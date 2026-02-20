@@ -183,7 +183,13 @@
         </div>
         <div class="form-group form-full">
           <label>Adresă Hartă Google Maps (opțional)</label>
-          <input type="text" id="fMap" placeholder="ex: Sinaia, Prahova, România">
+          <input type="text" id="fMap" placeholder="ex: Sinaia, Prahova, România" oninput="previewMap(this.value)">
+          <div id="mapPreview" style="display:none;margin-top:10px;border-radius:6px;overflow:hidden;border:1.5px solid var(--green-pale);">
+            <iframe id="mapIframe" src="" style="width:100%;height:220px;border:none;" allowfullscreen loading="lazy"></iframe>
+            <div style="padding:10px 14px;background:var(--off-white);font-size:12px;color:#5a7a65;display:flex;align-items:center;gap:6px;">
+              ✅ Verifică dacă locația e corectă pe hartă
+            </div>
+          </div>
         </div>
         <div class="form-group">
           <label>Telefon Contact</label>
@@ -289,6 +295,7 @@ function openModal(id = null) {
       document.getElementById('fDesc').value = data.desc || '';
       document.getElementById('fVideo').value = data.video || '';
       document.getElementById('fMap').value = data.map || '';
+      if (data.map) previewMap(data.map);
       document.getElementById('fPhone').value = data.phone || '';
       document.getElementById('fBadge').value = data.badge || '';
       currentPhotos = (data.photos || []).map(url => ({ url, isNew: false }));
@@ -422,6 +429,17 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+let mapTimer = null;
+function previewMap(val) {
+  clearTimeout(mapTimer);
+  const preview = document.getElementById('mapPreview');
+  if (!val.trim()) { preview.style.display = 'none'; return; }
+  mapTimer = setTimeout(() => {
+    document.getElementById('mapIframe').src = 'https://maps.google.com/maps?q=' + encodeURIComponent(val) + '&output=embed';
+    preview.style.display = 'block';
+  }, 800);
 }
 
 document.getElementById('modalOverlay').addEventListener('click', function(e) {
