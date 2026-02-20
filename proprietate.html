@@ -351,9 +351,12 @@ function render(){
       <div class="card-price">${prop.price?prop.price+' €':'Preț la cerere'}</div>
       <div class="card-price-note">Preț negociabil · TVA inclus</div>
       <div class="card-divider"></div>
-      ${prop.area?`
+      ${prop.area||prop.rooms||prop.baths||prop.land?`
         <div class="card-features">
-          <div class="card-feat"><div class="card-feat-icon" style="font-size:22px;color:#40916c;font-weight:700">m²</div><div class="card-feat-val">${prop.area} m²</div><div class="card-feat-lbl">Suprafață</div></div>
+          ${prop.rooms?`<div class="card-feat"><div class="card-feat-icon">🛏</div><div class="card-feat-val">${prop.rooms}</div><div class="card-feat-lbl">Camere</div></div>`:''}
+          ${prop.baths?`<div class="card-feat"><div class="card-feat-icon">🚿</div><div class="card-feat-val">${prop.baths}</div><div class="card-feat-lbl">Băi</div></div>`:''}
+          ${prop.area?`<div class="card-feat"><div class="card-feat-icon">📐</div><div class="card-feat-val">${prop.area} m²</div><div class="card-feat-lbl">Suprafață</div></div>`:''}
+          ${prop.land?`<div class="card-feat"><div class="card-feat-icon">🌳</div><div class="card-feat-val">${prop.land}</div><div class="card-feat-lbl">Teren</div></div>`:''}
         </div>
         <div class="card-divider"></div>`:''}
       <div class="contact-btns">
