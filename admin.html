@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAVINVEST – Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --green-deep:#1a3a2a;--green-mid:#2d6a4f;--green-bright:#40916c;
+    --green-light:#74c69d;--green-pale:#b7e4c7;--green-mist:#d8f3dc;
+    --white:#fafff8;--off-white:#f1f9f3;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  a{color:inherit;text-decoration:none;}
+  body{font-family:'Jost',sans-serif;background:#eef4ef;color:#1a3a2a;}
+  nav{background:var(--green-deep);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .nav-brand{display:flex;align-items:center;gap:12px;}
+  .nav-brand svg{width:36px;height:32px;}
+  .nav-brand-text{display:flex;flex-direction:column;}
+  .nav-brand-text span:first-child{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;letter-spacing:2px;color:white;}
+  .nav-brand-text span:last-child{font-size:9px;font-weight:500;letter-spacing:4px;color:var(--green-light);text-transform:uppercase;}
+  .nav-right{display:flex;gap:12px;align-items:center;}
+  .btn-nav{padding:8px 20px;border-radius:2px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border:none;text-decoration:none;display:inline-block;transition:all 0.2s;}
+  .btn-site{background:rgba(255,255,255,0.1);color:white;}
+  .btn-site:hover{background:rgba(255,255,255,0.2);}
+  .badge-count{background:var(--green-light);color:var(--green-deep);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;}
+  .container{max-width:1300px;margin:0 auto;padding:40px;}
+  .page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;}
+  .page-header h1{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--green-deep);}
+  .page-header p{font-size:13px;color:#5a7a65;margin-top:4px;}
+  .btn-add{background:var(--green-deep);color:white;padding:12px 28px;border-radius:3px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border:none;transition:background 0.2s;display:flex;align-items:center;gap:8px;}
+  .btn-add:hover{background:var(--green-mid);}
+  .props-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-bottom:40px;}
+  .prop-card{background:white;border-radius:6px;overflow:hidden;box-shadow:0 2px 12px rgba(26,58,42,0.08);transition:transform 0.2s,box-shadow 0.2s;}
+  .prop-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(26,58,42,0.12);}
+  .prop-img{height:180px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--green-deep),var(--green-mid));display:flex;align-items:center;justify-content:center;}
+  .prop-img img{width:100%;height:100%;object-fit:cover;}
+  .prop-img-placeholder{font-size:40px;opacity:0.3;}
+  .prop-body{padding:16px;}
+  .prop-type{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--green-bright);margin-bottom:6px;}
+  .prop-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--green-deep);margin-bottom:6px;line-height:1.3;}
+  .prop-location{font-size:12px;color:#5a7a65;margin-bottom:10px;}
+  .prop-price{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--green-deep);}
+  .prop-actions{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--green-mist);background:var(--off-white);}
+  .btn-edit,.btn-delete,.btn-view{flex:1;padding:8px;border-radius:2px;border:none;cursor:pointer;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:all 0.2s;text-align:center;}
+  .btn-view{background:var(--green-mist);color:var(--green-deep);}
+  .btn-view:hover{background:var(--green-pale);}
+  .btn-edit{background:var(--green-deep);color:white;}
+  .btn-edit:hover{background:var(--green-mid);}
+  .btn-delete{background:#fee2e2;color:#dc2626;}
+  .btn-delete:hover{background:#fca5a5;}
+  .empty-state{text-align:center;padding:80px 40px;background:white;border-radius:8px;box-shadow:0 2px 12px rgba(26,58,42,0.06);grid-column:1/-1;}
+  .empty-state .icon{font-size:60px;margin-bottom:20px;opacity:0.4;}
+  .empty-state h3{font-family:'Playfair Display',serif;font-size:22px;color:var(--green-deep);margin-bottom:8px;}
+  .empty-state p{font-size:14px;color:#7a9a82;}
+  .modal-overlay{position:fixed;inset:0;background:rgba(13,35,24,0.7);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:white;border-radius:8px;width:100%;max-width:720px;box-shadow:0 24px 80px rgba(0,0,0,0.3);margin:auto;}
+  .modal-header{display:flex;justify-content:space-between;align-items:center;padding:24px 32px;border-bottom:1px solid var(--green-mist);}
+  .modal-header h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--green-deep);}
+  .modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:#7a9a82;transition:color 0.2s;line-height:1;}
+  .modal-close:hover{color:var(--green-deep);}
+  .modal-body{padding:32px;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .form-full{grid-column:span 2;}
+  .form-group{display:flex;flex-direction:column;gap:6px;}
+  .form-group label{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--green-mid);}
+  .form-group input,.form-group select,.form-group textarea{padding:12px 14px;border:1.5px solid var(--green-pale);border-radius:3px;font-family:'Jost',sans-serif;font-size:14px;color:var(--green-deep);outline:none;transition:border-color 0.2s;background:var(--white);}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--green-mid);}
+  .form-group textarea{height:100px;resize:vertical;}
+  .photo-upload-area{border:2px dashed var(--green-pale);border-radius:6px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--off-white);}
+  .photo-upload-area:hover{border-color:var(--green-mid);background:var(--green-mist);}
+  .photo-upload-area input{display:none;}
+  .upload-icon{font-size:32px;margin-bottom:8px;}
+  .upload-text{font-size:13px;color:#5a7a65;}
+  .upload-hint{font-size:11px;color:#9ab8a0;margin-top:4px;}
+  .photos-preview{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}
+  .photo-thumb{width:80px;height:80px;border-radius:4px;overflow:hidden;position:relative;border:2px solid var(--green-pale);}
+  .photo-thumb img{width:100%;height:100%;object-fit:cover;}
+  .photo-thumb-remove{position:absolute;top:2px;right:2px;background:rgba(220,38,38,0.85);color:white;border:none;border-radius:50%;width:18px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
+  .modal-footer{display:flex;justify-content:flex-end;gap:12px;padding:20px 32px;border-top:1px solid var(--green-mist);background:var(--off-white);border-radius:0 0 8px 8px;}
+  .btn-cancel{padding:11px 24px;border-radius:3px;border:1.5px solid var(--green-pale);background:white;color:var(--green-mid);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;}
+  .btn-save{padding:11px 28px;border-radius:3px;border:none;background:var(--green-deep);color:white;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+  .btn-save:hover{background:var(--green-mid);}
+  .btn-save:disabled{background:#9ab8a0;cursor:not-allowed;}
+  .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--green-deep);color:white;padding:14px 28px;border-radius:4px;font-size:13px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,0.2);transition:transform 0.4s ease;z-index:999;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  .loader{text-align:center;padding:60px;color:#7a9a82;font-size:14px;grid-column:1/-1;}
+  .upload-progress{margin-top:8px;font-size:12px;color:var(--green-mid);font-weight:600;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <svg viewBox="0 0 64 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="14,54 0,54 7,33" fill="rgba(116,198,157,0.3)"/>
+      <polygon points="50,54 64,54 57,33" fill="rgba(116,198,157,0.3)"/>
+      <polygon points="32,4 8,54 56,54" fill="#40916c"/>
+      <polygon points="32,4 56,54 32,54" fill="#52b788"/>
+      <rect x="0" y="54" width="64" height="2.5" fill="#74c69d"/>
+      <polygon points="32,4 25,21 39,21" fill="#d8f3dc"/>
+    </svg>
+    <div class="nav-brand-text">
+      <span>SAVINVEST</span>
+      <span>Admin Panel</span>
+    </div>
+  </div>
+  <div class="nav-right">
+    <span class="badge-count" id="propCount">Se încarcă...</span>
+    <a href="index.html" class="btn-nav btn-site">← Înapoi la Site</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1>Proprietăți</h1>
+      <p>Administrează toate proprietățile afișate pe site</p>
+    </div>
+    <button class="btn-add" onclick="openModal()">+ Adaugă Proprietate</button>
+  </div>
+  <div class="props-grid" id="propsGrid"><div class="loader">⏳ Se încarcă proprietățile...</div></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle">Proprietate Nouă</h2>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editId">
+      <div class="form-grid">
+        <div class="form-group form-full">
+          <label>Titlu Proprietate</label>
+          <input type="text" id="fTitle" placeholder="ex: Vilă Panoramică cu Vedere la Bucegi">
+        </div>
+        <div class="form-group">
+          <label>Tip Proprietate</label>
+          <select id="fType">
+            <option value="Casă / Vilă">Casă / Vilă</option>
+            <option value="Cabană">Cabană</option>
+            <option value="Teren">Teren</option>
+            <option value="Fermă">Fermă</option>
+            <option value="Pensiune">Pensiune</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Locație</label>
+          <input type="text" id="fLocation" placeholder="ex: Sinaia, Prahova">
+        </div>
+        <div class="form-group">
+          <label>Preț (€)</label>
+          <input type="text" id="fPrice" placeholder="ex: 185.000">
+        </div>
+        <div class="form-group">
+          <label>Suprafață (m²)</label>
+          <input type="number" id="fArea" placeholder="ex: 180">
+        </div>
+        <div class="form-group">
+          <label>Teren</label>
+          <input type="text" id="fLand" placeholder="ex: 1.200 m²">
+        </div>
+        <div class="form-group">
+          <label>Camere</label>
+          <input type="number" id="fRooms" placeholder="ex: 4">
+        </div>
+        <div class="form-group">
+          <label>Băi</label>
+          <input type="number" id="fBaths" placeholder="ex: 2">
+        </div>
+        <div class="form-group form-full">
+          <label>Descriere</label>
+          <textarea id="fDesc" placeholder="Descrie proprietatea..."></textarea>
+        </div>
+        <div class="form-group form-full">
+          <label>Link Video YouTube / Vimeo (opțional)</label>
+          <input type="text" id="fVideo" placeholder="ex: https://www.youtube.com/watch?v=...">
+        </div>
+        <div class="form-group form-full">
+          <label>Adresă Hartă Google Maps (opțional)</label>
+          <input type="text" id="fMap" placeholder="ex: Sinaia, Prahova, România">
+        </div>
+        <div class="form-group">
+          <label>Telefon Contact</label>
+          <input type="text" id="fPhone" placeholder="ex: +40720123456">
+        </div>
+        <div class="form-group">
+          <label>Badge</label>
+          <select id="fBadge">
+            <option value="">Fără badge</option>
+            <option value="Nou">Nou</option>
+            <option value="Exclusiv">Exclusiv</option>
+            <option value="Reducere">Reducere</option>
+            <option value="Premium">Premium</option>
+          </select>
+        </div>
+        <div class="form-group form-full">
+          <label>Fotografii (max 10)</label>
+          <div class="photo-upload-area" onclick="document.getElementById('fPhotos').click()">
+            <input type="file" id="fPhotos" multiple accept="image/*" onchange="handlePhotos(this)">
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">Click pentru a adăuga fotografii</div>
+            <div class="upload-hint">JPG, PNG, WEBP · Max 5MB per poză</div>
+          </div>
+          <div class="upload-progress" id="uploadProgress"></div>
+          <div class="photos-preview" id="photosPreview"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Anulează</button>
+      <button class="btn-save" id="btnSave" onclick="saveProperty()">Salvează Proprietatea</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL = 'https://onjwsqzkrhvknitohqyl.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uandzcXprcmh2a25pdG9ocXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NzkwMjYsImV4cCI6MjA4NzE1NTAyNn0.fj_t4quODGN3MQds3TVcshi5cLpYssy77qgJ3KbwCdQ';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let editingId = null;
+let currentPhotos = []; // { url, isNew, file? }
+
+// ── LOAD ──
+async function loadProperties() {
+  const { data, error } = await sb.from('proprietati').select('*').order('created_at', { ascending: false });
+  if (error) { showToast('❌ Eroare la încărcare: ' + error.message); return; }
+  renderCards(data || []);
+}
+
+function renderCards(props) {
+  const grid = document.getElementById('propsGrid');
+  document.getElementById('propCount').textContent = props.length + ' proprietăți';
+  if (props.length === 0) {
+    grid.innerHTML = '<div class="empty-state"><div class="icon">🏔️</div><h3>Nicio proprietate adăugată</h3><p>Apasă "Adaugă Proprietate" pentru a începe</p></div>';
+    return;
+  }
+  grid.innerHTML = props.map(p => `
+    <div class="prop-card">
+      <div class="prop-img">
+        ${p.photos && p.photos[0] ? `<img src="${p.photos[0]}" alt="${p.title}">` : '<div class="prop-img-placeholder">🏡</div>'}
+      </div>
+      <div class="prop-body">
+        <div class="prop-type">${p.type || ''}${p.badge ? ' · ' + p.badge : ''}</div>
+        <div class="prop-title">${p.title}</div>
+        <div class="prop-location">📍 ${p.location || ''}</div>
+        <div class="prop-price">${p.price ? p.price + ' €' : 'Preț la cerere'}</div>
+      </div>
+      <div class="prop-actions">
+        <a href="proprietate.html?id=${p.id}" target="_blank" class="btn-view">👁 Vezi</a>
+        <button class="btn-edit" onclick="editProperty('${p.id}')">✏️ Editează</button>
+        <button class="btn-delete" onclick="deleteProperty('${p.id}')">🗑 Șterge</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── MODAL ──
+function openModal(id = null) {
+  editingId = id;
+  currentPhotos = [];
+  document.getElementById('photosPreview').innerHTML = '';
+  document.getElementById('uploadProgress').textContent = '';
+  document.getElementById('modalTitle').textContent = id ? 'Editează Proprietate' : 'Proprietate Nouă';
+  const fields = ['fTitle','fLocation','fPrice','fArea','fLand','fRooms','fBaths','fDesc','fVideo','fMap','fPhone'];
+  fields.forEach(f => document.getElementById(f).value = '');
+  document.getElementById('fType').value = 'Casă / Vilă';
+  document.getElementById('fBadge').value = '';
+
+  if (id) {
+    sb.from('proprietati').select('*').eq('id', id).single().then(({ data }) => {
+      if (!data) return;
+      document.getElementById('fTitle').value = data.title || '';
+      document.getElementById('fType').value = data.type || 'Casă / Vilă';
+      document.getElementById('fLocation').value = data.location || '';
+      document.getElementById('fPrice').value = data.price || '';
+      document.getElementById('fArea').value = data.area || '';
+      document.getElementById('fLand').value = data.land || '';
+      document.getElementById('fRooms').value = data.rooms || '';
+      document.getElementById('fBaths').value = data.baths || '';
+      document.getElementById('fDesc').value = data.desc || '';
+      document.getElementById('fVideo').value = data.video || '';
+      document.getElementById('fMap').value = data.map || '';
+      document.getElementById('fPhone').value = data.phone || '';
+      document.getElementById('fBadge').value = data.badge || '';
+      currentPhotos = (data.photos || []).map(url => ({ url, isNew: false }));
+      renderPhotosPrev();
+    });
+  }
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  editingId = null;
+}
+
+async function editProperty(id) { openModal(id); }
+
+// ── PHOTOS ──
+function handlePhotos(input) {
+  const files = Array.from(input.files);
+  const remaining = 10 - currentPhotos.length;
+  files.slice(0, remaining).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      currentPhotos.push({ url: e.target.result, isNew: true, file });
+      renderPhotosPrev();
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
+function renderPhotosPrev() {
+  document.getElementById('photosPreview').innerHTML = currentPhotos.map((p, i) => `
+    <div class="photo-thumb">
+      <img src="${p.url}">
+      <button class="photo-thumb-remove" onclick="removePhoto(${i})">×</button>
+    </div>
+  `).join('');
+}
+
+function removePhoto(i) { currentPhotos.splice(i, 1); renderPhotosPrev(); }
+
+// ── UPLOAD PHOTO TO SUPABASE STORAGE ──
+async function uploadPhoto(file) {
+  const ext = file.name.split('.').pop();
+  const path = `prop-${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const { error } = await sb.storage.from('poze-proprietati').upload(path, file, { contentType: file.type });
+  if (error) throw error;
+  const { data } = sb.storage.from('poze-proprietati').getPublicUrl(path);
+  return data.publicUrl;
+}
+
+// ── SAVE ──
+async function saveProperty() {
+  const title = document.getElementById('fTitle').value.trim();
+  const location = document.getElementById('fLocation').value.trim();
+  if (!title) { showToast('⚠️ Adaugă un titlu!'); return; }
+  if (!location) { showToast('⚠️ Adaugă o locație!'); return; }
+
+  const btn = document.getElementById('btnSave');
+  btn.disabled = true; btn.textContent = 'Se salvează...';
+
+  try {
+    // Upload pozele noi
+    const prog = document.getElementById('uploadProgress');
+    const newPhotos = currentPhotos.filter(p => p.isNew);
+    const uploadedUrls = [];
+
+    for (let i = 0; i < newPhotos.length; i++) {
+      prog.textContent = `Se încarcă poza ${i+1} din ${newPhotos.length}...`;
+      const url = await uploadPhoto(newPhotos[i].file);
+      uploadedUrls.push(url);
+    }
+    prog.textContent = '';
+
+    // Construieste array final de poze (existente + noi)
+    const finalPhotos = [
+      ...currentPhotos.filter(p => !p.isNew).map(p => p.url),
+      ...uploadedUrls
+    ];
+
+    const payload = {
+      title,
+      type: document.getElementById('fType').value,
+      location,
+      price: document.getElementById('fPrice').value.trim(),
+      area: document.getElementById('fArea').value,
+      land: document.getElementById('fLand').value.trim(),
+      rooms: document.getElementById('fRooms').value,
+      baths: document.getElementById('fBaths').value,
+      desc: document.getElementById('fDesc').value.trim(),
+      video: document.getElementById('fVideo').value.trim(),
+      map: document.getElementById('fMap').value.trim(),
+      phone: document.getElementById('fPhone').value.trim(),
+      badge: document.getElementById('fBadge').value,
+      photos: finalPhotos
+    };
+
+    let error;
+    if (editingId) {
+      ({ error } = await sb.from('proprietati').update(payload).eq('id', editingId));
+    } else {
+      ({ error } = await sb.from('proprietati').insert(payload));
+    }
+
+    if (error) throw error;
+    showToast(editingId ? '✅ Proprietate actualizată!' : '✅ Proprietate adăugată!');
+    closeModal();
+    loadProperties();
+  } catch(e) {
+    showToast('❌ Eroare: ' + e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Salvează Proprietatea';
+  }
+}
+
+// ── DELETE ──
+async function deleteProperty(id) {
+  if (!confirm('Ești sigur că vrei să ștergi această proprietate?')) return;
+  const { error } = await sb.from('proprietati').delete().eq('id', id);
+  if (error) { showToast('❌ Eroare: ' + error.message); return; }
+  showToast('🗑 Proprietate ștearsă');
+  loadProperties();
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+loadProperties();
+</script>
+</body>
+</html>

@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAVINVEST IMOBILIARE – Proprietăți de Deal și Munte</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a3a2a;
+    --green-mid: #2d6a4f;
+    --green-bright: #40916c;
+    --green-light: #74c69d;
+    --green-pale: #b7e4c7;
+    --green-mist: #d8f3dc;
+    --white: #fafff8;
+    --off-white: #f1f9f3;
+    --text-dark: #0d2318;
+    --text-mid: #2d4a39;
+    --gold: #c9a84c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  a { color: inherit; text-decoration: none; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--white);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 60px;
+    background: rgba(250,255,248,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--green-pale);
+    animation: fadeDown 0.8s ease;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .nav-logo {
+    display: flex; flex-direction: row; align-items: center; gap: 12px;
+  }
+  .nav-logo-text { display: flex; flex-direction: column; gap: 2px; }
+  .nav-logo span:first-child {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 900; letter-spacing: 2px;
+    color: var(--green-deep);
+  }
+  .nav-logo span:last-child {
+    font-size: 10px; font-weight: 500; letter-spacing: 4px;
+    color: var(--green-bright); text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none; font-size: 13px; font-weight: 500;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--text-mid); transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--green-bright); }
+
+  .nav-cta {
+    background: var(--green-deep); color: var(--white);
+    padding: 10px 26px; border-radius: 2px;
+    font-size: 12px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; cursor: pointer;
+    border: none; transition: background 0.3s;
+  }
+  .nav-cta:hover { background: var(--green-mid); }
+
+  /* ---- HERO ---- */
+  .hero {
+    min-height: 75vh;
+    position: relative;
+    display: flex; align-items: flex-start;
+    overflow: hidden;
+    padding-top: 140px;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 70% 40%, rgba(64,145,108,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(45,106,79,0.12) 0%, transparent 50%),
+      linear-gradient(160deg, var(--white) 45%, var(--green-mist) 100%);
+  }
+
+  /* Decorative mountain silhouette */
+  .hero-mountains {
+    position: absolute; bottom: 0; right: 0;
+    width: 60%; height: 80%;
+    overflow: hidden;
+  }
+
+  .mountain-svg {
+    width: 100%; height: 100%;
+    opacity: 0.07;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 0 60px;
+    max-width: 680px;
+    animation: heroReveal 1.2s ease 0.3s both;
+  }
+
+  @keyframes heroReveal {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--green-bright);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block; width: 40px; height: 1px;
+    background: var(--green-bright);
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 5vw, 68px);
+    font-weight: 900; line-height: 1.1;
+    color: var(--green-deep);
+    margin-bottom: 24px;
+  }
+
+  .hero h1 em {
+    font-style: italic; color: var(--green-mid);
+  }
+
+  .hero-desc {
+    font-size: 16px; line-height: 1.8;
+    color: var(--text-mid); font-weight: 300;
+    margin-bottom: 48px; max-width: 480px;
+  }
+
+  .hero-actions {
+    display: flex; gap: 16px; align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--green-deep); color: var(--white);
+    padding: 16px 36px; border-radius: 2px;
+    font-size: 13px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; cursor: pointer; border: none;
+    transition: all 0.3s; text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--green-mid); transform: translateY(-2px); }
+
+  .btn-outline {
+    border: 1.5px solid var(--green-mid); color: var(--green-mid);
+    padding: 15px 32px; border-radius: 2px;
+    font-size: 13px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; cursor: pointer; background: transparent;
+    transition: all 0.3s; text-decoration: none;
+    display: inline-block;
+  }
+  .btn-outline:hover {
+    background: var(--green-mid); color: var(--white);
+    transform: translateY(-2px);
+  }
+
+  .hero-stats {
+    position: absolute; bottom: 90px; right: 60px;
+    display: flex; gap: 48px; z-index: 2;
+    animation: heroReveal 1.2s ease 0.7s both;
+  }
+
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-weight: 900; color: var(--green-deep);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--green-bright);
+    margin-top: 6px;
+  }
+
+  .search-section {
+    background: var(--green-deep);
+    padding: 0 60px;
+    position: relative;
+    z-index: 10;
+    margin-top: -2px;
+  }
+
+  .search-bar {
+    display: grid; grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 0; max-width: 1100px; margin: 0 auto;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 3px; overflow: hidden;
+  }
+
+  .search-field {
+    padding: 22px 24px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+  }
+  .search-field:last-child { border-right: none; }
+  .search-field label {
+    display: block; font-size: 9px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--green-light); margin-bottom: 6px;
+  }
+  .search-field select, .search-field input {
+    background: transparent; border: none; outline: none;
+    color: var(--white); font-family: 'Jost', sans-serif;
+    font-size: 15px; font-weight: 400; width: 100%;
+  }
+  .search-field select option { background: var(--green-deep); color: var(--white); }
+
+  .search-btn {
+    background: var(--green-bright); border: none;
+    padding: 0 40px; color: var(--white);
+    font-size: 12px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; cursor: pointer;
+    transition: background 0.3s;
+  }
+  .search-btn:hover { background: var(--green-light); }
+
+  /* ---- SECTION COMMON ---- */
+  section { padding: 100px 60px; }
+
+  .section-header {
+    margin-bottom: 64px;
+  }
+  .section-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--green-bright);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-eyebrow::before {
+    content: ''; display: block;
+    width: 30px; height: 1px; background: var(--green-bright);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 3.5vw, 48px);
+    font-weight: 900; color: var(--green-deep);
+    line-height: 1.2;
+  }
+  .section-title em {
+    font-style: italic; color: var(--green-mid);
+  }
+
+  /* ---- CATEGORIES ---- */
+  .categories-section {
+    background: var(--off-white);
+  }
+
+  .categories-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-top: 40px;
+  }
+
+  .category-card {
+    position: relative; overflow: hidden;
+    aspect-ratio: 4/3; cursor: pointer;
+    background: var(--green-deep);
+  }
+
+  .category-card:first-child {
+    grid-row: span 2; aspect-ratio: auto;
+  }
+
+  .category-card-bg {
+    position: absolute; inset: 0;
+    transition: transform 0.6s ease;
+  }
+
+  .category-card:hover .category-card-bg {
+    transform: scale(1.06);
+  }
+
+  /* Illustrated SVG backgrounds for each category */
+  .cat-1 .category-card-bg {
+    background: linear-gradient(135deg, #1a3a2a 0%, #2d6a4f 50%, #40916c 100%);
+  }
+  .cat-2 .category-card-bg {
+    background: linear-gradient(135deg, #0d2318 0%, #1a3a2a 60%, #2d6a4f 100%);
+  }
+  .cat-3 .category-card-bg {
+    background: linear-gradient(135deg, #2d6a4f 0%, #40916c 100%);
+  }
+  .cat-4 .category-card-bg {
+    background: linear-gradient(135deg, #1a5c38 0%, #2d7a58 100%);
+  }
+  .cat-5 .category-card-bg {
+    background: linear-gradient(135deg, #0d3320 0%, #1a4e30 100%);
+  }
+
+  .category-card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(13,35,24,0.9) 0%, transparent 60%);
+  }
+
+  .category-icon {
+    position: absolute; top: 24px; right: 24px;
+    width: 48px; height: 48px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 22px;
+    backdrop-filter: blur(8px);
+  }
+
+  .category-card-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 32px;
+  }
+
+  .category-tag {
+    font-size: 9px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--green-light);
+    margin-bottom: 10px;
+  }
+
+  .category-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 700;
+    color: var(--white); line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .cat-1 .category-name { font-size: 32px; }
+
+  .category-count {
+    font-size: 12px; color: rgba(255,255,255,0.6);
+    font-weight: 400;
+  }
+
+  /* Decorative mountain/forest patterns within cards */
+  .cat-decoration {
+    position: absolute; bottom: 30%; left: 0; right: 0;
+    opacity: 0.12; pointer-events: none;
+  }
+
+  /* ---- LISTINGS ---- */
+  .listings-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 32px; margin-top: 48px;
+  }
+
+  .listing-card {
+    background: var(--white);
+    border: 1px solid var(--green-pale);
+    border-radius: 4px; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+  }
+
+  .listing-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 60px rgba(26,58,42,0.12);
+  }
+
+  .listing-img {
+    height: 240px; position: relative; overflow: hidden;
+  }
+
+  .listing-img-inner {
+    width: 100%; height: 100%;
+    transition: transform 0.6s ease;
+  }
+
+  .listing-card:hover .listing-img-inner {
+    transform: scale(1.06);
+  }
+
+  /* Different gradient themes per listing */
+  .l1 .listing-img-inner { background: linear-gradient(160deg, #1a5c38 0%, #2d8a5a 40%, #52b788 100%); }
+  .l2 .listing-img-inner { background: linear-gradient(160deg, #0d2318 0%, #1a4e30 40%, #2d7a52 100%); }
+  .l3 .listing-img-inner { background: linear-gradient(160deg, #2d6a4f 0%, #40916c 50%, #74c69d 100%); }
+
+  /* SVG house silhouettes inside images */
+  .listing-illustration {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    display: flex; justify-content: center; align-items: flex-end;
+    height: 100%; overflow: hidden;
+  }
+
+  .badge-container {
+    position: absolute; top: 16px; left: 16px;
+    display: flex; gap: 8px;
+  }
+
+  .badge {
+    padding: 5px 12px; border-radius: 2px;
+    font-size: 9px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .badge-new { background: var(--gold); color: var(--text-dark); }
+  .badge-excl { background: var(--green-deep); color: var(--white); }
+
+  .listing-body { padding: 24px; }
+
+  .listing-location {
+    font-size: 10px; font-weight: 600; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--green-bright);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .listing-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--green-deep); line-height: 1.3;
+    margin-bottom: 12px;
+  }
+
+  .listing-features {
+    display: flex; gap: 20px;
+    padding: 12px 0; border-top: 1px solid var(--green-mist);
+    border-bottom: 1px solid var(--green-mist);
+    margin-bottom: 16px;
+  }
+
+  .feature {
+    font-size: 11px; color: var(--text-mid);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .feature span:first-child { font-size: 14px; }
+
+  .listing-footer {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .listing-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700; color: var(--green-deep);
+  }
+
+  .listing-price-label {
+    font-size: 10px; color: var(--text-mid); font-weight: 400;
+    display: block; margin-top: 2px;
+  }
+
+  .listing-btn {
+    background: transparent; border: 1.5px solid var(--green-mid);
+    color: var(--green-mid); padding: 8px 20px; border-radius: 2px;
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; cursor: pointer;
+    transition: all 0.3s;
+  }
+  .listing-btn:hover {
+    background: var(--green-mid); color: var(--white);
+  }
+
+  /* ---- WHY US ---- */
+  .why-section {
+    background: var(--green-deep);
+    position: relative; overflow: hidden;
+  }
+
+  .why-section .section-eyebrow { color: var(--green-light); }
+  .why-section .section-eyebrow::before { background: var(--green-light); }
+  .why-section .section-title { color: var(--white); }
+  .why-section .section-title em { color: var(--green-light); }
+
+  .why-bg-pattern {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: repeating-linear-gradient(
+      45deg, var(--white) 0, var(--white) 1px,
+      transparent 0, transparent 50%
+    );
+    background-size: 40px 40px;
+  }
+
+  .why-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 40px; position: relative; z-index: 1; margin-top: 64px;
+  }
+
+  .why-card {
+    padding: 32px 0;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .why-icon {
+    font-size: 36px; margin-bottom: 20px;
+    display: block;
+  }
+
+  .why-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--white); margin-bottom: 12px;
+  }
+
+  .why-desc {
+    font-size: 14px; line-height: 1.8;
+    color: rgba(255,255,255,0.55); font-weight: 300;
+  }
+
+  /* ---- ZONES ---- */
+  .zones-section { background: var(--off-white); }
+
+  .zones-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 2px; margin-top: 48px;
+  }
+
+  .zone-card {
+    background: var(--green-deep);
+    padding: 56px 48px;
+    position: relative; overflow: hidden;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .zone-card:hover { background: var(--green-mid); }
+
+  .zone-card-deco {
+    position: absolute; right: -20px; top: -20px;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .zone-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px; font-weight: 900;
+    color: rgba(255,255,255,0.06); line-height: 1;
+    position: absolute; top: 20px; right: 30px;
+  }
+
+  .zone-icon { font-size: 40px; margin-bottom: 20px; display: block; }
+
+  .zone-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px; font-weight: 700; color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .zone-desc {
+    font-size: 14px; color: rgba(255,255,255,0.6);
+    line-height: 1.8; font-weight: 300;
+    margin-bottom: 24px; max-width: 340px;
+  }
+
+  .zone-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+
+  .zone-tag {
+    padding: 5px 14px; border-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 10px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: rgba(255,255,255,0.5);
+  }
+
+  /* ---- CONTACT ---- */
+  .contact-section {
+    background: var(--green-mist);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; padding: 0;
+  }
+
+  .contact-left {
+    padding: 100px 80px;
+    background: var(--green-deep);
+    color: var(--white);
+  }
+
+  .contact-left .section-eyebrow { color: var(--green-light); }
+  .contact-left .section-eyebrow::before { background: var(--green-light); }
+  .contact-left .section-title { color: var(--white); }
+  .contact-left .section-title em { color: var(--green-light); }
+
+  .contact-info {
+    margin-top: 48px; display: flex; flex-direction: column; gap: 28px;
+  }
+
+  .contact-item {
+    display: flex; gap: 18px; align-items: flex-start;
+  }
+
+  .contact-item-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  .contact-item-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--green-light);
+    margin-bottom: 4px;
+  }
+
+  .contact-item-value {
+    font-size: 15px; color: var(--white);
+    font-weight: 400; line-height: 1.5;
+  }
+
+  .contact-right {
+    padding: 100px 80px; background: var(--off-white);
+  }
+
+  .contact-right .section-header { margin-bottom: 40px; }
+
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  .form-group label {
+    display: block; font-size: 10px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--green-mid); margin-bottom: 8px;
+  }
+
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 14px 16px;
+    border: 1.5px solid var(--green-pale);
+    border-radius: 2px; outline: none;
+    font-family: 'Jost', sans-serif; font-size: 14px;
+    color: var(--text-dark); background: var(--white);
+    transition: border-color 0.3s;
+  }
+
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--green-mid);
+  }
+
+  .form-group textarea { height: 100px; resize: none; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .submit-btn {
+    width: 100%; background: var(--green-deep); color: var(--white);
+    padding: 16px; border: none; border-radius: 2px;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; cursor: pointer;
+    transition: background 0.3s;
+  }
+  .submit-btn:hover { background: var(--green-mid); }
+
+  /* ---- FOOTER ---- */
+  footer {
+    background: #0a1e12;
+    padding: 60px 60px 30px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px; margin-bottom: 48px;
+  }
+
+  .footer-brand span:first-child {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 900; letter-spacing: 2px;
+    color: var(--white); display: block; margin-bottom: 4px;
+  }
+  .footer-brand span:last-child {
+    font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--green-light); display: block; margin-bottom: 20px;
+  }
+
+  .footer-tagline {
+    font-size: 13px; line-height: 1.8;
+    color: rgba(255,255,255,0.4); font-weight: 300;
+  }
+
+  .footer-col h4 {
+    font-size: 10px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--white); margin-bottom: 20px;
+  }
+
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 10px; }
+  .footer-col a {
+    font-size: 13px; color: rgba(255,255,255,0.4);
+    text-decoration: none; transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--green-light); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-bottom p { font-size: 12px; }
+
+  /* ---- SCROLL ANIMATIONS ---- */
+  .reveal {
+    opacity: 0; transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  @media (max-width: 640px) {
+    .reveal {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  /* ---- FLOATING CTA ---- */
+  .floating-cta {
+    position: fixed; bottom: 32px; right: 32px; z-index: 99;
+    background: var(--green-bright); color: var(--white);
+    padding: 14px 28px; border-radius: 2px;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; cursor: pointer;
+    border: none; box-shadow: 0 8px 32px rgba(26,58,42,0.3);
+    transition: all 0.3s; display: flex; align-items: center; gap: 10px;
+  }
+  .floating-cta:hover {
+    background: var(--green-deep); transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(26,58,42,0.4);
+  }
+
+  /* ---- RESPONSIVE TABLET ---- */
+  @media (max-width: 1024px) {
+    nav { padding: 14px 24px; }
+    .nav-links { display: none; }
+    .nav-cta { padding: 9px 18px; font-size: 11px; }
+    section { padding: 60px 24px; }
+    .hero-content { padding: 0 24px; max-width: 100%; }
+    .listings-grid { grid-template-columns: 1fr 1fr; }
+    .why-grid { grid-template-columns: 1fr 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .contact-section { grid-template-columns: 1fr; }
+    .contact-left, .contact-right { padding: 60px 40px; }
+    .search-bar { grid-template-columns: 1fr 1fr; }
+    .search-field:last-child { grid-column: span 2; }
+    .categories-grid { grid-template-columns: 1fr 1fr; }
+    .category-card:first-child { grid-row: span 1; }
+    .zones-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ---- RESPONSIVE MOBILE ---- */
+  @media (max-width: 640px) {
+    /* NAV */
+    nav { padding: 12px 16px; }
+    .nav-logo svg { width: 30px; height: 26px; }
+    .nav-logo-text span:first-child { font-size: 15px; letter-spacing: 1px; }
+    .nav-logo-text span:last-child { font-size: 7px; letter-spacing: 2px; }
+    .nav-cta { padding: 8px 14px; font-size: 10px; letter-spacing: 1px; }
+
+    /* HERO - full reflow pentru mobil */
+    .hero {
+      min-height: auto;
+      display: block;
+      padding: 80px 0 0 0;
+      overflow: visible;
+    }
+    .hero-bg { display: none; }
+    .hero-mountains { display: none; }
+
+    .hero-content {
+      padding: 28px 20px 32px;
+      max-width: 100%;
+      background: linear-gradient(160deg, #fafff8 50%, #d8f3dc 100%);
+    }
+    .hero-eyebrow { font-size: 9px; letter-spacing: 4px; margin-bottom: 14px; }
+    .hero h1 { font-size: 36px; margin-bottom: 16px; }
+    .hero-desc { font-size: 14px; line-height: 1.7; margin-bottom: 24px; max-width: 100%; }
+    .hero-actions { flex-direction: column; gap: 10px; }
+    .btn-primary, .btn-outline {
+      width: 100%; text-align: center;
+      padding: 15px 20px; font-size: 12px;
+      display: block;
+    }
+
+    /* SEARCH */
+    .search-section { padding: 0; }
+    .search-bar {
+      grid-template-columns: 1fr;
+      border-radius: 0; margin: 0; border: none;
+      background: rgba(255,255,255,0.06);
+    }
+    .search-field {
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 16px 20px;
+    }
+    .search-field label { font-size: 9px; letter-spacing: 2px; }
+    .search-field select, .search-field input { font-size: 14px; }
+    .search-btn { padding: 18px; font-size: 12px; letter-spacing: 3px; }
+
+    /* SECTIONS */
+    section { padding: 44px 16px; }
+    .section-title { font-size: 24px; }
+    .section-eyebrow { font-size: 9px; }
+
+    /* CATEGORIES */
+    .categories-grid { grid-template-columns: 1fr; gap: 3px; }
+    .category-card { aspect-ratio: 16/8; }
+    .category-card:first-child { aspect-ratio: 16/8; grid-row: span 1; }
+    .category-name { font-size: 20px !important; }
+    .category-card-content { padding: 20px; }
+
+    /* LISTINGS */
+    .listings-grid { grid-template-columns: 1fr; gap: 16px; }
+    .listing-img { height: 190px; }
+    .listing-body { padding: 16px; }
+    .listing-title { font-size: 17px; }
+    .listing-features { flex-wrap: wrap; gap: 8px; }
+    .listing-price { font-size: 20px; }
+    .listing-footer { flex-wrap: wrap; gap: 10px; }
+
+    /* WHY */
+    .why-grid { grid-template-columns: 1fr; gap: 0; }
+    .why-card { padding: 22px 0; }
+    .why-title { font-size: 18px; }
+    .why-desc { font-size: 13px; }
+
+    /* ZONES */
+    .zones-grid { grid-template-columns: 1fr; gap: 3px; }
+    .zone-card { padding: 32px 20px; }
+    .zone-title { font-size: 22px; }
+    .zone-num { font-size: 50px; top: 10px; right: 16px; }
+    .zone-desc { font-size: 13px; }
+
+    /* CONTACT */
+    .contact-section { display: block; }
+    .contact-left { padding: 44px 20px; }
+    .contact-right { padding: 44px 20px; }
+    .form-row { grid-template-columns: 1fr; }
+    .contact-info { gap: 18px; }
+    .contact-item-value { font-size: 14px; }
+
+    /* FOOTER */
+    .footer-top { grid-template-columns: 1fr; gap: 28px; }
+    footer { padding: 40px 20px 20px; }
+    .footer-bottom { flex-direction: column; gap: 6px; text-align: center; font-size: 11px; }
+    .footer-col { display: none; }
+    .footer-col:first-child { display: block; }
+
+    /* FLOATING CTA */
+    .floating-cta { bottom: 14px; right: 14px; padding: 11px 18px; font-size: 10px; gap: 6px; }
+  }
+
+  /* ---- EXTRA SMALL ---- */
+  @media (max-width: 380px) {
+    .hero h1 { font-size: 30px; }
+    .nav-logo-text span:first-child { font-size: 14px; }
+    .nav-cta { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg width="42" height="38" viewBox="0 0 64 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="14,54 0,54 7,33" fill="#b7e4c7"/>
+      <polygon points="50,54 64,54 57,33" fill="#b7e4c7"/>
+      <polygon points="32,4 8,54 56,54" fill="#1a3a2a"/>
+      <polygon points="32,4 56,54 32,54" fill="#2d6a4f"/>
+      <rect x="0" y="54" width="64" height="2.5" fill="#40916c"/>
+      <polygon points="32,4 25,21 39,21" fill="#ffffff"/>
+    </svg>
+    <div class="nav-logo-text">
+      <span>SAVINVEST</span>
+      <span>Imobiliare</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#listings">Proprietăți</a></li>
+    <li><a href="#zone">Zone</a></li>
+    <li><a href="#about">Despre Noi</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contactează-ne</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="hero-mountains">
+    <svg class="mountain-svg" viewBox="0 0 1000 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Mountains -->
+      <polygon points="0,600 200,180 400,600" fill="#2d6a4f"/>
+      <polygon points="150,600 400,80 650,600" fill="#1a3a2a"/>
+      <polygon points="350,600 600,200 850,600" fill="#40916c"/>
+      <polygon points="600,600 800,300 1000,600" fill="#2d6a4f"/>
+      <!-- Snow caps -->
+      <polygon points="400,80 360,180 440,180" fill="white"/>
+      <!-- Pine trees -->
+      <polygon points="80,600 90,540 100,600" fill="#0d2318"/>
+      <polygon points="120,600 130,530 140,600" fill="#0d2318"/>
+      <polygon points="720,600 732,550 744,600" fill="#0d2318"/>
+      <polygon points="760,600 772,540 784,600" fill="#0d2318"/>
+      <polygon points="800,600 812,555 824,600" fill="#0d2318"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Proprietăți Exclusive</div>
+    <h1>Casele tale la<br><em>deal și munte</em></h1>
+    <p class="hero-desc">
+      Descoperă proprietăți unice în zonele colinare și montane ale României. De la căsuțe rustice la vile de lux, te ajutăm să găsești locul perfect pentru a te reconecta cu natura.
+    </p>
+    <div class="hero-actions">
+      <a href="#listings" class="btn-primary">Vezi Proprietăți</a>
+      <a href="#contact" class="btn-outline">Contactează-ne</a>
+    </div>
+  </div>
+
+
+
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<div class="search-section">
+  <div class="search-bar">
+    <div class="search-field">
+      <label>Tip Proprietate</label>
+      <select>
+        <option>Toate proprietățile</option>
+        <option>Casă / Vilă</option>
+        <option>Teren</option>
+        <option>Cabană</option>
+        <option>Fermă</option>
+      </select>
+    </div>
+    <div class="search-field">
+      <label>Zona</label>
+      <select>
+        <option>Toate zonele</option>
+        <option>Munții Bucegi</option>
+        <option>Munții Apuseni</option>
+        <option>Subcarpați</option>
+        <option>Munții Retezat</option>
+        <option>Valea Prahovei</option>
+      </select>
+    </div>
+    <div class="search-field">
+      <label>Buget Maxim</label>
+      <input type="text" placeholder="ex: 150.000 EUR">
+    </div>
+    <button class="search-btn">Caută</button>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="categories-section">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">Tipuri de Proprietăți</div>
+    <h2 class="section-title">Găsește ce <em>cauți</em></h2>
+  </div>
+
+  <div class="categories-grid reveal">
+    <div class="category-card cat-1">
+      <div class="category-card-bg">
+        <svg style="width:100%;height:100%;opacity:0.15" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="0,800 150,300 300,800" fill="white"/>
+          <polygon points="200,800 350,200 500,800" fill="white"/>
+          <polygon points="400,800 550,400 700,800" fill="white"/>
+        </svg>
+      </div>
+      <div class="category-card-overlay"></div>
+      <div class="category-icon">🏔️</div>
+      <div class="category-card-content">
+        <div class="category-tag">Categorie Principală</div>
+        <div class="category-name">Vile &<br>Case de Munte</div>
+        <div class="category-count">84 proprietăți disponibile</div>
+      </div>
+    </div>
+
+    <div class="category-card cat-2">
+      <div class="category-card-bg">
+        <svg style="width:100%;height:100%;opacity:0.12" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="0,300 80,100 160,300" fill="white"/>
+          <polygon points="150,300 250,80 350,300" fill="white"/>
+        </svg>
+      </div>
+      <div class="category-card-overlay"></div>
+      <div class="category-icon">🌲</div>
+      <div class="category-card-content">
+        <div class="category-tag">Natură Pură</div>
+        <div class="category-name">Terenuri Forestiere</div>
+        <div class="category-count">56 terenuri disponibile</div>
+      </div>
+    </div>
+
+    <div class="category-card cat-3">
+      <div class="category-card-bg"></div>
+      <div class="category-card-overlay"></div>
+      <div class="category-icon">🏡</div>
+      <div class="category-card-content">
+        <div class="category-tag">Rustic & Autentic</div>
+        <div class="category-name">Cabane & Pensiuni</div>
+        <div class="category-count">43 proprietăți disponibile</div>
+      </div>
+    </div>
+
+    <div class="category-card cat-4">
+      <div class="category-card-bg"></div>
+      <div class="category-card-overlay"></div>
+      <div class="category-icon">🌄</div>
+      <div class="category-card-content">
+        <div class="category-tag">Investiție</div>
+        <div class="category-name">Ferme de Deal</div>
+        <div class="category-count">32 proprietăți disponibile</div>
+      </div>
+    </div>
+
+    <div class="category-card cat-5">
+      <div class="category-card-bg"></div>
+      <div class="category-card-overlay"></div>
+      <div class="category-icon">🏕️</div>
+      <div class="category-card-content">
+        <div class="category-tag">Aventură</div>
+        <div class="category-name">Proprietăți cu Pârtie</div>
+        <div class="category-count">18 proprietăți disponibile</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LISTINGS -->
+<section id="listings">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">Proprietăți Recomandate</div>
+    <h2 class="section-title">Selecția <em>noastră exclusivă</em></h2>
+  </div>
+
+  <div class="listings-grid" id="listingsGrid">
+    <!-- populat dinamic din localStorage -->
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why-section" id="about">
+  <div class="why-bg-pattern"></div>
+  <div class="section-header reveal">
+    <div class="section-eyebrow">De Ce Noi</div>
+    <h2 class="section-title">SAVINVEST —<br><em>Expertiza ta</em> în imobiliare montane</h2>
+  </div>
+
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <span class="why-icon">🏔️</span>
+      <div class="why-title">Specialiști Montani</div>
+      <p class="why-desc">Ne focalizăm exclusiv pe proprietăți de deal și munte. Cunoaștem fiecare zonă, fiecare sat și fiecare potecă.</p>
+    </div>
+    <div class="why-card reveal">
+      <span class="why-icon">🤝</span>
+      <div class="why-title">Transparență Totală</div>
+      <p class="why-desc">Fără surprize. Toate costurile, documentele și istoricul proprietăților sunt prezentate clar de la primul contact.</p>
+    </div>
+    <div class="why-card reveal">
+      <span class="why-icon">⚖️</span>
+      <div class="why-title">Suport Juridic</div>
+      <p class="why-desc">Echipa noastră juridică asigură că fiecare tranzacție este sigură, legală și lipsită de complicații.</p>
+    </div>
+    <div class="why-card reveal">
+      <span class="why-icon">📈</span>
+      <div class="why-title">Investiție Valoroasă</div>
+      <p class="why-desc">Proprietățile montane din România sunt în ascensiune. Te ajutăm să alegi investiții cu potențial maxim.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ZONES -->
+<section class="zones-section" id="zone">
+  <div class="section-header reveal">
+    <div class="section-eyebrow">Zonele Noastre</div>
+    <h2 class="section-title">Unde <em>operăm</em></h2>
+  </div>
+
+  <div class="zones-grid reveal">
+    <div class="zone-card">
+      <div class="zone-card-deco"></div>
+      <div class="zone-num">01</div>
+      <span class="zone-icon">⛰️</span>
+      <div class="zone-title">Zone de Munte</div>
+      <p class="zone-desc">Proprietăți situate în inima munților României, cu acces la pârtii de schi, trasee de drumeție și aer curat.</p>
+      <div class="zone-tags">
+        <span class="zone-tag">Bucegi</span>
+        <span class="zone-tag">Apuseni</span>
+        <span class="zone-tag">Retezat</span>
+        <span class="zone-tag">Făgăraș</span>
+        <span class="zone-tag">Parâng</span>
+      </div>
+    </div>
+
+    <div class="zone-card">
+      <div class="zone-card-deco"></div>
+      <div class="zone-num">02</div>
+      <span class="zone-icon">🌄</span>
+      <div class="zone-title">Zone de Deal</div>
+      <p class="zone-desc">Proprietăți în dealuri pitorești, cu podgorii, livezi și priveliști nesfârșite spre câmpii și munți în zare.</p>
+      <div class="zone-tags">
+        <span class="zone-tag">Subcarpați</span>
+        <span class="zone-tag">Podgoria</span>
+        <span class="zone-tag">Mărginimea</span>
+        <span class="zone-tag">Colinele Moldovei</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-left">
+    <div class="section-header">
+      <div class="section-eyebrow">Contactează-ne</div>
+      <h2 class="section-title">Suntem <em>aici</em><br>pentru tine</h2>
+    </div>
+    <div class="contact-info">
+      <div class="contact-item">
+        <div class="contact-item-icon">📞</div>
+        <div>
+          <div class="contact-item-label">Telefon</div>
+          <div class="contact-item-value">+40 720 123 456<br>+40 731 654 321</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">✉️</div>
+        <div>
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dfb0b9b9b6bcba9facbea9b6b1a9baacabf1adb0">[email&#160;protected]</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">🕐</div>
+        <div>
+          <div class="contact-item-label">Program</div>
+          <div class="contact-item-value">Luni – Vineri: 09:00 – 18:00<br>Sâmbătă: 10:00 – 14:00</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-icon">📍</div>
+        <div>
+          <div class="contact-item-label">Adresă</div>
+          <div class="contact-item-value">Str. Muntelui nr. 12<br>Sinaia, Prahova</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-right">
+    <div class="section-header">
+      <div class="section-eyebrow">Formular</div>
+      <h2 class="section-title" style="font-size:32px">Trimite-ne <em>un mesaj</em></h2>
+    </div>
+
+    <form onsubmit="return false">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nume</label>
+          <input type="text" placeholder="Numele tău">
+        </div>
+        <div class="form-group">
+          <label>Prenume</label>
+          <input type="text" placeholder="Prenumele tău">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="email@exemplu.ro">
+      </div>
+      <div class="form-group">
+        <label>Tipul de proprietate</label>
+        <select>
+          <option>Casă / Vilă de munte</option>
+          <option>Cabană</option>
+          <option>Teren</option>
+          <option>Fermă</option>
+          <option>Altele</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Mesaj</label>
+        <textarea placeholder="Descrie-ne ce proprietate cauți..."></textarea>
+      </div>
+      <button class="submit-btn">Trimite Mesajul →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span>SAVINVEST</span>
+      <span>Imobiliare</span>
+      <p class="footer-tagline">Specialiști în proprietăți de deal și munte din România. Găsim locul perfect unde natura devine acasă.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Servicii</h4>
+      <ul>
+        <li><a href="#">Vânzare Proprietăți</a></li>
+        <li><a href="#">Cumpărare</a></li>
+        <li><a href="#">Evaluare Imobiliară</a></li>
+        <li><a href="#">Consultanță Investiții</a></li>
+        <li><a href="#">Servicii Juridice</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Zone</h4>
+      <ul>
+        <li><a href="#">Munții Bucegi</a></li>
+        <li><a href="#">Munții Apuseni</a></li>
+        <li><a href="#">Valea Prahovei</a></li>
+        <li><a href="#">Retezat</a></li>
+        <li><a href="#">Subcarpați</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Companie</h4>
+      <ul>
+        <li><a href="#">Despre Noi</a></li>
+        <li><a href="#">Echipa</a></li>
+        <li><a href="#">Testimoniale</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 SAVINVEST IMOBILIARE. Toate drepturile rezervate.</p>
+    <p>Realizat cu ❤️ pentru iubitorii de munte</p>
+  </div>
+</footer>
+
+<!-- Floating CTA -->
+<button class="floating-cta">
+  📞 Sună Acum
+</button>
+
+<script>
+  // ── SUPABASE ──
+  const SUPABASE_URL = 'https://onjwsqzkrhvknitohqyl.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uandzcXprcmh2a25pdG9ocXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NzkwMjYsImV4cCI6MjA4NzE1NTAyNn0.fj_t4quODGN3MQds3TVcshi5cLpYssy77qgJ3KbwCdQ';
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // ── LISTINGS DINAMICE ──
+  async function renderListings() {
+    const grid = document.getElementById('listingsGrid');
+    if (!grid) return;
+
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#7a9a82;font-size:14px;">⏳ Se încarcă proprietățile...</div>';
+
+    const { data: props, error } = await sb.from('proprietati').select('*').order('created_at', { ascending: false });
+
+    if (error || !props || props.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a9a82;"><div style="font-size:48px;margin-bottom:16px;opacity:0.3">🏔️</div><p style="font-size:14px;">Proprietățile vor apărea în curând.</p></div>';
+      return;
+    }
+
+    const colors = ['#1a5c38','#0d2318','#2d6a4f','#1a3a2a','#245840'];
+    grid.innerHTML = props.map(function(p, i) {
+      const bg = colors[i % colors.length];
+      const badgeHTML = p.badge ? '<span class="badge badge-excl">' + p.badge + '</span>' : '';
+      const imgHTML = p.photos && p.photos[0]
+        ? '<img src="' + p.photos[0] + '" style="width:100%;height:100%;object-fit:cover;display:block;" alt="' + p.title + '">'
+        : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;opacity:0.3">🏡</div>';
+
+      return '<a href="proprietate.html?id=' + p.id + '" class="listing-card reveal" style="transition-delay:' + (i*0.12) + 's; display:block; text-decoration:none; color:inherit; cursor:pointer;">' +
+        '<div class="listing-img">' +
+          '<div class="listing-img-inner" style="background:' + bg + '">' + imgHTML + '</div>' +
+          '<div class="badge-container">' + badgeHTML + '</div>' +
+        '</div>' +
+        '<div class="listing-body">' +
+          '<div class="listing-location">📍 ' + p.location + '</div>' +
+          '<div class="listing-title">' + p.title + '</div>' +
+          '<div class="listing-features">' +
+            (p.rooms ? '<span class="feature"><span>🛏</span> ' + p.rooms + ' camere</span>' : '') +
+            (p.baths ? '<span class="feature"><span>🚿</span> ' + p.baths + ' băi</span>' : '') +
+            (p.area  ? '<span class="feature"><span>📐</span> ' + p.area + ' m²</span>' : '') +
+            (p.land  ? '<span class="feature"><span>🌳</span> ' + p.land + '</span>' : '') +
+          '</div>' +
+          '<div class="listing-footer">' +
+            '<div>' +
+              '<div class="listing-price">' + (p.price ? p.price + ' €' : 'La cerere') + '</div>' +
+              '<span class="listing-price-label">' + p.type + '</span>' +
+            '</div>' +
+            '<span class="listing-btn">Detalii</span>' +
+          '</div>' +
+        '</div>' +
+      '</a>';
+    }).join('');
+
+    document.querySelectorAll('#listingsGrid .reveal').forEach(function(el) {
+      observer.observe(el);
+    });
+  }
+
+  // ── SCROLL REVEAL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        setTimeout(function() { entry.target.classList.add('visible'); }, 100);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(function(el) { observer.observe(el); });
+
+  document.querySelectorAll('.why-grid .why-card').forEach(function(el, i) {
+    el.style.transitionDelay = (i * 0.1) + 's';
+  });
+
+  // ── SMOOTH SCROLL ──
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // ── NAV SCROLL EFFECT ──
+  window.addEventListener('scroll', function() {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 80) {
+      nav.style.boxShadow = '0 4px 30px rgba(26,58,42,0.12)';
+    } else {
+      nav.style.boxShadow = 'none';
+    }
+  });
+
+  // ── INIT ──
+  renderListings();
+</script>
+</body>
+</html>
