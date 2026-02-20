@@ -295,7 +295,7 @@ function render(){
     <div class="prop-meta-feats">
       ${prop.rooms?`<div class="prop-meta-feat">🛏 ${prop.rooms}<span>camere</span></div>`:''}
       ${prop.baths?`<div class="prop-meta-feat">🚿 ${prop.baths}<span>băi</span></div>`:''}
-      ${prop.area?`<div class="prop-meta-feat">◻ ${prop.area}<span>m²</span></div>`:''}
+      ${prop.area?`<div class="prop-meta-feat">${prop.area?`<div class="prop-meta-feat">${prop.area}<span>m²</span></div>`:''}<span>m²</span></div>`:''}
       ${prop.land?`<div class="prop-meta-feat">🌳 ${prop.land}<span>teren</span></div>`:''}
       ${prop.price?`<div class="prop-meta-feat" style="color:var(--green-bright);font-size:18px">${prop.price} €</div>`:''}
     </div>`;
