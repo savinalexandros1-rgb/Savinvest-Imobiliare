@@ -293,11 +293,10 @@ function render(){
       ${prop.type?`<span>· ${prop.type}</span>`:''}
     </div>
     <div class="prop-meta-feats">
-      ${prop.rooms?`<div class="prop-meta-feat">🛏 ${prop.rooms}<span>camere</span></div>`:''}
-      ${prop.baths?`<div class="prop-meta-feat">🚿 ${prop.baths}<span>băi</span></div>`:''}
-      ${prop.area?`<div class="prop-meta-feat">${prop.area?`<div class="prop-meta-feat">${prop.area}<span>m²</span></div>`:''}<span>m²</span></div>`:''}
-      ${prop.land?`<div class="prop-meta-feat">🌳 ${prop.land}<span>teren</span></div>`:''}
-      ${prop.price?`<div class="prop-meta-feat" style="color:var(--green-bright);font-size:18px">${prop.price} €</div>`:''}
+      ${prop.rooms?`<div class="prop-meta-feat">🛏 ${prop.rooms} camere</div>`:''}
+      ${prop.baths?`<div class="prop-meta-feat">🚿 ${prop.baths} băi</div>`:''}
+      ${prop.area?`<div class="prop-meta-feat">${prop.area} m²</div>`:''}
+      ${prop.land?`<div class="prop-meta-feat">🌳 ${prop.land}</div>`:''}
     </div>`;
 
   // PHOTO GRID
@@ -352,6 +351,11 @@ function render(){
       <div class="card-price">${prop.price?prop.price+' €':'Preț la cerere'}</div>
       <div class="card-price-note">Preț negociabil · TVA inclus</div>
       <div class="card-divider"></div>
+      ${prop.area?`
+        <div class="card-features">
+          <div class="card-feat"><div class="card-feat-icon" style="font-size:22px;color:#40916c;font-weight:700">m²</div><div class="card-feat-val">${prop.area} m²</div><div class="card-feat-lbl">Suprafață</div></div>
+        </div>
+        <div class="card-divider"></div>`:''}
       <div class="contact-btns">
         <a href="${waLink}" target="_blank" class="btn-wa">💬 Contactează pe WhatsApp</a>
         <a href="tel:${phone}" class="btn-tel">📞 ${phone}</a>
