@@ -42,6 +42,9 @@
   .prop-title{font-family:'Playfair Display',serif;font-size:34px;font-weight:900;color:var(--green-deep);line-height:1.2;margin-bottom:10px;}
   .prop-meta{display:flex;align-items:center;gap:20px;font-size:14px;color:#5a7a65;}
   .prop-meta span{display:flex;align-items:center;gap:6px;}
+  .prop-meta-feats{display:flex;align-items:center;gap:24px;margin-top:12px;padding-top:12px;border-top:1px solid var(--green-mist);flex-wrap:wrap;}
+  .prop-meta-feat{font-size:15px;font-weight:600;color:var(--green-deep);}
+  .prop-meta-feat span{font-size:13px;color:#7a9a82;font-weight:400;margin-left:4px;}
 
   /* PHOTO GRID - Airbnb style */
   .photo-grid{
@@ -288,6 +291,13 @@ function render(){
     <div class="prop-meta">
       <span>📍 ${prop.location||''}</span>
       ${prop.type?`<span>· ${prop.type}</span>`:''}
+    </div>
+    <div class="prop-meta-feats">
+      ${prop.rooms?`<div class="prop-meta-feat">🛏 ${prop.rooms}<span>camere</span></div>`:''}
+      ${prop.baths?`<div class="prop-meta-feat">🚿 ${prop.baths}<span>băi</span></div>`:''}
+      ${prop.area?`<div class="prop-meta-feat">◻ ${prop.area}<span>m²</span></div>`:''}
+      ${prop.land?`<div class="prop-meta-feat">🌳 ${prop.land}<span>teren</span></div>`:''}
+      ${prop.price?`<div class="prop-meta-feat" style="color:var(--green-bright);font-size:18px">${prop.price} €</div>`:''}
     </div>`;
 
   // PHOTO GRID
@@ -327,13 +337,6 @@ function render(){
   if(prop.price) details.push(['Preț',prop.price+' €']);
 
   document.getElementById('propLeft').innerHTML=`
-    ${prop.type?`<div class="prop-tagline">${prop.type} · ${prop.location||''}</div>`:''}
-    <div class="features-strip">
-      ${prop.rooms?`<div class="feat-item"><span class="feat-icon">🛏</span><span class="feat-val">${prop.rooms}</span><span class="feat-lbl">Camere</span></div>`:''}
-      ${prop.baths?`<div class="feat-item"><span class="feat-icon">🚿</span><span class="feat-val">${prop.baths}</span><span class="feat-lbl">Băi</span></div>`:''}
-      ${prop.area?`<div class="feat-item"><span class="feat-icon">📐</span><span class="feat-val">${prop.area}</span><span class="feat-lbl">m²</span></div>`:''}
-      ${prop.land?`<div class="feat-item"><span class="feat-icon">🌳</span><span class="feat-val">${prop.land}</span><span class="feat-lbl">Teren</span></div>`:''}
-    </div>
     ${prop.desc?`<div class="section-title">Despre proprietate</div><p class="prop-desc">${prop.desc.replace(/\n/g,'<br>')}</p>`:''}
     ${details.length?`
       <div class="section-title">Detalii</div>
@@ -348,14 +351,7 @@ function render(){
     <div class="contact-card">
       <div class="card-price">${prop.price?prop.price+' €':'Preț la cerere'}</div>
       <div class="card-price-note">Preț negociabil · TVA inclus</div>
-      ${(prop.rooms||prop.baths||prop.area||prop.land)?`
-        <div class="card-features">
-          ${prop.rooms?`<div class="card-feat"><div class="card-feat-icon">🛏</div><div class="card-feat-val">${prop.rooms}</div><div class="card-feat-lbl">Camere</div></div>`:''}
-          ${prop.baths?`<div class="card-feat"><div class="card-feat-icon">🚿</div><div class="card-feat-val">${prop.baths}</div><div class="card-feat-lbl">Băi</div></div>`:''}
-          ${prop.area?`<div class="card-feat"><div class="card-feat-icon">📐</div><div class="card-feat-val">${prop.area} m²</div><div class="card-feat-lbl">Suprafață</div></div>`:''}
-          ${prop.land?`<div class="card-feat"><div class="card-feat-icon">🌳</div><div class="card-feat-val">${prop.land}</div><div class="card-feat-lbl">Teren</div></div>`:''}
-        </div>
-        <div class="card-divider"></div>`:''}
+      <div class="card-divider"></div>
       <div class="contact-btns">
         <a href="${waLink}" target="_blank" class="btn-wa">💬 Contactează pe WhatsApp</a>
         <a href="tel:${phone}" class="btn-tel">📞 ${phone}</a>
