@@ -322,12 +322,24 @@ function render(){
     <div class="section-title">Video</div>
     <div class="video-wrap"><iframe src="${embedUrl(prop.video)}" allowfullscreen></iframe></div>`:'';
 
+  function getMapEmbed(val) {
+    // Extrage coordonate din link Google Maps lung (@lat,lng)
+    const coord = val.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+    if (coord) return 'https://maps.google.com/maps?q=' + coord[1] + ',' + coord[2] + '&output=embed&z=16';
+    // Adresa simpla
+    return 'https://maps.google.com/maps?q=' + encodeURIComponent(val) + '&output=embed';
+  }
+  function getNavUrl(val) {
+    const coord = val.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+    if (coord) return 'https://www.google.com/maps/dir/?api=1&destination=' + coord[1] + ',' + coord[2];
+    return 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(val);
+  }
   const mapHTML=prop.map?`
     <div class="section-title">Locație</div>
     <div class="map-wrap" style="position:relative">
-      <iframe src="https://maps.google.com/maps?q=${encodeURIComponent(prop.map)}&output=embed" allowfullscreen loading="lazy" style="width:100%;height:100%;border:none;"></iframe>
+      <iframe src="${getMapEmbed(prop.map)}" allowfullscreen loading="lazy" style="width:100%;height:100%;border:none;"></iframe>
     </div>
-    <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(prop.map)}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;padding:14px;background:#1a3a2a;color:white;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='#2d6a4f'" onmouseout="this.style.background='#1a3a2a'">
+    <a href="${getNavUrl(prop.map)}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;padding:14px;background:#1a3a2a;color:white;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='#2d6a4f'" onmouseout="this.style.background='#1a3a2a'">
       🗺️ Deschide în Google Maps
     </a>`:'';
 
