@@ -4,97 +4,102 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SAVINVEST – Proprietate</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  :root{--green-deep:#1a3a2a;--green-mid:#2d6a4f;--green-bright:#40916c;--green-light:#74c69d;--green-pale:#b7e4c7;--green-mist:#d8f3dc;--white:#fafff8;--off-white:#f1f9f3;--text-dark:#0d2318;--gold:#c9a84c;}
+  :root{
+    --green-deep:#1a3a2a;--green-mid:#2d6a4f;--green-bright:#40916c;
+    --green-light:#74c69d;--green-pale:#b7e4c7;--green-mist:#d8f3dc;
+    --white:#fafff8;--off-white:#f1f9f3;--text-dark:#0d2318;--gold:#c9a84c;
+  }
   *{margin:0;padding:0;box-sizing:border-box;}
   a{color:inherit;text-decoration:none;}
-  html{scroll-behavior:smooth;}
-  body{font-family:'Jost',sans-serif;background:var(--white);color:var(--text-dark);}
-  nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 60px;background:rgba(250,255,248,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--green-pale);}
-  .nav-logo{display:flex;align-items:center;gap:12px;}
+  html,body{height:100%;overflow:hidden;}
+  body{font-family:'Jost',sans-serif;background:var(--white);color:var(--text-dark);display:flex;flex-direction:column;}
+  nav{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:var(--white);border-bottom:1px solid var(--green-pale);z-index:100;}
+  .nav-logo{display:flex;align-items:center;gap:10px;}
   .nav-logo-text{display:flex;flex-direction:column;}
-  .nav-logo-text span:first-child{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;letter-spacing:2px;color:var(--green-deep);}
-  .nav-logo-text span:last-child{font-size:9px;font-weight:500;letter-spacing:4px;color:var(--green-bright);text-transform:uppercase;}
-  .btn-back{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--green-mid);padding:8px 20px;border:1.5px solid var(--green-pale);border-radius:2px;transition:all 0.2s;}
+  .nav-logo-text span:first-child{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;letter-spacing:2px;color:var(--green-deep);}
+  .nav-logo-text span:last-child{font-size:8px;font-weight:500;letter-spacing:4px;color:var(--green-bright);text-transform:uppercase;}
+  .btn-back{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--green-mid);padding:8px 16px;border:1.5px solid var(--green-pale);border-radius:2px;transition:all 0.2s;}
   .btn-back:hover{border-color:var(--green-mid);background:var(--green-mist);}
-  .prop-hero{display:grid;grid-template-columns:1fr 380px;min-height:70vh;}
-  .gallery{position:relative;background:var(--green-deep);overflow:hidden;}
-  .gallery-main{width:100%;height:100%;min-height:500px;object-fit:cover;display:block;cursor:zoom-in;}
-  .gallery-placeholder{width:100%;min-height:500px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--green-deep),var(--green-mid));font-size:80px;opacity:0.2;}
-  .gallery-thumbs{position:absolute;bottom:16px;left:16px;right:16px;display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;}
-  .gallery-thumbs::-webkit-scrollbar{height:3px;}
-  .gallery-thumbs::-webkit-scrollbar-thumb{background:var(--green-light);border-radius:2px;}
-  .thumb{width:72px;height:52px;flex-shrink:0;cursor:pointer;border-radius:3px;overflow:hidden;border:2px solid transparent;opacity:0.7;transition:all 0.2s;}
+  .page-body{flex:1;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
+  .gallery-panel{position:relative;background:var(--green-deep);overflow:hidden;}
+  .gallery-main-img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;transition:transform 0.4s ease;}
+  .gallery-main-img:hover{transform:scale(1.02);}
+  .gallery-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--green-deep),var(--green-mid));font-size:80px;opacity:0.15;}
+  .thumbs-strip{position:absolute;bottom:0;left:0;right:0;display:flex;gap:4px;padding:12px;background:linear-gradient(transparent,rgba(0,0,0,0.6));overflow-x:auto;}
+  .thumbs-strip::-webkit-scrollbar{height:3px;}
+  .thumbs-strip::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.4);border-radius:2px;}
+  .thumb{width:64px;height:48px;flex-shrink:0;cursor:pointer;border-radius:3px;overflow:hidden;border:2px solid transparent;opacity:0.65;transition:all 0.2s;}
   .thumb.active{border-color:white;opacity:1;}
-  .thumb:hover{opacity:1;}
   .thumb img{width:100%;height:100%;object-fit:cover;}
-  .gallery-counter{position:absolute;top:16px;right:16px;background:rgba(0,0,0,0.5);color:white;backdrop-filter:blur(4px);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;}
-  .gallery-nav{position:absolute;top:50%;transform:translateY(-50%);display:flex;justify-content:space-between;width:100%;padding:0 12px;pointer-events:none;}
-  .gallery-btn{pointer-events:all;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;width:44px;height:44px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
-  .gallery-btn:hover{background:rgba(255,255,255,0.3);}
-  .prop-sidebar{padding:40px 36px;background:var(--white);border-left:1px solid var(--green-mist);overflow-y:auto;display:flex;flex-direction:column;gap:24px;}
-  .prop-badge{display:inline-block;padding:5px 14px;border-radius:2px;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;background:var(--gold);color:var(--text-dark);width:fit-content;}
-  .prop-type-label{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--green-bright);}
-  .prop-title{font-family:'Playfair Display',serif;font-size:clamp(22px,2.5vw,30px);font-weight:900;color:var(--green-deep);line-height:1.2;}
-  .prop-location{display:flex;align-items:center;gap:8px;font-size:14px;color:#5a7a65;}
-  .prop-price{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--green-deep);}
-  .prop-price-note{font-size:11px;color:#7a9a82;margin-top:2px;}
-  .features-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:20px 0;border-top:1px solid var(--green-mist);border-bottom:1px solid var(--green-mist);}
-  .feature-item{display:flex;flex-direction:column;gap:3px;}
-  .feature-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--green-bright);}
-  .feature-value{font-size:15px;font-weight:600;color:var(--green-deep);}
-  .contact-section{display:flex;flex-direction:column;gap:10px;}
-  .btn-whatsapp{display:flex;align-items:center;justify-content:center;gap:10px;background:#25d366;color:white;padding:14px;border-radius:3px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:background 0.2s;}
-  .btn-whatsapp:hover{background:#1ebe5d;}
-  .btn-phone{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--green-deep);color:white;padding:14px;border-radius:3px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:background 0.2s;}
-  .btn-phone:hover{background:var(--green-mid);}
-  .btn-email{display:flex;align-items:center;justify-content:center;gap:10px;background:transparent;color:var(--green-mid);padding:13px;border-radius:3px;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:all 0.2s;border:1.5px solid var(--green-mid);}
-  .btn-email:hover{background:var(--green-mist);}
-  .prop-content{display:grid;grid-template-columns:1fr 380px;border-top:1px solid var(--green-mist);}
-  .prop-main{padding:60px;border-right:1px solid var(--green-mist);}
-  .section-label{font-size:10px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--green-bright);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
-  .section-label::before{content:'';display:block;width:24px;height:1px;background:var(--green-bright);}
-  .prop-desc{font-size:16px;line-height:1.9;color:#3a5a48;font-weight:300;margin-bottom:48px;}
-  .video-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:4px;overflow:hidden;margin-bottom:48px;box-shadow:0 8px 32px rgba(26,58,42,0.12);}
+  .gal-nav{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 14px;pointer-events:none;}
+  .gal-btn{pointer-events:all;background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;width:42px;height:42px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+  .gal-btn:hover{background:rgba(255,255,255,0.35);}
+  .photo-count{position:absolute;top:14px;right:14px;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);color:white;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;}
+  .prop-badge-overlay{position:absolute;top:14px;left:14px;background:var(--gold);color:var(--text-dark);padding:5px 14px;border-radius:2px;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;}
+  .info-panel{overflow-y:auto;background:var(--white);border-left:1px solid var(--green-mist);}
+  .info-panel::-webkit-scrollbar{width:4px;}
+  .info-panel::-webkit-scrollbar-thumb{background:var(--green-pale);border-radius:2px;}
+  .info-inner{padding:32px 36px;}
+  .prop-type-tag{font-size:9px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--green-bright);margin-bottom:8px;}
+  .prop-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--green-deep);line-height:1.2;margin-bottom:8px;}
+  .prop-location{font-size:13px;color:#5a7a65;margin-bottom:16px;}
+  .prop-price{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--green-deep);}
+  .prop-price-note{font-size:11px;color:#7a9a82;margin-top:2px;margin-bottom:20px;}
+  .features-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:16px 0;border-top:1px solid var(--green-mist);border-bottom:1px solid var(--green-mist);margin-bottom:20px;}
+  .feat{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;}
+  .feat-icon{font-size:20px;}
+  .feat-val{font-size:14px;font-weight:700;color:var(--green-deep);}
+  .feat-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#7a9a82;}
+  .contact-btns{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+  .btn-wa{display:flex;align-items:center;justify-content:center;gap:8px;background:#25d366;color:white;padding:13px;border-radius:3px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:background 0.2s;}
+  .btn-wa:hover{background:#1ebe5d;}
+  .btn-tel{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green-deep);color:white;padding:13px;border-radius:3px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:background 0.2s;}
+  .btn-tel:hover{background:var(--green-mid);}
+  .btn-mail{display:flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--green-mid);color:var(--green-mid);padding:12px;border-radius:3px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:all 0.2s;}
+  .btn-mail:hover{background:var(--green-mist);}
+  .divider{height:1px;background:var(--green-mist);margin:20px 0;}
+  .section-lbl{font-size:9px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--green-bright);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+  .section-lbl::before{content:'';display:block;width:20px;height:1px;background:var(--green-bright);}
+  .prop-desc{font-size:14px;line-height:1.85;color:#3a5a48;font-weight:300;margin-bottom:20px;}
+  .details-table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+  .details-table tr{border-bottom:1px solid var(--green-mist);}
+  .details-table tr:last-child{border-bottom:none;}
+  .details-table td{padding:10px 0;font-size:13px;}
+  .details-table td:first-child{color:#7a9a82;font-weight:500;width:45%;}
+  .details-table td:last-child{color:var(--green-deep);font-weight:600;}
+  .video-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:4px;overflow:hidden;margin-bottom:20px;}
   .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
-  .map-wrap{border-radius:4px;overflow:hidden;box-shadow:0 8px 32px rgba(26,58,42,0.12);height:380px;}
+  .map-wrap{border-radius:4px;overflow:hidden;height:220px;margin-bottom:20px;}
   .map-wrap iframe{width:100%;height:100%;border:none;}
-  .prop-aside{padding:60px 40px;background:var(--off-white);}
-  .info-card{background:white;border-radius:4px;padding:24px;border:1px solid var(--green-pale);margin-bottom:20px;}
-  .info-card h3{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--green-deep);margin-bottom:16px;}
-  .info-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--green-mist);font-size:13px;}
-  .info-row:last-child{border-bottom:none;}
-  .info-row span:first-child{color:#7a9a82;font-weight:500;}
-  .info-row span:last-child{color:var(--green-deep);font-weight:600;}
-  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:999;display:none;align-items:center;justify-content:center;}
+  .loading-page{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--white);font-size:16px;color:#7a9a82;gap:16px;}
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.96);z-index:999;display:none;align-items:center;justify-content:center;}
   .lightbox.open{display:flex;}
   .lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:3px;}
-  .lightbox-close{position:absolute;top:20px;right:28px;color:white;font-size:32px;cursor:pointer;background:none;border:none;line-height:1;}
-  .lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 20px;pointer-events:none;}
-  .lightbox-btn{pointer-events:all;background:rgba(255,255,255,0.12);border:none;color:white;width:52px;height:52px;border-radius:50%;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
-  .lightbox-btn:hover{background:rgba(255,255,255,0.25);}
-  .not-found{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;text-align:center;padding:40px;}
-  .not-found .icon{font-size:64px;margin-bottom:20px;opacity:0.3;}
-  .not-found h2{font-family:'Playfair Display',serif;font-size:28px;color:var(--green-deep);margin-bottom:10px;}
-  .loading-page{display:flex;align-items:center;justify-content:center;min-height:60vh;font-size:18px;color:#7a9a82;}
-  @media(max-width:900px){
-    nav{padding:14px 20px;}
-    .prop-hero{grid-template-columns:1fr;}
-    .prop-sidebar{border-left:none;border-top:1px solid var(--green-mist);}
-    .prop-content{grid-template-columns:1fr;}
-    .prop-main{padding:40px 20px;border-right:none;border-bottom:1px solid var(--green-mist);}
-    .prop-aside{padding:40px 20px;}
-    .gallery-main{min-height:280px;}
-    .gallery-placeholder{min-height:280px;}
+  .lb-close{position:absolute;top:20px;right:24px;color:white;font-size:32px;cursor:pointer;background:none;border:none;line-height:1;}
+  .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 20px;pointer-events:none;}
+  .lb-btn{pointer-events:all;background:rgba(255,255,255,0.1);border:none;color:white;width:50px;height:50px;border-radius:50%;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+  .lb-btn:hover{background:rgba(255,255,255,0.25);}
+  @media(max-width:768px){
+    html,body{height:auto;overflow:auto;}
+    nav{padding:12px 16px;}
+    .nav-logo-text span:first-child{font-size:15px;}
+    .page-body{grid-template-columns:1fr;overflow:visible;height:auto;}
+    .gallery-panel{height:260px;}
+    .info-panel{overflow:visible;}
+    .info-inner{padding:24px 20px;}
+    .prop-title{font-size:22px;}
+    .prop-price{font-size:26px;}
+    .features-row{grid-template-columns:repeat(2,1fr);}
   }
 </style>
 </head>
 <body>
 <nav>
   <a class="nav-logo" href="index.html">
-    <svg width="38" height="34" viewBox="0 0 64 58" fill="none">
+    <svg width="34" height="30" viewBox="0 0 64 58" fill="none">
       <polygon points="14,54 0,54 7,33" fill="#b7e4c7"/>
       <polygon points="50,54 64,54 57,33" fill="#b7e4c7"/>
       <polygon points="32,4 8,54 56,54" fill="#1a3a2a"/>
@@ -107,143 +112,103 @@
       <span>Imobiliare</span>
     </div>
   </a>
-  <a href="index.html" class="btn-back">← Înapoi la proprietăți</a>
+  <a href="index.html" class="btn-back">← Înapoi</a>
 </nav>
-
-<div id="pageContent"><div class="loading-page">⏳ Se încarcă...</div></div>
-
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close" onclick="closeLightbox()">×</button>
-  <img id="lightboxImg" src="" alt="">
-  <div class="lightbox-nav">
-    <button class="lightbox-btn" onclick="lightboxNav(-1)">‹</button>
-    <button class="lightbox-btn" onclick="lightboxNav(1)">›</button>
+<div class="loading-page" id="loadingPage">⏳ Se încarcă...</div>
+<div class="page-body" id="pageBody" style="display:none;">
+  <div class="gallery-panel" id="galleryPanel">
+    <div class="gallery-placeholder">🏡</div>
+  </div>
+  <div class="info-panel">
+    <div class="info-inner" id="infoInner"></div>
   </div>
 </div>
-
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLb()">×</button>
+  <img id="lbImg" src="" alt="">
+  <div class="lb-nav">
+    <button class="lb-btn" onclick="lbNav(-1)">‹</button>
+    <button class="lb-btn" onclick="lbNav(1)">›</button>
+  </div>
+</div>
 <script>
-const SUPABASE_URL = 'https://onjwsqzkrhvknitohqyl.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uandzcXprcmh2a25pdG9ocXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NzkwMjYsImV4cCI6MjA4NzE1NTAyNn0.fj_t4quODGN3MQds3TVcshi5cLpYssy77qgJ3KbwCdQ';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-const params = new URLSearchParams(window.location.search);
-const id = params.get('id');
-let prop = null;
-let currentPhoto = 0;
-
-async function loadProp() {
-  if (!id) { showNotFound(); return; }
-  const { data, error } = await sb.from('proprietati').select('*').eq('id', id).single();
-  if (error || !data) { showNotFound(); return; }
-  prop = data;
-  document.title = 'SAVINVEST – ' + prop.title;
-  renderPage(prop);
+const SUPABASE_URL='https://onjwsqzkrhvknitohqyl.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uandzcXprcmh2a25pdG9ocXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NzkwMjYsImV4cCI6MjA4NzE1NTAyNn0.fj_t4quODGN3MQds3TVcshi5cLpYssy77qgJ3KbwCdQ';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let prop=null,curPhoto=0;
+async function load(){
+  const id=new URLSearchParams(window.location.search).get('id');
+  if(!id){showNotFound();return;}
+  const{data,error}=await sb.from('proprietati').select('*').eq('id',id).single();
+  if(error||!data){showNotFound();return;}
+  prop=data;document.title='SAVINVEST – '+prop.title;render();
 }
-
-function showNotFound() {
-  document.getElementById('pageContent').innerHTML = `
-    <div class="not-found">
-      <div class="icon">🏔️</div>
-      <h2>Proprietatea nu a fost găsită</h2>
-      <p>Este posibil să fi fost ștearsă sau link-ul să fie incorect.</p>
-    </div>`;
+function showNotFound(){
+  document.getElementById('loadingPage').innerHTML='<div style="text-align:center"><div style="font-size:60px;opacity:0.3">🏔️</div><h2 style="font-family:Playfair Display,serif;color:#1a3a2a;margin:16px 0">Proprietatea nu a fost găsită</h2><p style="color:#7a9a82">Link incorect sau proprietatea a fost ștearsă.</p></div>';
 }
-
-function renderPage(p) {
-  const photos = p.photos && p.photos.length > 0 ? p.photos : [];
-  const phone = p.phone || '+40720123456';
-  const waLink = 'https://wa.me/' + phone.replace(/[^0-9]/g,'') + '?text=' + encodeURIComponent('Bună ziua! Sunt interesat de proprietatea: ' + p.title);
-
-  const galleryHTML = photos.length > 0 ? `
-    <img class="gallery-main" id="galleryMain" src="${photos[0]}" alt="${p.title}" onclick="openLightbox(0)">
-    ${photos.length > 1 ? `
-      <div class="gallery-nav">
-        <button class="gallery-btn" onclick="changePhoto(-1)">‹</button>
-        <button class="gallery-btn" onclick="changePhoto(1)">›</button>
-      </div>
-      <div class="gallery-counter" id="galleryCounter">1 / ${photos.length}</div>
-      <div class="gallery-thumbs">
-        ${photos.map((src,i) => `<div class="thumb ${i===0?'active':''}" id="thumb${i}" onclick="setPhoto(${i})"><img src="${src}" alt=""></div>`).join('')}
-      </div>` : ''}
-  ` : '<div class="gallery-placeholder">🏡</div>';
-
-  const videoHTML = p.video ? `<div class="section-label">Video</div><div class="video-wrap"><iframe src="${getEmbedUrl(p.video)}" allowfullscreen></iframe></div>` : '';
-  const mapHTML = p.map ? `<div class="section-label">Locație pe Hartă</div><div class="map-wrap"><iframe src="https://maps.google.com/maps?q=${encodeURIComponent(p.map)}&output=embed" allowfullscreen loading="lazy"></iframe></div>` : '';
-
-  document.getElementById('pageContent').innerHTML = `
-    <div class="prop-hero">
-      <div class="gallery">${galleryHTML}</div>
-      <div class="prop-sidebar">
-        ${p.badge ? `<span class="prop-badge">${p.badge}</span>` : ''}
-        <div class="prop-type-label">${p.type || ''}</div>
-        <h1 class="prop-title">${p.title}</h1>
-        <div class="prop-location">📍 ${p.location || ''}</div>
-        <div>
-          <div class="prop-price">${p.price ? p.price + ' €' : 'Preț la cerere'}</div>
-          <div class="prop-price-note">Preț negociabil · TVA inclus</div>
+function render(){
+  document.getElementById('loadingPage').style.display='none';
+  document.getElementById('pageBody').style.display='grid';
+  const photos=prop.photos||[];
+  const phone=prop.phone||'+40720123456';
+  const waLink='https://wa.me/'+phone.replace(/[^0-9]/g,'')+'?text='+encodeURIComponent('Bună ziua! Sunt interesat de proprietatea: '+prop.title);
+  const gp=document.getElementById('galleryPanel');
+  if(photos.length>0){
+    gp.innerHTML=`
+      ${prop.badge?`<div class="prop-badge-overlay">${prop.badge}</div>`:''}
+      <img class="gallery-main-img" id="gMain" src="${photos[0]}" alt="${prop.title}" onclick="openLb(0)">
+      ${photos.length>1?`
+        <div class="gal-nav">
+          <button class="gal-btn" onclick="changePhoto(-1)">‹</button>
+          <button class="gal-btn" onclick="changePhoto(1)">›</button>
         </div>
-        <div class="features-grid">
-          ${p.rooms ? `<div class="feature-item"><span class="feature-label">Camere</span><span class="feature-value">🛏 ${p.rooms}</span></div>` : ''}
-          ${p.baths ? `<div class="feature-item"><span class="feature-label">Băi</span><span class="feature-value">🚿 ${p.baths}</span></div>` : ''}
-          ${p.area  ? `<div class="feature-item"><span class="feature-label">Suprafață</span><span class="feature-value">📐 ${p.area} m²</span></div>` : ''}
-          ${p.land  ? `<div class="feature-item"><span class="feature-label">Teren</span><span class="feature-value">🌳 ${p.land}</span></div>` : ''}
-        </div>
-        <div class="contact-section">
-          <a href="${waLink}" target="_blank" class="btn-whatsapp">💬 WhatsApp</a>
-          <a href="tel:${phone}" class="btn-phone">📞 ${phone}</a>
-          <a href="mailto:office@savinvest.ro?subject=Interesat: ${encodeURIComponent(p.title)}" class="btn-email">✉️ Trimite Email</a>
-        </div>
-      </div>
+        <div class="photo-count" id="photoCount">1 / ${photos.length}</div>
+        <div class="thumbs-strip">
+          ${photos.map((s,i)=>`<div class="thumb ${i===0?'active':''}" id="th${i}" onclick="setPhoto(${i})"><img src="${s}"></div>`).join('')}
+        </div>`:''}`;
+  }
+  const videoHTML=prop.video?`<div class="divider"></div><div class="section-lbl">Video</div><div class="video-wrap"><iframe src="${embedUrl(prop.video)}" allowfullscreen></iframe></div>`:'';
+  const mapHTML=prop.map?`<div class="divider"></div><div class="section-lbl">Locație</div><div class="map-wrap"><iframe src="https://maps.google.com/maps?q=${encodeURIComponent(prop.map)}&output=embed" allowfullscreen loading="lazy"></iframe></div>`:'';
+  document.getElementById('infoInner').innerHTML=`
+    <div class="prop-type-tag">${prop.type||''}</div>
+    <h1 class="prop-title">${prop.title}</h1>
+    <div class="prop-location">📍 ${prop.location||''}</div>
+    <div class="prop-price">${prop.price?prop.price+' €':'Preț la cerere'}</div>
+    <div class="prop-price-note">Preț negociabil · TVA inclus</div>
+    <div class="features-row">
+      ${prop.rooms?`<div class="feat"><span class="feat-icon">🛏</span><span class="feat-val">${prop.rooms}</span><span class="feat-lbl">Camere</span></div>`:''}
+      ${prop.baths?`<div class="feat"><span class="feat-icon">🚿</span><span class="feat-val">${prop.baths}</span><span class="feat-lbl">Băi</span></div>`:''}
+      ${prop.area?`<div class="feat"><span class="feat-icon">📐</span><span class="feat-val">${prop.area}</span><span class="feat-lbl">m²</span></div>`:''}
+      ${prop.land?`<div class="feat"><span class="feat-icon">🌳</span><span class="feat-val">${prop.land}</span><span class="feat-lbl">Teren</span></div>`:''}
     </div>
-    <div class="prop-content">
-      <div class="prop-main">
-        ${p.desc ? `<div class="section-label">Descriere</div><p class="prop-desc">${p.desc.replace(/\n/g,'<br>')}</p>` : ''}
-        ${videoHTML}${mapHTML}
-      </div>
-      <div class="prop-aside">
-        <div class="info-card">
-          <h3>Detalii Proprietate</h3>
-          ${p.type     ? `<div class="info-row"><span>Tip</span><span>${p.type}</span></div>` : ''}
-          ${p.location ? `<div class="info-row"><span>Locație</span><span>${p.location}</span></div>` : ''}
-          ${p.area     ? `<div class="info-row"><span>Suprafață</span><span>${p.area} m²</span></div>` : ''}
-          ${p.land     ? `<div class="info-row"><span>Teren</span><span>${p.land}</span></div>` : ''}
-          ${p.rooms    ? `<div class="info-row"><span>Camere</span><span>${p.rooms}</span></div>` : ''}
-          ${p.baths    ? `<div class="info-row"><span>Băi</span><span>${p.baths}</span></div>` : ''}
-          ${p.price    ? `<div class="info-row"><span>Preț</span><span>${p.price} €</span></div>` : ''}
-        </div>
-        <div class="info-card">
-          <h3>Contact Agent</h3>
-          <div class="info-row"><span>Agenție</span><span>SAVINVEST</span></div>
-          <div class="info-row"><span>Telefon</span><span>${phone}</span></div>
-          <div class="info-row"><span>Email</span><span>office@savinvest.ro</span></div>
-          <div class="info-row"><span>Program</span><span>Lun–Vin 09–18</span></div>
-        </div>
-      </div>
-    </div>`;
+    <div class="contact-btns">
+      <a href="${waLink}" target="_blank" class="btn-wa">💬 WhatsApp</a>
+      <a href="tel:${phone}" class="btn-tel">📞 ${phone}</a>
+      <a href="mailto:office@savinvest.ro?subject=Interesat: ${encodeURIComponent(prop.title)}" class="btn-mail">✉️ Email</a>
+    </div>
+    ${prop.desc?`<div class="divider"></div><div class="section-lbl">Descriere</div><p class="prop-desc">${prop.desc.replace(/\n/g,'<br>')}</p>`:''}
+    <div class="divider"></div>
+    <div class="section-lbl">Detalii</div>
+    <table class="details-table">
+      ${prop.type?`<tr><td>Tip</td><td>${prop.type}</td></tr>`:''}
+      ${prop.location?`<tr><td>Locație</td><td>${prop.location}</td></tr>`:''}
+      ${prop.area?`<tr><td>Suprafață</td><td>${prop.area} m²</td></tr>`:''}
+      ${prop.land?`<tr><td>Teren</td><td>${prop.land}</td></tr>`:''}
+      ${prop.rooms?`<tr><td>Camere</td><td>${prop.rooms}</td></tr>`:''}
+      ${prop.baths?`<tr><td>Băi</td><td>${prop.baths}</td></tr>`:''}
+      ${prop.price?`<tr><td>Preț</td><td>${prop.price} €</td></tr>`:''}
+    </table>
+    ${videoHTML}${mapHTML}`;
 }
-
-function setPhoto(i) {
-  currentPhoto = i;
-  document.getElementById('galleryMain').src = prop.photos[i];
-  document.querySelectorAll('.thumb').forEach((t,idx) => t.classList.toggle('active', idx===i));
-  const c = document.getElementById('galleryCounter');
-  if(c) c.textContent = (i+1) + ' / ' + prop.photos.length;
-}
-function changePhoto(dir) { setPhoto((currentPhoto+dir+prop.photos.length)%prop.photos.length); }
-function openLightbox(i) { currentPhoto=i; document.getElementById('lightboxImg').src=prop.photos[i]; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow=''; }
-function lightboxNav(dir) { currentPhoto=(currentPhoto+dir+prop.photos.length)%prop.photos.length; document.getElementById('lightboxImg').src=prop.photos[currentPhoto]; }
-document.getElementById('lightbox').addEventListener('click', function(e){ if(e.target===this) closeLightbox(); });
-document.addEventListener('keydown', e => { if(!document.getElementById('lightbox').classList.contains('open')) return; if(e.key==='ArrowLeft') lightboxNav(-1); if(e.key==='ArrowRight') lightboxNav(1); if(e.key==='Escape') closeLightbox(); });
-function getEmbedUrl(url) {
-  const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
-  if(yt) return 'https://www.youtube.com/embed/'+yt[1];
-  const vm = url.match(/vimeo\.com\/(\d+)/);
-  if(vm) return 'https://player.vimeo.com/video/'+vm[1];
-  return url;
-}
-
-loadProp();
+function setPhoto(i){curPhoto=i;document.getElementById('gMain').src=prop.photos[i];document.querySelectorAll('.thumb').forEach((t,idx)=>t.classList.toggle('active',idx===i));const c=document.getElementById('photoCount');if(c)c.textContent=(i+1)+' / '+prop.photos.length;}
+function changePhoto(dir){setPhoto((curPhoto+dir+prop.photos.length)%prop.photos.length);}
+function openLb(i){curPhoto=i;document.getElementById('lbImg').src=prop.photos[i];document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';}
+function closeLb(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
+function lbNav(dir){curPhoto=(curPhoto+dir+prop.photos.length)%prop.photos.length;document.getElementById('lbImg').src=prop.photos[curPhoto];}
+document.getElementById('lightbox').addEventListener('click',e=>{if(e.target===e.currentTarget)closeLb();});
+document.addEventListener('keydown',e=>{if(!document.getElementById('lightbox').classList.contains('open'))return;if(e.key==='ArrowLeft')lbNav(-1);if(e.key==='ArrowRight')lbNav(1);if(e.key==='Escape')closeLb();});
+function embedUrl(url){const yt=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);if(yt)return'https://www.youtube.com/embed/'+yt[1];const vm=url.match(/vimeo\.com\/(\d+)/);if(vm)return'https://player.vimeo.com/video/'+vm[1];return url;}
+load();
 </script>
 </body>
 </html>
