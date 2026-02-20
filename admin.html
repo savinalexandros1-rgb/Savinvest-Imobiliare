@@ -183,7 +183,8 @@
         </div>
         <div class="form-group form-full">
           <label>Adresă Hartă Google Maps (opțional)</label>
-          <input type="text" id="fMap" placeholder="ex: Sinaia, Prahova, România" oninput="previewMap(this.value)">
+          <input type="text" id="fMap" placeholder="Adresă sau link din Google Maps" oninput="previewMap(this.value)">
+          <div style="font-size:11px;color:#7a9a82;margin-top:4px;">💡 Pentru precizie maximă: deschide Google Maps → caută adresa → Share → Copy link → lipește aici</div>
           <div id="mapPreview" style="display:none;margin-top:10px;border-radius:6px;overflow:hidden;border:1.5px solid var(--green-pale);">
             <iframe id="mapIframe" src="" style="width:100%;height:220px;border:none;" allowfullscreen loading="lazy"></iframe>
             <div style="padding:10px 14px;background:var(--off-white);font-size:12px;color:#5a7a65;display:flex;align-items:center;gap:6px;">
@@ -432,12 +433,31 @@ function showToast(msg) {
 }
 
 let mapTimer = null;
+function getMapEmbedUrl(val) {
+  val = val.trim();
+  // Daca e link Google Maps extras coordonatele
+  const coordMatch = val.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+  if (coordMatch) {
+    return 'https://maps.google.com/maps?q=' + coordMatch[1] + ',' + coordMatch[2] + '&output=embed';
+  }
+  // Daca e link maps.google.com sau goo.gl
+  if (val.includes('maps.google') || val.includes('goo.gl') || val.includes('maps.app.goo.gl')) {
+    // Extragem place din URL
+    const placeMatch = val.match(/place\/([^/@]+)/);
+    if (placeMatch) {
+      return 'https://maps.google.com/maps?q=' + encodeURIComponent(decodeURIComponent(placeMatch[1].replace(/\+/g,' '))) + '&output=embed';
+    }
+    return 'https://maps.google.com/maps?q=' + encodeURIComponent(val) + '&output=embed';
+  }
+  // Adresa normala
+  return 'https://maps.google.com/maps?q=' + encodeURIComponent(val) + '&output=embed';
+}
 function previewMap(val) {
   clearTimeout(mapTimer);
   const preview = document.getElementById('mapPreview');
   if (!val.trim()) { preview.style.display = 'none'; return; }
   mapTimer = setTimeout(() => {
-    document.getElementById('mapIframe').src = 'https://maps.google.com/maps?q=' + encodeURIComponent(val) + '&output=embed';
+    document.getElementById('mapIframe').src = getMapEmbedUrl(val);
     preview.style.display = 'block';
   }, 800);
 }
