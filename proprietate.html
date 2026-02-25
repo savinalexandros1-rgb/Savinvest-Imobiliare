@@ -295,8 +295,9 @@ function render(){
     <div class="prop-meta-feats">
       ${prop.rooms?`<div class="prop-meta-feat">🛏 ${prop.rooms} camere</div>`:''}
       ${prop.baths?`<div class="prop-meta-feat">🚿 ${prop.baths} băi</div>`:''}
-      ${prop.area?`<div class="prop-meta-feat">${prop.area} m²</div>`:''}
-      ${prop.land?`<div class="prop-meta-feat">🌳 ${prop.land}</div>`:''}
+      ${prop.area?`<div class="prop-meta-feat">🏗 ${prop.area} m² <span style="font-size:11px;color:#7a9a82">construită</span></div>`:''}
+      ${prop.area_useful?`<div class="prop-meta-feat">📋 ${prop.area_useful} m² <span style="font-size:11px;color:#7a9a82">utilă</span></div>`:''}
+      ${prop.land?`<div class="prop-meta-feat">🌳 ${prop.land} m² <span style="font-size:11px;color:#7a9a82">teren</span></div>`:''}
     </div>`;
 
   // PHOTO GRID
@@ -346,8 +347,9 @@ function render(){
   const details=[];
   if(prop.type) details.push(['Tip proprietate',prop.type]);
   if(prop.location) details.push(['Locație',prop.location]);
-  if(prop.area) details.push(['Suprafață',prop.area+' m²']);
-  if(prop.land) details.push(['Teren',prop.land]);
+  if(prop.area) details.push(['Suprafață construită',prop.area+' m²']);
+  if(prop.area_useful) details.push(['Suprafață utilă',prop.area_useful+' m²']);
+  if(prop.land) details.push(['Teren',prop.land+' m²']);
   if(prop.rooms) details.push(['Camere',prop.rooms]);
   if(prop.baths) details.push(['Băi',prop.baths]);
   if(prop.price) details.push(['Preț',prop.price+' €']);
@@ -372,8 +374,9 @@ function render(){
         <div class="card-features">
           ${prop.rooms?`<div class="card-feat"><div class="card-feat-icon">🛏</div><div class="card-feat-val">${prop.rooms}</div><div class="card-feat-lbl">Camere</div></div>`:''}
           ${prop.baths?`<div class="card-feat"><div class="card-feat-icon">🚿</div><div class="card-feat-val">${prop.baths}</div><div class="card-feat-lbl">Băi</div></div>`:''}
-          ${prop.area?`<div class="card-feat"><div class="card-feat-icon">📐</div><div class="card-feat-val">${prop.area} m²</div><div class="card-feat-lbl">Suprafață</div></div>`:''}
-          ${prop.land?`<div class="card-feat"><div class="card-feat-icon">🌳</div><div class="card-feat-val">${prop.land}</div><div class="card-feat-lbl">Teren</div></div>`:''}
+          ${prop.area?`<div class="card-feat"><div class="card-feat-icon">🏗</div><div class="card-feat-val">${prop.area} m²</div><div class="card-feat-lbl">Construită</div></div>`:''}
+          ${prop.area_useful?`<div class="card-feat"><div class="card-feat-icon">📋</div><div class="card-feat-val">${prop.area_useful} m²</div><div class="card-feat-lbl">Utilă</div></div>`:''}
+          ${prop.land?`<div class="card-feat"><div class="card-feat-icon">🌳</div><div class="card-feat-val">${prop.land} m²</div><div class="card-feat-lbl">Teren</div></div>`:''}
         </div>
         <div class="card-divider"></div>`:''}
       <div class="contact-btns">

@@ -2,9 +2,6 @@
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SAVINVEST – Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -128,7 +125,7 @@
   <div class="props-grid" id="propsGrid"><div class="loader">⏳ Se încarcă proprietățile...</div></div>
 </div>
 
-<!-- MODAL v2 -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-header">
@@ -162,12 +159,16 @@
           <input type="text" id="fPrice" placeholder="ex: 185.000">
         </div>
         <div class="form-group">
-          <label>Suprafață (m²)</label>
+          <label>Suprafață Construită (m²)</label>
           <input type="number" id="fArea" placeholder="ex: 180">
         </div>
         <div class="form-group">
-          <label>Teren</label>
-          <input type="text" id="fLand" placeholder="ex: 1.200 m²">
+          <label>Suprafață Utilă (m²)</label>
+          <input type="number" id="fAreaUseful" placeholder="ex: 150">
+        </div>
+        <div class="form-group">
+          <label>Teren (m²)</label>
+          <input type="text" id="fLand" placeholder="ex: 1.200">
         </div>
         <div class="form-group">
           <label>Camere</label>
@@ -284,7 +285,7 @@ function openModal(id = null) {
   document.getElementById('photosPreview').innerHTML = '';
   document.getElementById('uploadProgress').textContent = '';
   document.getElementById('modalTitle').textContent = id ? 'Editează Proprietate' : 'Proprietate Nouă';
-  const fields = ['fTitle','fLocation','fPrice','fArea','fLand','fRooms','fBaths','fDesc','fVideo','fMap','fPhone'];
+  const fields = ['fTitle','fLocation','fPrice','fArea','fAreaUseful','fLand','fRooms','fBaths','fDesc','fVideo','fMap','fPhone'];
   fields.forEach(f => document.getElementById(f).value = '');
   document.getElementById('fType').value = 'Casă / Vilă';
   document.getElementById('fBadge').value = '';
@@ -297,6 +298,7 @@ function openModal(id = null) {
       document.getElementById('fLocation').value = data.location || '';
       document.getElementById('fPrice').value = data.price || '';
       document.getElementById('fArea').value = data.area || '';
+      document.getElementById('fAreaUseful').value = data.area_useful || '';
       document.getElementById('fLand').value = data.land || '';
       document.getElementById('fRooms').value = data.rooms || '';
       document.getElementById('fBaths').value = data.baths || '';
@@ -393,6 +395,7 @@ async function saveProperty() {
       location,
       price: document.getElementById('fPrice').value.trim(),
       area: document.getElementById('fArea').value,
+        area_useful: document.getElementById('fAreaUseful').value,
       land: document.getElementById('fLand').value.trim(),
       rooms: document.getElementById('fRooms').value,
       baths: document.getElementById('fBaths').value,
