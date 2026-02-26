@@ -943,30 +943,32 @@
   <div class="search-bar">
     <div class="search-field">
       <label>Tip Proprietate</label>
-      <select>
-        <option>Toate proprietățile</option>
-        <option>Casă / Vilă</option>
-        <option>Teren</option>
-        <option>Cabană</option>
-        <option>Fermă</option>
+      <select id="searchType">
+        <option value="">Toate proprietățile</option>
+        <option value="Casă / Vilă">Casă / Vilă</option>
+        <option value="Teren">Teren</option>
+        <option value="Cabană">Cabană</option>
+        <option value="Fermă">Fermă</option>
+        <option value="Pensiune">Pensiune</option>
+        <option value="Imobil / Clădire">Imobil / Clădire</option>
       </select>
     </div>
     <div class="search-field">
       <label>Zona</label>
-      <select>
-        <option>Toate zonele</option>
-        <option>Munții Bucegi</option>
-        <option>Munții Apuseni</option>
-        <option>Subcarpați</option>
-        <option>Munții Retezat</option>
-        <option>Valea Prahovei</option>
+      <select id="searchZone">
+        <option value="">Toate zonele</option>
+        <option value="Bucegi">Munții Bucegi</option>
+        <option value="Apuseni">Munții Apuseni</option>
+        <option value="Subcarpați">Subcarpați</option>
+        <option value="Retezat">Munții Retezat</option>
+        <option value="Prahova">Valea Prahovei</option>
       </select>
     </div>
     <div class="search-field">
       <label>Buget Maxim</label>
-      <input type="text" placeholder="ex: 150.000 EUR">
+      <input type="text" id="searchBudget" placeholder="ex: 150.000 EUR">
     </div>
-    <button class="search-btn">Caută</button>
+    <button class="search-btn" onclick="doSearch()">Caută</button>
   </div>
 </div>
 
@@ -1196,6 +1198,8 @@
           <option>Cabană</option>
           <option>Teren</option>
           <option>Fermă</option>
+          <option>Pensiune</option>
+          <option>Imobil / Clădire</option>
           <option>Altele</option>
         </select>
       </div>
@@ -1265,16 +1269,26 @@
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   // ── LISTINGS DINAMICE ──
-  async function renderListings() {
+  let allProps = [];
+
+  async function renderListings(filtered) {
     const grid = document.getElementById('listingsGrid');
     if (!grid) return;
 
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#7a9a82;font-size:14px;">⏳ Se încarcă proprietățile...</div>';
+    if (!filtered) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#7a9a82;font-size:14px;">⏳ Se încarcă proprietățile...</div>';
+      const { data, error } = await sb.from('proprietati').select('*').order('created_at', { ascending: false });
+      if (error || !data || data.length === 0) {
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a9a82;"><div style="font-size:48px;margin-bottom:16px;opacity:0.3">🏔️</div><p style="font-size:14px;">Proprietățile vor apărea în curând.</p></div>';
+        return;
+      }
+      allProps = data;
+    }
 
-    const { data: props, error } = await sb.from('proprietati').select('*').order('created_at', { ascending: false });
+    const props = filtered || allProps;
 
-    if (error || !props || props.length === 0) {
-      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a9a82;"><div style="font-size:48px;margin-bottom:16px;opacity:0.3">🏔️</div><p style="font-size:14px;">Proprietățile vor apărea în curând.</p></div>';
+    if (props.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a9a82;"><div style="font-size:48px;margin-bottom:16px;opacity:0.3">🔍</div><p style="font-size:14px;">Nicio proprietate găsită pentru criteriile selectate.</p></div>';
       return;
     }
 
@@ -1351,6 +1365,23 @@
   });
 
   // ── INIT ──
+  function doSearch() {
+    const type = document.getElementById('searchType').value;
+    const zone = document.getElementById('searchZone').value;
+    const budget = document.getElementById('searchBudget').value.replace(/[^0-9]/g,'');
+
+    let filtered = allProps;
+    if (type) filtered = filtered.filter(p => p.type === type);
+    if (zone) filtered = filtered.filter(p => p.location && p.location.toLowerCase().includes(zone.toLowerCase()));
+    if (budget) filtered = filtered.filter(p => {
+      const price = parseInt((p.price || '').replace(/[^0-9]/g,''));
+      return !isNaN(price) && price <= parseInt(budget);
+    });
+
+    document.getElementById('listingsGrid').scrollIntoView({behavior:'smooth'});
+    renderListings(filtered);
+  }
+
   renderListings();
 </script>
 </body>
