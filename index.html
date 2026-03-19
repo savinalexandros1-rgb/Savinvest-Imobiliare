@@ -1284,7 +1284,7 @@
 
     if (!filtered) {
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#7a9a82;font-size:14px;">⏳ Se încarcă proprietățile...</div>';
-      const { data, error } = await sb.from('proprietati').select('*').eq('hidden', false).order('created_at', { ascending: false });
+      const { data, error } = await sb.from('proprietati').select('*').or('hidden.eq.false,hidden.is.null').order('created_at', { ascending: false });
       if (error || !data || data.length === 0) {
         grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a9a82;"><div style="font-size:48px;margin-bottom:16px;opacity:0.3">🏔️</div><p style="font-size:14px;">Proprietățile vor apărea în curând.</p></div>';
         return;
