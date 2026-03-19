@@ -1381,4 +1381,15 @@
     if (type) filtered = filtered.filter(p => p.type === type);
     if (zone) filtered = filtered.filter(p => p.location && p.location.toLowerCase().includes(zone.toLowerCase()));
     if (budget) filtered = filtered.filter(p => {
-      const price = parseInt((p.pri
+      const price = parseInt((p.price || '').replace(/[^0-9]/g,''));
+      return !isNaN(price) && price <= parseInt(budget);
+    });
+
+    document.getElementById('listings').scrollIntoView({behavior:'smooth'});
+    renderListings(filtered);
+  }
+
+  renderListings();
+</script>
+</body>
+</html>
