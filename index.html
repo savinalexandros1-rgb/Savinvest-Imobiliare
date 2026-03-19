@@ -737,6 +737,63 @@
     }
   }
 
+
+  /* ---- ABOUT ME ---- */
+  .about-section { background: var(--white); }
+  .about-inner {
+    display: grid; grid-template-columns: 1fr 1.4fr;
+    gap: 80px; align-items: center;
+  }
+  .about-photo { position: relative; }
+  .about-photo-frame {
+    width: 100%; aspect-ratio: 3/4;
+    border-radius: 4px; overflow: hidden;
+    background: var(--green-mist);
+    border: 1px solid var(--green-pale);
+  }
+  .about-photo-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 12px; color: var(--green-bright);
+  }
+  .about-photo-placeholder span { font-size: 60px; opacity: 0.3; }
+  .about-photo-placeholder p { font-size: 13px; opacity: 0.5; }
+  .about-photo-badge {
+    position: absolute; bottom: -20px; right: -20px;
+    background: white; border: 1px solid var(--green-pale);
+    border-radius: 4px; padding: 14px 18px;
+    display: flex; gap: 12px; align-items: center;
+    box-shadow: 0 8px 32px rgba(26,58,42,0.1);
+    font-size: 24px;
+  }
+  .about-desc {
+    font-size: 15px; line-height: 1.85;
+    color: var(--text-mid); font-weight: 300;
+  }
+  .about-stats {
+    display: flex; gap: 40px; margin-top: 40px;
+    padding-top: 32px; border-top: 1px solid var(--green-mist);
+  }
+  .about-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700;
+    color: var(--green-deep); margin-bottom: 4px;
+  }
+  .about-stat-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--green-bright);
+  }
+  @media (max-width: 1024px) {
+    .about-inner { grid-template-columns: 1fr; gap: 40px; }
+    .about-photo-frame { aspect-ratio: 4/3; max-width: 400px; }
+    .about-photo-badge { right: 0; }
+  }
+  @media (max-width: 640px) {
+    .about-stats { flex-direction: column; gap: 20px; }
+    .about-photo-badge { position: static; margin-top: 16px; }
+  }
+
   /* ---- FLOATING CTA ---- */
   .floating-cta {
     position: fixed; bottom: 32px; right: 32px; z-index: 99;
@@ -959,7 +1016,6 @@
         <option value="Casă / Vilă">Casă / Vilă</option>
         <option value="Teren">Teren</option>
         <option value="Cabană">Cabană</option>
-        <option value="Fermă">Fermă</option>
         <option value="Pensiune">Pensiune</option>
         <option value="Imobil / Clădire">Imobil / Clădire</option>
       </select>
@@ -968,11 +1024,8 @@
       <label>Zona</label>
       <select id="searchZone">
         <option value="">Toate zonele</option>
-        <option value="Bucegi">Munții Bucegi</option>
-        <option value="Apuseni">Munții Apuseni</option>
-        <option value="Subcarpați">Subcarpați</option>
-        <option value="Retezat">Munții Retezat</option>
         <option value="Prahova">Valea Prahovei</option>
+        <option value="Doftanei">Valea Doftanei</option>
       </select>
     </div>
     <div class="search-field">
@@ -1031,8 +1084,8 @@
       <div class="category-icon">🌲</div>
       <div class="category-card-content">
         <div class="category-tag">Natură Pură</div>
-        <div class="category-name">Terenuri Forestiere</div>
-        <div class="category-count">Terenuri în zone montane</div>
+        <div class="category-name">Terenuri</div>
+        <div class="category-count">Terenuri în zone montane și colinare</div>
       </div>
     </div>
 
@@ -1042,8 +1095,8 @@
       <div class="category-icon">🏡</div>
       <div class="category-card-content">
         <div class="category-tag">Rustic & Autentic</div>
-        <div class="category-name">Cabane & Pensiuni</div>
-        <div class="category-count">Cabane și pensiuni</div>
+        <div class="category-name">Pensiuni și Hoteluri</div>
+        <div class="category-count">Pensiuni, hoteluri și cazări</div>
       </div>
     </div>
 
@@ -1053,8 +1106,8 @@
       <div class="category-icon">🌄</div>
       <div class="category-card-content">
         <div class="category-tag">Investiție</div>
-        <div class="category-name">Ferme de Deal</div>
-        <div class="category-count">Ferme și proprietăți rurale</div>
+        <div class="category-name">Imobile și Clădiri</div>
+        <div class="category-count">Clădiri comerciale și investiții</div>
       </div>
     </div>
 
@@ -1064,9 +1117,53 @@
       <div class="category-icon">🏕️</div>
       <div class="category-card-content">
         <div class="category-tag">Aventură</div>
-        <div class="category-name">Proprietăți cu Pârtie</div>
-        <div class="category-count">Proprietăți premium de schi</div>
+        <div class="category-name">Cabane</div>
+        <div class="category-count">Cabane rustice și de munte</div>
       </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ABOUT ME -->
+<section class="about-section" id="despre">
+  <div class="about-inner">
+    <div class="about-photo reveal">
+      <div class="about-photo-frame">
+        <img id="aboutPhoto" src="" alt="Savin Alexandru" style="width:100%;height:100%;object-fit:cover;display:none;">
+        <div class="about-photo-placeholder" id="aboutPlaceholder">
+          <span>🏔️</span>
+          <p>Fotografie în curând</p>
+        </div>
+      </div>
+      <div class="about-photo-badge">
+        <span>🤝</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--green-deep)">Savin Alexandru</div>
+          <div style="font-size:11px;color:var(--green-bright);letter-spacing:1px">Agent Imobiliar</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <div class="section-eyebrow">Despre Mine</div>
+      <h2 class="section-title">Un om de <em>încredere</em><br>în Valea Prahovei</h2>
+      <p class="about-desc">Sunt specializat în proprietăți din zona montană a Prahovei — terenuri, vile, case de vacanță, pensiuni și clădiri comerciale în Sinaia, Bușteni, Azuga, Predeal, Comarnic și Valea Doftanei.</p>
+      <p class="about-desc" style="margin-top:16px;">Cunosc fiecare zonă în detaliu, colaborez direct cu proprietarii și îți ofer informații reale, fără comisioane ascunse. Fie că ești o persoană fizică în căutarea casei de vacanță ideale sau un investitor care caută oportunități cu potențial, sunt aici să te ghidez.</p>
+      <div class="about-stats">
+        <div class="about-stat">
+          <div class="about-stat-num">Valea Prahovei</div>
+          <div class="about-stat-label">Zona de activitate</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">Direct</div>
+          <div class="about-stat-label">Fără intermediari</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">100%</div>
+          <div class="about-stat-label">Transparență</div>
+        </div>
+      </div>
+      <a href="#contact" class="btn-primary" style="margin-top:32px;display:inline-block;">Contactează-mă</a>
     </div>
   </div>
 </section>
@@ -1117,13 +1214,7 @@
       <span class="zone-icon">⛰️</span>
       <div class="zone-title">Valea Prahovei</div>
       <p class="zone-desc">Terenuri și proprietăți de vânzare în cele mai căutate stațiuni montane din România, cu acces facil din București.</p>
-      <div class="zone-tags">
-        <span class="zone-tag">Sinaia</span>
-        <span class="zone-tag">Bușteni</span>
-        <span class="zone-tag">Azuga</span>
-        <span class="zone-tag">Predeal</span>
-        <span class="zone-tag">Comarnic</span>
-      </div>
+
     </div>
 
     <div class="zone-card">
@@ -1132,12 +1223,7 @@
       <span class="zone-icon">🌿</span>
       <div class="zone-title">Valea Doftanei</div>
       <p class="zone-desc">O zonă pitorească și liniștită, ideală pentru terenuri și case de vacanță, departe de agitație dar aproape de natură.</p>
-      <div class="zone-tags">
-        <span class="zone-tag">Valea Doftanei</span>
-        <span class="zone-tag">Prahova</span>
-        <span class="zone-tag">Natură</span>
-        <span class="zone-tag">Liniște</span>
-      </div>
+
     </div>
   </div>
 </section>
@@ -1146,8 +1232,8 @@
 <section class="contact-section" id="contact">
   <div class="contact-left">
     <div class="section-header">
-      <div class="section-eyebrow">Contactează-ne</div>
-      <h2 class="section-title">Hai să <em>vorbim</em><br>direct</h2>
+      <div class="section-eyebrow">Contact Direct</div>
+      <h2 class="section-title">Suntem <em>aici</em><br>pentru tine</h2>
     </div>
     <div class="contact-info">
       <div class="contact-item">
@@ -1161,9 +1247,7 @@
         <div class="contact-item-icon">✉️</div>
         <div>
           <div class="contact-item-label">Email</div>
-          <div class="contact-item-value">
-            <a href="/cdn-cgi/l/email-protection#394a584f505758555c4158575d4b564a79505a55564c5d175a5654" style="text-decoration:none;color:inherit;"><span class="__cf_email__" data-cfemail="641705120d0a0508011c050a00160b17240d07080b11004a070b09">[email&#160;protected]</span></a>
-          </div>
+          <div class="contact-item-value" style="color:white;font-size:15px;letter-spacing:0.5px;">savinalexandros@icloud.com</div>
         </div>
       </div>
 
@@ -1201,11 +1285,10 @@
       <div class="form-group">
         <label>Tipul de proprietate</label>
         <select>
-          <option>Casă / Vilă de munte</option>
-          <option>Cabană</option>
+          <option>Casă / Vilă</option>
           <option>Teren</option>
-          <option>Fermă</option>
-          <option>Pensiune</option>
+          <option>Cabană</option>
+          <option>Pensiune / Hotel</option>
           <option>Imobil / Clădire</option>
           <option>Altele</option>
         </select>
