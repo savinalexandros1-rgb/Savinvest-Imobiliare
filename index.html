@@ -1162,7 +1162,7 @@
         <div>
           <div class="contact-item-label">Email</div>
           <div class="contact-item-value">
-            <a href="mailto:savinalexandros@icloud.com" style="text-decoration:none;color:inherit;">savinalexandros@icloud.com</a>
+            <a href="/cdn-cgi/l/email-protection#394a584f505758555c4158575d4b564a79505a55564c5d175a5654" style="text-decoration:none;color:inherit;"><span class="__cf_email__" data-cfemail="641705120d0a0508011c050a00160b17240d07080b11004a070b09">[email&#160;protected]</span></a>
           </div>
         </div>
       </div>
@@ -1269,7 +1269,7 @@
   💬 WhatsApp
 </a>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── SUPABASE ──
   const SUPABASE_URL = 'https://onjwsqzkrhvknitohqyl.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uandzcXprcmh2a25pdG9ocXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NzkwMjYsImV4cCI6MjA4NzE1NTAyNn0.fj_t4quODGN3MQds3TVcshi5cLpYssy77qgJ3KbwCdQ';
@@ -1284,7 +1284,7 @@
 
     if (!filtered) {
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:#7a9a82;font-size:14px;">⏳ Se încarcă proprietățile...</div>';
-      const { data, error } = await sb.from('proprietati').select('*').order('created_at', { ascending: false });
+      const { data, error } = await sb.from('proprietati').select('*').eq('hidden', false).order('created_at', { ascending: false });
       if (error || !data || data.length === 0) {
         grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#7a9a82;"><div style="font-size:48px;margin-bottom:16px;opacity:0.3">🏔️</div><p style="font-size:14px;">Proprietățile vor apărea în curând.</p></div>';
         return;
@@ -1381,15 +1381,4 @@
     if (type) filtered = filtered.filter(p => p.type === type);
     if (zone) filtered = filtered.filter(p => p.location && p.location.toLowerCase().includes(zone.toLowerCase()));
     if (budget) filtered = filtered.filter(p => {
-      const price = parseInt((p.price || '').replace(/[^0-9]/g,''));
-      return !isNaN(price) && price <= parseInt(budget);
-    });
-
-    document.getElementById('listings').scrollIntoView({behavior:'smooth'});
-    renderListings(filtered);
-  }
-
-  renderListings();
-</script>
-</body>
-</html>
+      const price = parseInt((p.pri
