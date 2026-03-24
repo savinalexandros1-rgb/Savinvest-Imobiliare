@@ -401,7 +401,11 @@ function render(){
   document.getElementById('propRight').innerHTML=`
     <div class="contact-card">
       <div class="card-price">${prop.price?prop.price+' €':'Preț la cerere'}</div>
-      <div class="card-price-note">Preț negociabil · TVA inclus</div>
+      <div class="card-price-note">Preț negociabil · ${
+        prop.tva === 'inclus' ? 'TVA inclus' :
+        prop.tva === 'plus' ? '+ TVA' :
+        'Fără TVA'
+      }${prop.vanzator === 'juridica' ? ' · Persoană juridică' : ' · Persoană fizică'}</div>
       <div class="card-divider"></div>
       ${prop.area||prop.rooms||prop.baths||prop.land?`
         <div class="card-features">
