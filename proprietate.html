@@ -201,7 +201,7 @@
     .prop-header{padding:20px 0 14px;}
     .prop-title{font-size:26px;}
     .photo-grid{display:none;}
-    .mobile-slider{display:block;position:relative;width:100%;height:300px;overflow:hidden;background:#1a3a2a;border-radius:6px;margin-bottom:20px;}
+    .mobile-slider{display:block;position:relative;width:100%;height:420px;overflow:hidden;background:#1a3a2a;border-radius:6px;margin-bottom:20px;}
     .mobile-slider-track{display:flex;height:100%;transition:transform 0.35s ease;will-change:transform;}
     .mobile-slide{min-width:100%;height:100%;flex-shrink:0;}
     .mobile-slide img{width:100%;height:100%;object-fit:cover;display:block;}
@@ -434,8 +434,8 @@ function initMobileSlider(photos) {
   const track = document.getElementById('sliderTrack');
   const dots = document.getElementById('sliderDots');
   
-  track.innerHTML = photos.map(url => 
-    `<div class="mobile-slide"><img src="${url}" alt=""></div>`
+  track.innerHTML = photos.map((url, i) => 
+    `<div class="mobile-slide" onclick="openLb(${i})" style="cursor:zoom-in;"><img src="${url}" alt=""></div>`
   ).join('');
   
   dots.innerHTML = photos.map((_, i) => 
