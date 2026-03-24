@@ -7,12 +7,13 @@
 <meta name="description" content="Terenuri și proprietăți de vânzare în Sinaia, Bușteni, Azuga, Predeal, Comarnic și Valea Doftanei. Vile, case de vacanță, pensiuni și clădiri. Contact direct: 0747 095 063.">
 <meta name="keywords" content="terenuri vanzare Sinaia, proprietati Busteni, vile Predeal, case vacanta Valea Prahovei, teren Azuga, imobiliare montane Romania, pensiuni vanzare Prahova, Vila Comarnic, teren Valea Doftanei">
 <meta name="robots" content="index, follow">
+<meta name="google-site-verification" content="-j80NyrsYz6B4dSizCuILdySA4kr6Y1cJd3jKLAaPz0" />
 <meta name="author" content="SAVINVEST Imobiliare">
-<link rel="canonical" href="https://iridescent-fox-6e9b15.netlify.app/">
+<link rel="canonical" href="https://www.savinvestimobiliare.ro/">
 <meta property="og:title" content="SAVINVEST – Terenuri și Proprietăți în Valea Prahovei">
 <meta property="og:description" content="Terenuri, vile, case de vacanță și pensiuni de vânzare în Sinaia, Bușteni, Azuga, Predeal, Comarnic și Valea Doftanei.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://iridescent-fox-6e9b15.netlify.app/">
+<meta property="og:url" content="https://www.savinvestimobiliare.ro/">
 <meta name="geo.region" content="RO-PH">
 <meta name="geo.placename" content="Valea Prahovei, Prahova, Romania">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1246,7 +1247,7 @@
         <div class="contact-item-icon">✉️</div>
         <div>
           <div class="contact-item-label">Email</div>
-          <div class="contact-item-value" style="color:white;font-size:15px;letter-spacing:0.5px;">savinalexandros@icloud.com</div>
+          <div class="contact-item-value" style="color:white;font-size:15px;letter-spacing:0.5px;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fc8f9d8a95929d9099849d92988e938fbc959f90938998d29f9391">[email&#160;protected]</a></div>
         </div>
       </div>
 
@@ -1351,7 +1352,7 @@
   💬 WhatsApp
 </a>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── SUPABASE ──
   const SUPABASE_URL = 'https://onjwsqzkrhvknitohqyl.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uandzcXprcmh2a25pdG9ocXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NzkwMjYsImV4cCI6MjA4NzE1NTAyNn0.fj_t4quODGN3MQds3TVcshi5cLpYssy77qgJ3KbwCdQ';
@@ -1463,15 +1464,4 @@
     if (type) filtered = filtered.filter(p => p.type === type);
     if (zone) filtered = filtered.filter(p => p.location && p.location.toLowerCase().includes(zone.toLowerCase()));
     if (budget) filtered = filtered.filter(p => {
-      const price = parseInt((p.price || '').replace(/[^0-9]/g,''));
-      return !isNaN(price) && price <= parseInt(budget);
-    });
-
-    document.getElementById('listings').scrollIntoView({behavior:'smooth'});
-    renderListings(filtered);
-  }
-
-  renderListings();
-</script>
-</body>
-</html>
+      const price = parseInt((p.price || '').replace(/[
