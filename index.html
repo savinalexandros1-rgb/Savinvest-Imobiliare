@@ -1473,10 +1473,64 @@
   });
 
   // ── INIT ──
+  /**
+   * Filters the loaded properties based on the selected criteria and re‑renders
+   * the listing grid.  The original file ended with a partial arrow function
+   * which caused a syntax error and prevented any scripts from running.
+   * This implementation supports filtering by property type, region
+   * (zone) and maximum budget using the `allProps` array.
+   */
   function doSearch() {
-    const type = document.getElementById('searchType').value;
-    const zone = document.getElementById('searchZone').value;
-    const budget = document.getElementById('searchBudget').value.replace(/[^0-9]/g,'');
+    const typeVal = document.getElementById('searchType').value;
+    const zoneVal = document.getElementById('searchZone').value;
+    // Extract digits from the budget input (e.g. "150.000 EUR" → "150000")
+    const budgetStr = document.getElementById('searchBudget').value.replace(/[^0-9]/g, '');
+    const budgetVal = budgetStr ? parseInt(budgetStr, 10) : null;
 
-    let filtered = allProps;
-    if (type) filtered = filtered.filter(p => p.
+    // Start with a copy of the full list of properties
+    let filtered = allProps.slice();
+
+    // Filter by type if a specific option is selected
+    if (typeVal) {
+      filtered = filtered.filter(p => p.type === typeVal);
+    }
+
+    // Filter by zone (region).  We infer the region from the `location`
+    // field; "Doftanei" corresponds to Valea Doftanei, anything else is
+    // treated as part of Valea Prahovei.  Adjust if your dataset stores
+    // zones differently.
+    if (zoneVal) {
+      filtered = filtered.filter(p => {
+        const loc = (p.location || '').toLowerCase();
+        if (zoneVal === 'Doftanei') {
+          return loc.includes('doftanei');
+        }
+        // Zone "Prahova" corresponds to Valea Prahovei; exclude Doftanei.
+        return !loc.includes('doftanei');
+      });
+    }
+
+    // Filter by budget if a numeric value is provided.  Prices without
+    // numeric values (e.g. "La cerere") are excluded from the budget filter.
+    if (budgetVal !== null) {
+      filtered = filtered.filter(p => {
+        if (!p.price) return false;
+        const priceNum = parseInt(String(p.price).replace(/[^0-9]/g, ''), 10);
+        return !isNaN(priceNum) && priceNum <= budgetVal;
+      });
+    }
+
+    // Re‑render the filtered results
+    renderListings(filtered);
+  }
+
+  // Trigger an initial render of all properties once the DOM is ready.
+  document.addEventListener('DOMContentLoaded', function() {
+    renderListings();
+  });
+
+</script>
+
+</body>
+
+</html>
