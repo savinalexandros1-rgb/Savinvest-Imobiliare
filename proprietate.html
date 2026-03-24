@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SAVINVEST – Proprietate</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
 <style>
   :root{
     --green-deep:#1a3a2a;--green-mid:#2d6a4f;--green-bright:#40916c;
@@ -290,17 +289,52 @@
 <script>
 const SUPABASE_URL='https://onjwsqzkrhvknitohqyl.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uandzcXprcmh2a25pdG9ocXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NzkwMjYsImV4cCI6MjA4NzE1NTAyNn0.fj_t4quODGN3MQds3TVcshi5cLpYssy77qgJ3KbwCdQ';
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+async function sbGet(table, params) {
+  const url = new URL(SUPABASE_URL + '/rest/v1/' + table);
+  if (params) Object.entries(params).forEach(([k,v]) => url.searchParams.set(k,v));
+  const res = await fetch(url, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }});
+  if (!res.ok) throw new Error('Error ' + res.status);
+  return await res.json();
+}
+
+async function sbPost(table, body) {
+  const res = await fetch(SUPABASE_URL + '/rest/v1/' + table, {
+    method: 'POST',
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) { const e = await res.json(); throw new Error(e.message || res.status); }
+}
+
+async function sbPatch(table, id, body) {
+  const res = await fetch(SUPABASE_URL + '/rest/v1/' + table + '?id=eq.' + id, {
+    method: 'PATCH',
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) { const e = await res.json(); throw new Error(e.message || res.status); }
+}
+
+async function sbDelete(table, id) {
+  const res = await fetch(SUPABASE_URL + '/rest/v1/' + table + '?id=eq.' + id, {
+    method: 'DELETE',
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+  });
+  if (!res.ok) throw new Error('Error ' + res.status);
+}
 let prop=null,curPhoto=0;
 
 async function load(){
   const id=new URLSearchParams(window.location.search).get('id');
   if(!id){showErr();return;}
-  const{data,error}=await sb.from('proprietati').select('*').eq('id',id).single();
-  if(error||!data){showErr();return;}
-  prop=data;
-  document.title='SAVINVEST – '+prop.title;
-  render();
+  try {
+    const arr = await sbGet('proprietati', {'id': 'eq.'+id, 'select': '*'});
+    if(!arr || arr.length===0){showErr();return;}
+    prop = arr[0];
+    document.title='SAVINVEST – '+prop.title;
+    render();
+  } catch(e) {showErr();}
 }
 
 function showErr(){
