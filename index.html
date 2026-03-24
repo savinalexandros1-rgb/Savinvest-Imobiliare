@@ -1246,7 +1246,7 @@
         <div class="contact-item-icon">✉️</div>
         <div>
           <div class="contact-item-label">Email</div>
-          <div class="contact-item-value" style="color:white;font-size:15px;letter-spacing:0.5px;">savinalexandros@icloud.com</div>
+          <div class="contact-item-value" style="color:white;font-size:15px;letter-spacing:0.5px;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4f3c2e3926212e232a372e212b3d203c0f262c23203a2b612c2022">[email&#160;protected]</a></div>
         </div>
       </div>
 
@@ -1479,7 +1479,4 @@
     const budget = document.getElementById('searchBudget').value.replace(/[^0-9]/g,'');
 
     let filtered = allProps;
-    if (type) filtered = filtered.filter(p => p.type === type);
-    if (zone) filtered = filtered.filter(p => p.location && p.location.toLowerCase().includes(zone.toLowerCase()));
-    if (budget) filtered = filtered.filter(p => {
-      const price = parseInt((p.price || '').replace(/[
+    if (type) filtered = filtered.filter(p => p.
