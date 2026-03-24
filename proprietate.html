@@ -201,10 +201,10 @@
     .prop-header{padding:20px 0 14px;}
     .prop-title{font-size:26px;}
     .photo-grid{display:none;}
-    .mobile-slider{display:block;position:relative;width:100%;height:420px;overflow:hidden;background:#1a3a2a;border-radius:6px;margin-bottom:20px;}
+    .mobile-slider{display:block;position:relative;width:100%;height:75vw;max-height:480px;min-height:280px;overflow:hidden;background:#0d2318;border-radius:6px;margin-bottom:20px;}
     .mobile-slider-track{display:flex;height:100%;transition:transform 0.35s ease;will-change:transform;}
     .mobile-slide{min-width:100%;height:100%;flex-shrink:0;}
-    .mobile-slide img{width:100%;height:100%;object-fit:cover;display:block;}
+    .mobile-slide img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;}
     .mobile-slider-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;}
     .mobile-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;transition:background 0.2s;}
     .mobile-dot.active{background:white;}
@@ -446,11 +446,27 @@ function initMobileSlider(photos) {
   
   // Swipe support
   let startX = 0;
+  let startY = 0;
+  let isDragging = false;
   const slider = document.getElementById('mobileSlider');
-  slider.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive:true});
+  const track = document.getElementById('sliderTrack');
+  
+  slider.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isDragging = false;
+  }, {passive:true});
+  
+  slider.addEventListener('touchmove', e => {
+    const diffX = Math.abs(e.touches[0].clientX - startX);
+    const diffY = Math.abs(e.touches[0].clientY - startY);
+    if (diffX > diffY && diffX > 10) isDragging = true;
+  }, {passive:true});
+  
   slider.addEventListener('touchend', e => {
+    if (!isDragging) return;
     const diff = startX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) sliderNav(diff > 0 ? 1 : -1);
+    if (Math.abs(diff) > 30) sliderNav(diff > 0 ? 1 : -1);
   }, {passive:true});
   
   // Show slider on mobile
