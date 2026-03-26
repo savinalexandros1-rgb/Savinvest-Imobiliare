@@ -1481,5 +1481,21 @@
   });
 
   // ── INIT ──
-  function doSearch() {
+  function doSearch() {).value;
+                           const zone = document.getElementById('searchZone').value;
+                           const budget = document.getElementById('searchBudget').value.replace(/[^0-9]/g,'');
+                           let filtered = allProps;
+                           if (type) filtered = filtered.filter(p => p.type === type);
+                           if (zone) filtered = filtered.filter(p => p.location && p.location.toLowerCase().includes(zone.toLowerCase()));
+                           if (budget) filtered = filtered.filter(p => {
+                                   const price = parseInt((p.price || '').replace(/[^0-9]/g,''));
+                                   return !isNaN(price) && price <= parseInt(budget);
+                           });
+                           document.getElementById('listings').scrollIntoView({behavior:'smooth'});
+                           renderListings(filtered);
+                      }
+    renderListings();
+</script>
+</body>body>
+</html>html>
     const type = document.getElementById('searchType'
