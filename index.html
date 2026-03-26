@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8ME5S9YZR8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8ME5S9YZR8');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Terenuri și Proprietăți de Vânzare | Sinaia, Bușteni, Predeal, Azuga, Comarnic | SAVINVEST</title>
@@ -1246,7 +1254,7 @@
         <div class="contact-item-icon">✉️</div>
         <div>
           <div class="contact-item-label">Email</div>
-          <div class="contact-item-value" style="color:white;font-size:15px;letter-spacing:0.5px;">savinalexandros@icloud.com</div>
+          <div class="contact-item-value" style="color:white;font-size:15px;letter-spacing:0.5px;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4a392b3c23242b262f322b242e3825390a232926253f2e64292527">[email&#160;protected]</a></div>
         </div>
       </div>
 
@@ -1351,7 +1359,7 @@
   💬 WhatsApp
 </a>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── SUPABASE ──
   const SUPABASE_URL = 'https://onjwsqzkrhvknitohqyl.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uandzcXprcmh2a25pdG9ocXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NzkwMjYsImV4cCI6MjA4NzE1NTAyNn0.fj_t4quODGN3MQds3TVcshi5cLpYssy77qgJ3KbwCdQ';
@@ -1473,64 +1481,5 @@
   });
 
   // ── INIT ──
-  /**
-   * Filters the loaded properties based on the selected criteria and re‑renders
-   * the listing grid.  The original file ended with a partial arrow function
-   * which caused a syntax error and prevented any scripts from running.
-   * This implementation supports filtering by property type, region
-   * (zone) and maximum budget using the `allProps` array.
-   */
   function doSearch() {
-    const typeVal = document.getElementById('searchType').value;
-    const zoneVal = document.getElementById('searchZone').value;
-    // Extract digits from the budget input (e.g. "150.000 EUR" → "150000")
-    const budgetStr = document.getElementById('searchBudget').value.replace(/[^0-9]/g, '');
-    const budgetVal = budgetStr ? parseInt(budgetStr, 10) : null;
-
-    // Start with a copy of the full list of properties
-    let filtered = allProps.slice();
-
-    // Filter by type if a specific option is selected
-    if (typeVal) {
-      filtered = filtered.filter(p => p.type === typeVal);
-    }
-
-    // Filter by zone (region).  We infer the region from the `location`
-    // field; "Doftanei" corresponds to Valea Doftanei, anything else is
-    // treated as part of Valea Prahovei.  Adjust if your dataset stores
-    // zones differently.
-    if (zoneVal) {
-      filtered = filtered.filter(p => {
-        const loc = (p.location || '').toLowerCase();
-        if (zoneVal === 'Doftanei') {
-          return loc.includes('doftanei');
-        }
-        // Zone "Prahova" corresponds to Valea Prahovei; exclude Doftanei.
-        return !loc.includes('doftanei');
-      });
-    }
-
-    // Filter by budget if a numeric value is provided.  Prices without
-    // numeric values (e.g. "La cerere") are excluded from the budget filter.
-    if (budgetVal !== null) {
-      filtered = filtered.filter(p => {
-        if (!p.price) return false;
-        const priceNum = parseInt(String(p.price).replace(/[^0-9]/g, ''), 10);
-        return !isNaN(priceNum) && priceNum <= budgetVal;
-      });
-    }
-
-    // Re‑render the filtered results
-    renderListings(filtered);
-  }
-
-  // Trigger an initial render of all properties once the DOM is ready.
-  document.addEventListener('DOMContentLoaded', function() {
-    renderListings();
-  });
-
-</script>
-
-</body>
-
-</html>
+    const type = document.getElementById('searchType'
