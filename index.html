@@ -1043,6 +1043,16 @@
     <h2 class="section-title">Ofertele <em>disponibile acum</em></h2>
   </div>
 
+  <div id="resultsToolbar" style="display:none;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin:0 60px 24px;padding:16px 20px;background:#f1f9f3;border:1px solid #d8f3dc;border-radius:8px;">
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      <strong style="font-size:14px;color:#1a3a2a;">Filtre active</strong>
+      <span id="resultsToolbarText" style="font-size:13px;color:#5a7a65;">Vezi rezultatele filtrate sau revino la toate proprietățile.</span>
+    </div>
+    <button type="button" onclick="return clearSearchAndShowAll(event)" style="background:#1a3a2a;color:#fafff8;border:none;border-radius:4px;padding:12px 18px;font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;cursor:pointer;">
+      Vezi toate proprietățile
+    </button>
+  </div>
+
   <div class="listings-grid" id="listingsGrid">
     <!-- populat dinamic din localStorage -->
   </div>
@@ -1483,35 +1493,23 @@
   function doSearch() {
     const typeVal = document.getElementById('searchType').value;
     const zoneVal = document.getElementById('searchZone').value;
-    // Extract digits from the budget input (e.g. "150.000 EUR" → "150000")
     const budgetStr = document.getElementById('searchBudget').value.replace(/[^0-9]/g, '');
     const budgetVal = budgetStr ? parseInt(budgetStr, 10) : null;
 
-    // Start with a copy of the full list of properties
     let filtered = allProps.slice();
 
-    // Filter by type if a specific option is selected
     if (typeVal) {
       filtered = filtered.filter(p => p.type === typeVal);
     }
 
-    // Filter by zone (region).  We infer the region from the `location`
-    // field; "Doftanei" corresponds to Valea Doftanei, anything else is
-    // treated as part of Valea Prahovei.  Adjust if your dataset stores
-    // zones differently.
     if (zoneVal) {
       filtered = filtered.filter(p => {
         const loc = (p.location || '').toLowerCase();
-        if (zoneVal === 'Doftanei') {
-          return loc.includes('doftanei');
-        }
-        // Zone "Prahova" corresponds to Valea Prahovei; exclude Doftanei.
+        if (zoneVal === 'Doftanei') return loc.includes('doftanei');
         return !loc.includes('doftanei');
       });
     }
 
-    // Filter by budget if a numeric value is provided.  Prices without
-    // numeric values (e.g. "La cerere") are excluded from the budget filter.
     if (budgetVal !== null) {
       filtered = filtered.filter(p => {
         if (!p.price) return false;
@@ -1520,8 +1518,11 @@
       });
     }
 
-    // Re‑render the filtered results
+    updateResultsToolbar(true, filtered.length, buildFilterSummary(typeVal, zoneVal, budgetVal, filtered.length));
     renderListings(filtered);
+
+    var target = document.getElementById('listings');
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   // Trigger an initial render of all properties once the DOM is ready.
@@ -1539,13 +1540,40 @@
     if (b) b.value = '';
   }
 
-  function openListingsFromStart(event) {
+  function updateResultsToolbar(isFiltered, count, summary) {
+    var bar = document.getElementById('resultsToolbar');
+    var text = document.getElementById('resultsToolbarText');
+    if (!bar || !text) return;
+    if (isFiltered) {
+      bar.style.display = 'flex';
+      text.textContent = summary || (count + ' proprietăți găsite.');
+    } else {
+      bar.style.display = 'none';
+      text.textContent = 'Vezi rezultatele filtrate sau revino la toate proprietățile.';
+    }
+  }
+
+  function buildFilterSummary(typeVal, zoneVal, budgetVal, count) {
+    var parts = [];
+    if (typeVal) parts.push('tip: ' + typeVal);
+    if (zoneVal === 'Prahova') parts.push('zonă: Valea Prahovei');
+    if (zoneVal === 'Doftanei') parts.push('zonă: Valea Doftanei');
+    if (budgetVal !== null) parts.push('buget maxim: ' + budgetVal.toLocaleString('ro-RO') + ' €');
+    return count + ' proprietăți găsite' + (parts.length ? ' pentru ' + parts.join(', ') : '') + '.';
+  }
+
+  function clearSearchAndShowAll(event) {
     if (event) event.preventDefault();
     resetSearchFields();
+    updateResultsToolbar(false, 0, '');
     renderListings();
     var target = document.getElementById('listings');
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     return false;
+  }
+
+  function openListingsFromStart(event) {
+    return clearSearchAndShowAll(event);
   }
 
   function goHomeReset(event) {
@@ -1554,11 +1582,11 @@
     if (!onHome) return true;
     if (event) event.preventDefault();
     resetSearchFields();
+    updateResultsToolbar(false, 0, '');
     renderListings();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return false;
   }
-
 
 </script>
 
