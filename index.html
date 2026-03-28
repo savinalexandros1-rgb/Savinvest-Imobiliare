@@ -755,6 +755,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 12%;
     display: block;
   }
   .about-photo-placeholder {
@@ -792,12 +793,42 @@
   }
   @media (max-width: 1024px) {
     .about-inner { grid-template-columns: 1fr; gap: 40px; }
-    .about-photo-frame { aspect-ratio: 4/3; max-width: 400px; }
+    .about-photo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .about-photo-frame {
+      width: min(100%, 420px);
+      aspect-ratio: 3/4;
+      max-width: 420px;
+    }
+    .about-photo-frame img {
+      object-position: center 10%;
+    }
     .about-photo-badge { right: 0; }
   }
   @media (max-width: 640px) {
+    .about-photo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .about-photo-frame {
+      width: 100%;
+      max-width: none;
+      aspect-ratio: 3/4;
+    }
+    .about-photo-frame img {
+      object-position: center 8%;
+    }
     .about-stats { flex-direction: column; gap: 20px; }
-    .about-photo-badge { position: static; margin-top: 16px; }
+    .about-photo-badge {
+      position: static;
+      margin-top: 16px;
+      width: 100%;
+      justify-content: flex-start;
+    }
   }
 
   /* ---- FLOATING CTA ---- */
