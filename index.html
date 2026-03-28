@@ -943,7 +943,7 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">
+  <a href="index.html" class="nav-logo" onclick="return goHomeReset(event)">
     <svg width="42" height="38" viewBox="0 0 64 58" fill="none" xmlns="http://www.w3.org/2000/svg">
       <polygon points="14,54 0,54 7,33" fill="#b7e4c7"/>
       <polygon points="50,54 64,54 57,33" fill="#b7e4c7"/>
@@ -956,9 +956,9 @@
       <span>SAVINVEST</span>
       <span>Imobiliare</span>
     </div>
-  </div>
+  </a>
   <ul class="nav-links">
-    <li><a href="#listings">Proprietăți</a></li>
+    <li><a href="#listings" onclick="return openListingsFromStart(event)">Proprietăți</a></li>
     <li><a href="#zone">Zone</a></li>
     <li><a href="#about">Despre Noi</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -995,7 +995,7 @@
       Descoperă proprietăți în zone montane și colinare — pentru vacanțe, investiții sau viață liniștită, aproape de natură.
     </p>
     <div class="hero-actions">
-      <a href="#listings" class="btn-primary">Vezi Proprietăți</a>
+      <a href="#listings" class="btn-primary" onclick="return openListingsFromStart(event)">Vezi Proprietăți</a>
       <a href="#contact" class="btn-outline">Contactează-ne</a>
     </div>
   </div>
@@ -1130,8 +1130,8 @@
   <div class="about-inner">
     <div class="about-photo reveal">
       <div class="about-photo-frame">
-        <img id="aboutPhoto" src="savin.jpg" alt="Savin Alexandros" style="width:100%;height:100%;object-fit:cover;display:block;">
-        <div class="about-photo-placeholder" id="aboutPlaceholder" style="display:none;">
+        <img id="aboutPhoto" src="" alt="Savin Alexandros" style="width:100%;height:100%;object-fit:cover;display:none;">
+        <div class="about-photo-placeholder" id="aboutPlaceholder">
           <span>🏔️</span>
           <p>Fotografie în curând</p>
         </div>
@@ -1140,7 +1140,7 @@
         <span>🤝</span>
         <div>
           <div style="font-size:13px;font-weight:700;color:var(--green-deep)">Savin Alexandros</div>
-          
+          <div style="font-size:11px;color:var(--green-bright);letter-spacing:1px">Agent Imobiliar</div>
         </div>
       </div>
     </div>
@@ -1528,6 +1528,37 @@
   document.addEventListener('DOMContentLoaded', function() {
     renderListings();
   });
+
+
+  function resetSearchFields() {
+    var t = document.getElementById('searchType');
+    var z = document.getElementById('searchZone');
+    var b = document.getElementById('searchBudget');
+    if (t) t.value = '';
+    if (z) z.value = '';
+    if (b) b.value = '';
+  }
+
+  function openListingsFromStart(event) {
+    if (event) event.preventDefault();
+    resetSearchFields();
+    renderListings();
+    var target = document.getElementById('listings');
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return false;
+  }
+
+  function goHomeReset(event) {
+    var path = window.location.pathname || '';
+    var onHome = path === '/' || path.endsWith('/index.html') || path === '/index.html';
+    if (!onHome) return true;
+    if (event) event.preventDefault();
+    resetSearchFields();
+    renderListings();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return false;
+  }
+
 
 </script>
 
