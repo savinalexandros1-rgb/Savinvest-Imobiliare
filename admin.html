@@ -3,6 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  (function() {
+    const PASS = 'savinvest2025';
+    const key = 'admin_auth';
+    if (sessionStorage.getItem(key) !== PASS) {
+      const input = prompt('Parolă admin:');
+      if (input !== PASS) {
+        document.documentElement.innerHTML = '<h2 style="font-family:sans-serif;text-align:center;margin-top:20vh">Acces interzis.</h2>';
+        history.replaceState(null, '', '/');
+        throw new Error('Unauthorized');
+      }
+      sessionStorage.setItem(key, PASS);
+    }
+  })();
+</script>
 <title>SAVINVEST – Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
