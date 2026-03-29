@@ -124,6 +124,21 @@
     font-size:16px;line-height:1.9;color:#3a5a48;font-weight:300;
     margin-bottom:32px;
   }
+  .prop-desc-wrap{position:relative;margin-bottom:32px;}
+  .prop-desc.is-collapsed{max-height:none;overflow:visible;}
+  .prop-desc-toggle{
+    display:none;
+    margin-top:-14px;
+    margin-bottom:32px;
+    padding:0;
+    border:none;
+    background:none;
+    color:var(--green-mid);
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:1px;
+    cursor:pointer;
+  }
 
   /* details list */
   .details-list{
@@ -231,11 +246,21 @@
     .mobile-slider-btn.prev{left:10px;}
     .mobile-slider-btn.next{right:10px;}
     .content-grid{grid-template-columns:1fr;gap:32px;}
+    .prop-left{order:2;}
+    .prop-right{order:1;}
     .contact-card{position:static;}
     .features-strip{gap:16px;flex-wrap:wrap;}
     .details-list{grid-template-columns:1fr;}
     .detail-row:nth-child(even){padding-left:0;border-left:none;}
     .detail-row:nth-child(odd){padding-right:0;}
+    .prop-desc-wrap{margin-bottom:24px;}
+    .prop-desc.is-collapsed{
+      max-height:170px;
+      overflow:hidden;
+      -webkit-mask-image:linear-gradient(to bottom, #000 68%, transparent 100%);
+      mask-image:linear-gradient(to bottom, #000 68%, transparent 100%);
+    }
+    .prop-desc-toggle{display:inline-flex;align-items:center;}
     .mobile-contact-bar{
       display:grid;grid-template-columns:1fr 1fr;
       gap:10px;position:fixed;left:12px;right:12px;bottom:12px;z-index:110;
@@ -448,12 +473,12 @@ function render(){
   if(prop.price) details.push(['Preț',prop.price+' €']);
 
   document.getElementById('propLeft').innerHTML=`
-    ${prop.desc?`<div class="section-title">Despre proprietate</div><p class="prop-desc">${prop.desc.replace(/\n/g,'<br>')}</p>`:''}
     ${details.length?`
       <div class="section-title">Detalii</div>
       <div class="details-list">
         ${details.map(([l,v])=>`<div class="detail-row"><span class="detail-lbl">${l}</span><span class="detail-val">${v}</span></div>`).join('')}
       </div>`:''}
+    ${prop.desc?`<div class="section-title">Despre proprietate</div><div class="prop-desc-wrap"><p class="prop-desc is-collapsed" id="propDesc">${prop.desc.replace(/\n/g,'<br>')}</p><button class="prop-desc-toggle" id="propDescToggle" type="button" onclick="toggleDescription()">Vezi mai mult</button></div>`:''}
     ${videoHTML}
     ${mapHTML}`;
 
@@ -492,6 +517,8 @@ function render(){
     <a href="${waLink}" target="_blank" class="mobile-wa">WhatsApp</a>
     <a href="tel:${phone}" class="mobile-call">Sună acum</a>
   `;
+
+  setupDescriptionToggle();
 }
 
 function updateMetaDetails() {
@@ -576,6 +603,32 @@ async function copyPropertyLink() {
   } catch (_) {
     alert('Nu am putut copia linkul automat. Copiază-l manual din bara de adresă.');
   }
+}
+
+function setupDescriptionToggle() {
+  const desc = document.getElementById('propDesc');
+  const toggle = document.getElementById('propDescToggle');
+  if (!desc || !toggle) return;
+
+  requestAnimationFrame(function() {
+    const isMobile = window.innerWidth <= 768;
+    const shouldCollapse = isMobile && desc.scrollHeight > 190;
+    desc.classList.toggle('is-collapsed', shouldCollapse);
+    toggle.style.display = shouldCollapse ? 'inline-flex' : 'none';
+    toggle.textContent = 'Vezi mai mult';
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+}
+
+function toggleDescription() {
+  const desc = document.getElementById('propDesc');
+  const toggle = document.getElementById('propDescToggle');
+  if (!desc || !toggle) return;
+
+  const collapsed = desc.classList.contains('is-collapsed');
+  desc.classList.toggle('is-collapsed', !collapsed);
+  toggle.textContent = collapsed ? 'Vezi mai puțin' : 'Vezi mai mult';
+  toggle.setAttribute('aria-expanded', collapsed ? 'true' : 'false');
 }
 
 // LIGHTBOX
