@@ -18,9 +18,29 @@
 <meta property="og:description" content="Terenuri, vile, case de vacanță și pensiuni de vânzare în Sinaia, Bușteni, Azuga, Predeal, Comarnic și Valea Doftanei.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.savinvestimobiliare.ro/">
+<meta property="og:image" content="https://www.savinvestimobiliare.ro/savin.jpg">
 <meta name="geo.region" content="RO-PH">
 <meta name="geo.placename" content="Valea Prahovei, Prahova, Romania">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "name": "SAVINVEST Imobiliare",
+  "url": "https://www.savinvestimobiliare.ro/",
+  "image": "https://www.savinvestimobiliare.ro/savin.jpg",
+  "telephone": "+40 747 095 063",
+  "email": "savinalexandros@icloud.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Bulevardul Libertății nr. 153",
+    "addressLocality": "Bușteni",
+    "addressCountry": "RO"
+  },
+  "areaServed": ["Valea Prahovei", "Valea Doftanei", "Prahova"],
+  "sameAs": ["https://www.savinvestimobiliare.ro/"]
+}
+</script>
 <style>
   :root {
     --green-deep: #1a3a2a;
@@ -639,6 +659,13 @@
   }
 
   .contact-right .section-header { margin-bottom: 40px; }
+  .contact-intro {
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.7;
+    margin-top: -16px;
+    margin-bottom: 28px;
+  }
 
   .form-group {
     margin-bottom: 24px;
@@ -676,6 +703,26 @@
     transition: background 0.3s;
   }
   .submit-btn:hover { background: var(--green-mid); }
+  .contact-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .contact-action-link {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 50px; border-radius: 2px;
+    font-size: 12px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .contact-action-wa { background:#25d366; color:white; }
+  .contact-action-mail { border:1.5px solid var(--green-mid); color:var(--green-mid); }
+  .contact-form-status {
+    min-height: 22px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--green-mid);
+  }
 
   /* ---- FOOTER ---- */
   footer {
@@ -959,6 +1006,7 @@
     .contact-left { padding: 44px 20px; }
     .contact-right { padding: 44px 20px; }
     .form-row { grid-template-columns: 1fr; }
+    .contact-actions { grid-template-columns: 1fr; }
     .contact-info { gap: 18px; }
     .contact-item-value { font-size: 14px; }
 
@@ -1108,7 +1156,7 @@
   </div>
 
   <div class="categories-grid reveal">
-    <div class="category-card cat-1">
+    <div class="category-card cat-1" onclick="quickFilter('Casă / Vilă', '')">
       <div class="category-card-bg">
         <svg style="width:100%;height:100%;opacity:0.15" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
           <polygon points="0,800 150,300 300,800" fill="white"/>
@@ -1125,7 +1173,7 @@
       </div>
     </div>
 
-    <div class="category-card cat-2">
+    <div class="category-card cat-2" onclick="quickFilter('Teren', '')">
       <div class="category-card-bg">
         <svg style="width:100%;height:100%;opacity:0.12" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
           <polygon points="0,300 80,100 160,300" fill="white"/>
@@ -1141,7 +1189,7 @@
       </div>
     </div>
 
-    <div class="category-card cat-3">
+    <div class="category-card cat-3" onclick="quickFilter('Pensiune', '')">
       <div class="category-card-bg"></div>
       <div class="category-card-overlay"></div>
       <div class="category-icon">🏡</div>
@@ -1152,7 +1200,7 @@
       </div>
     </div>
 
-    <div class="category-card cat-4">
+    <div class="category-card cat-4" onclick="quickFilter('Imobil / Clădire', '')">
       <div class="category-card-bg"></div>
       <div class="category-card-overlay"></div>
       <div class="category-icon">🌄</div>
@@ -1163,7 +1211,7 @@
       </div>
     </div>
 
-    <div class="category-card cat-5">
+    <div class="category-card cat-5" onclick="quickFilter('Cabană', '')">
       <div class="category-card-bg"></div>
       <div class="category-card-overlay"></div>
       <div class="category-icon">🏕️</div>
@@ -1255,7 +1303,7 @@
   </div>
 
   <div class="zones-grid reveal">
-    <div class="zone-card">
+    <div class="zone-card" onclick="quickFilter('', 'Prahova')">
       <div class="zone-card-deco"></div>
       <div class="zone-num">01</div>
       <span class="zone-icon">⛰️</span>
@@ -1264,7 +1312,7 @@
 
     </div>
 
-    <div class="zone-card">
+    <div class="zone-card" onclick="quickFilter('', 'Doftanei')">
       <div class="zone-card-deco"></div>
       <div class="zone-num">02</div>
       <span class="zone-icon">🌿</span>
@@ -1313,25 +1361,26 @@
       <div class="section-eyebrow">Formular</div>
       <h2 class="section-title" style="font-size:32px">Trimite-ne <em>un mesaj</em></h2>
     </div>
+    <p class="contact-intro">Trimite cererea ta și îți pregătim o selecție potrivită pentru buget, tip de proprietate și zonă.</p>
 
-    <form onsubmit="return false">
+    <form id="contactForm" onsubmit="return submitLeadForm(event, 'whatsapp')">
       <div class="form-row">
         <div class="form-group">
           <label>Nume</label>
-          <input type="text" placeholder="Numele tău">
+          <input type="text" id="leadLastName" placeholder="Numele tău">
         </div>
         <div class="form-group">
           <label>Prenume</label>
-          <input type="text" placeholder="Prenumele tău">
+          <input type="text" id="leadFirstName" placeholder="Prenumele tău">
         </div>
       </div>
       <div class="form-group">
         <label>Email</label>
-        <input type="email" placeholder="email@exemplu.ro">
+        <input type="email" id="leadEmail" placeholder="email@exemplu.ro">
       </div>
       <div class="form-group">
         <label>Tipul de proprietate</label>
-        <select>
+        <select id="leadType">
           <option>Casă / Vilă</option>
           <option>Teren</option>
           <option>Cabană</option>
@@ -1342,9 +1391,14 @@
       </div>
       <div class="form-group">
         <label>Mesaj</label>
-        <textarea placeholder="Descrie-ne ce proprietate cauți..."></textarea>
+        <textarea id="leadMessage" placeholder="Descrie-ne ce proprietate cauți, bugetul aproximativ și zona preferată..."></textarea>
       </div>
-      <button class="submit-btn">Trimite Mesajul →</button>
+      <button class="submit-btn" type="submit">Trimite pe WhatsApp →</button>
+      <div class="contact-actions">
+        <a class="contact-action-link contact-action-wa" href="https://wa.me/40747095063?text=Bună%20ziua!%20Sunt%20interesat%20de%20o%20proprietate%20SAVINVEST." target="_blank">WhatsApp direct</a>
+        <a class="contact-action-link contact-action-mail" href="mailto:savinalexandros@icloud.com?subject=Cerere%20proprietate%20SAVINVEST">Email direct</a>
+      </div>
+      <div class="contact-form-status" id="contactFormStatus"></div>
     </form>
   </div>
 </section>
@@ -1563,11 +1617,61 @@
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  function quickFilter(typeVal, zoneVal) {
+    if (typeVal) {
+      document.getElementById('searchType').value = typeVal;
+    }
+    if (zoneVal) {
+      document.getElementById('searchZone').value = zoneVal;
+    }
+    doSearch();
+  }
+
+  function buildLeadMessage() {
+    var firstName = (document.getElementById('leadFirstName').value || '').trim();
+    var lastName = (document.getElementById('leadLastName').value || '').trim();
+    var email = (document.getElementById('leadEmail').value || '').trim();
+    var type = (document.getElementById('leadType').value || '').trim();
+    var message = (document.getElementById('leadMessage').value || '').trim();
+    return [
+      'Bună ziua! Sunt interesat de o proprietate SAVINVEST.',
+      '',
+      'Nume: ' + [firstName, lastName].filter(Boolean).join(' ').trim(),
+      'Email: ' + email,
+      'Tip proprietate: ' + type,
+      'Mesaj: ' + message
+    ].join('\n');
+  }
+
+  function submitLeadForm(event, mode) {
+    if (event) event.preventDefault();
+    var status = document.getElementById('contactFormStatus');
+    var firstName = (document.getElementById('leadFirstName').value || '').trim();
+    var lastName = (document.getElementById('leadLastName').value || '').trim();
+    var email = (document.getElementById('leadEmail').value || '').trim();
+    var message = (document.getElementById('leadMessage').value || '').trim();
+
+    if (!firstName || !lastName || !email || !message) {
+      status.textContent = 'Completează nume, prenume, email și mesajul tău.';
+      return false;
+    }
+
+    var leadMessage = buildLeadMessage();
+    if (mode === 'email') {
+      window.location.href = 'mailto:savinalexandros@icloud.com?subject=' + encodeURIComponent('Cerere proprietate SAVINVEST') + '&body=' + encodeURIComponent(leadMessage);
+      status.textContent = 'Am pregătit mesajul în aplicația ta de email.';
+      return false;
+    }
+
+    window.open('https://wa.me/40747095063?text=' + encodeURIComponent(leadMessage), '_blank', 'noopener');
+    status.textContent = 'Mesajul a fost pregătit pentru WhatsApp.';
+    return false;
+  }
+
   // Trigger an initial render of all properties once the DOM is ready.
   document.addEventListener('DOMContentLoaded', function() {
     renderListings();
   });
-
 
   function resetSearchFields() {
     var t = document.getElementById('searchType');

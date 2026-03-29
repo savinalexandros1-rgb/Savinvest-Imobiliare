@@ -4,17 +4,52 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
-  (function() {
-    const PASS = 'savinvest2025';
-    const key = 'admin_auth';
-    if (sessionStorage.getItem(key) !== PASS) {
-      const input = prompt('Parolă admin:');
-      if (input !== PASS) {
-        document.documentElement.innerHTML = '<h2 style="font-family:sans-serif;text-align:center;margin-top:20vh">Acces interzis.</h2>';
-        history.replaceState(null, '', '/');
-        throw new Error('Unauthorized');
+  (async function() {
+    const PASS_HASH = '559474d96b15dd38c0f3e9d6414aeddcc79ed2c5a6c17aa4a068f52a1ddd2b05';
+    const SESSION_KEY = 'savinvest_admin_session_v2';
+    const SESSION_TTL_MS = 90 * 60 * 1000;
+
+    function getSession() {
+      try {
+        return JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
+      } catch (_) {
+        return null;
       }
-      sessionStorage.setItem(key, PASS);
+    }
+
+    function setSession() {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+        ok: true,
+        expiresAt: Date.now() + SESSION_TTL_MS
+      }));
+    }
+
+    async function hashValue(value) {
+      const bytes = new TextEncoder().encode(value);
+      const digest = await crypto.subtle.digest('SHA-256', bytes);
+      return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    try {
+      const activeSession = getSession();
+      if (activeSession && activeSession.ok && activeSession.expiresAt > Date.now()) {
+        setSession();
+        window.__ADMIN_AUTH__ = { sessionKey: SESSION_KEY, sessionTtlMs: SESSION_TTL_MS };
+        return;
+      }
+
+      const input = prompt('Acces admin SAVINVEST. Introdu parola:');
+      if (!input) throw new Error('Missing password');
+
+      const providedHash = await hashValue(input.trim());
+      if (providedHash !== PASS_HASH) throw new Error('Unauthorized');
+
+      setSession();
+      window.__ADMIN_AUTH__ = { sessionKey: SESSION_KEY, sessionTtlMs: SESSION_TTL_MS };
+    } catch (error) {
+      document.documentElement.innerHTML = '<h2 style="font-family:sans-serif;text-align:center;margin-top:20vh">Acces interzis.</h2>';
+      history.replaceState(null, '', '/');
+      throw error;
     }
   })();
 </script>
@@ -40,8 +75,11 @@
   .btn-nav{padding:8px 20px;border-radius:2px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border:none;text-decoration:none;display:inline-block;transition:all 0.2s;}
   .btn-site{background:rgba(255,255,255,0.1);color:white;}
   .btn-site:hover{background:rgba(255,255,255,0.2);}
+  .btn-logout{background:#fef3c7;color:#7c4a03;}
+  .btn-logout:hover{background:#fde68a;}
   .badge-count{background:var(--green-light);color:var(--green-deep);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;}
   .container{max-width:1300px;margin:0 auto;padding:40px;}
+  .admin-alert{margin-bottom:24px;padding:16px 18px;border-radius:8px;background:#fff7dd;border:1px solid #f4d890;color:#6b4b10;font-size:13px;line-height:1.6;}
   .page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;}
   .page-header h1{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--green-deep);}
   .page-header p{font-size:13px;color:#5a7a65;margin-top:4px;}
@@ -132,10 +170,14 @@
   <div class="nav-right">
     <span class="badge-count" id="propCount">Se încarcă...</span>
     <a href="index.html" class="btn-nav btn-site">← Înapoi la Site</a>
+    <button class="btn-nav btn-logout" type="button" onclick="logoutAdmin()">Ieșire</button>
   </div>
 </nav>
 
 <div class="container">
+  <div class="admin-alert">
+    Accesul la acest panou este protejat doar pe client. Pentru mai multă siguranță, păstrează parola privată și apasă „Ieșire” când termini.
+  </div>
   <div class="page-header">
     <div>
       <h1>Proprietăți</h1>
@@ -276,12 +318,64 @@
 const SUPABASE_URL = 'https://onjwsqzkrhvknitohqyl.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uandzcXprcmh2a25pdG9ocXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NzkwMjYsImV4cCI6MjA4NzE1NTAyNn0.fj_t4quODGN3MQds3TVcshi5cLpYssy77qgJ3KbwCdQ';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const AUTH_CONFIG = window.__ADMIN_AUTH__ || { sessionKey: 'savinvest_admin_session_v2', sessionTtlMs: 90 * 60 * 1000 };
+const MAX_PHOTOS = 10;
+const MAX_PHOTO_SIZE = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 let editingId = null;
 let currentPhotos = []; // { url, isNew, file? }
 
+function readAdminSession() {
+  try {
+    return JSON.parse(sessionStorage.getItem(AUTH_CONFIG.sessionKey) || 'null');
+  } catch (_) {
+    return null;
+  }
+}
+
+function touchAdminSession() {
+  const current = readAdminSession();
+  if (!current || !current.ok) return;
+  sessionStorage.setItem(AUTH_CONFIG.sessionKey, JSON.stringify({
+    ok: true,
+    expiresAt: Date.now() + AUTH_CONFIG.sessionTtlMs
+  }));
+}
+
+function enforceActiveSession() {
+  const current = readAdminSession();
+  if (!current || !current.ok || current.expiresAt <= Date.now()) {
+    logoutAdmin(true);
+    return false;
+  }
+  touchAdminSession();
+  return true;
+}
+
+function logoutAdmin(expired = false) {
+  sessionStorage.removeItem(AUTH_CONFIG.sessionKey);
+  if (expired) {
+    alert('Sesiunea de admin a expirat. Reautentifică-te.');
+  }
+  window.location.reload();
+}
+
+function sanitizeText(value) {
+  return value.trim().replace(/\s+/g, ' ');
+}
+
+function sanitizeNumericText(value) {
+  return value.replace(/[^\d.,]/g, '').trim();
+}
+
+function normalizePhone(value) {
+  return value.replace(/[^\d+ ]/g, '').replace(/\s+/g, ' ').trim();
+}
+
 // ── LOAD ──
 async function loadProperties() {
+  if (!enforceActiveSession()) return;
   const { data, error } = await sb.from('proprietati').select('*').order('created_at', { ascending: false });
   if (error) { showToast('❌ Eroare la încărcare: ' + error.message); return; }
   renderCards(data || []);
@@ -309,7 +403,7 @@ function renderCards(props) {
         <a href="proprietate.html?id=${p.id}" target="_blank" class="btn-view">👁 Vezi</a>
         <button class="btn-edit" onclick="editProperty('${p.id}')">✏️ Editează</button>
         <button class="${p.hidden ? 'btn-show' : 'btn-hide'}" onclick="toggleHide('${p.id}', ${p.hidden})">${p.hidden ? '👁 Afișează' : '🙈 Ascunde'}</button>
-        <button class="btn-delete" onclick="deleteProperty('${p.id}')">🗑 Șterge</button>
+        <button class="btn-delete" onclick="deleteProperty('${p.id}', ${JSON.stringify(p.title || '')})">🗑 Șterge</button>
       </div>
     </div>
   `).join('');
@@ -317,6 +411,7 @@ function renderCards(props) {
 
 // ── MODAL ──
 function openModal(id = null) {
+  if (!enforceActiveSession()) return;
   editingId = id;
   currentPhotos = [];
   document.getElementById('photosPreview').innerHTML = '';
@@ -366,8 +461,19 @@ async function editProperty(id) { openModal(id); }
 // ── PHOTOS ──
 function handlePhotos(input) {
   const files = Array.from(input.files);
-  const remaining = 10 - currentPhotos.length;
+  const remaining = MAX_PHOTOS - currentPhotos.length;
+  if (files.length > remaining) {
+    showToast(`⚠️ Poți încărca maximum ${MAX_PHOTOS} poze per proprietate.`);
+  }
   files.slice(0, remaining).forEach(file => {
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      showToast('⚠️ Sunt acceptate doar imagini JPG, PNG sau WEBP.');
+      return;
+    }
+    if (file.size > MAX_PHOTO_SIZE) {
+      showToast('⚠️ O imagine depășește limita de 5MB.');
+      return;
+    }
     const reader = new FileReader();
     reader.onload = e => {
       currentPhotos.push({ url: e.target.result, isNew: true, file });
@@ -391,6 +497,7 @@ function removePhoto(i) { currentPhotos.splice(i, 1); renderPhotosPrev(); }
 
 // ── UPLOAD PHOTO TO SUPABASE STORAGE ──
 async function uploadPhoto(file) {
+  touchAdminSession();
   const ext = file.name.split('.').pop();
   const path = `prop-${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
   const { error } = await sb.storage.from('poze-proprietati').upload(path, file, { contentType: file.type });
@@ -401,10 +508,13 @@ async function uploadPhoto(file) {
 
 // ── SAVE ──
 async function saveProperty() {
-  const title = document.getElementById('fTitle').value.trim();
-  const location = document.getElementById('fLocation').value.trim();
+  if (!enforceActiveSession()) return;
+  const title = sanitizeText(document.getElementById('fTitle').value);
+  const location = sanitizeText(document.getElementById('fLocation').value);
   if (!title) { showToast('⚠️ Adaugă un titlu!'); return; }
   if (!location) { showToast('⚠️ Adaugă o locație!'); return; }
+  if (title.length > 140) { showToast('⚠️ Titlul e prea lung. Păstrează-l sub 140 de caractere.'); return; }
+  if (currentPhotos.length > MAX_PHOTOS) { showToast(`⚠️ Maximum ${MAX_PHOTOS} poze per proprietate.`); return; }
 
   const btn = document.getElementById('btnSave');
   btn.disabled = true; btn.textContent = 'Se salvează...';
@@ -432,19 +542,19 @@ async function saveProperty() {
       title,
       type: document.getElementById('fType').value,
       location,
-      price: document.getElementById('fPrice').value.trim(),
-      area: document.getElementById('fArea').value,
-        area_useful: document.getElementById('fAreaUseful').value,
-      land: document.getElementById('fLand').value.trim(),
-      rooms: document.getElementById('fRooms').value,
-      baths: document.getElementById('fBaths').value,
+      price: sanitizeNumericText(document.getElementById('fPrice').value),
+      area: sanitizeNumericText(document.getElementById('fArea').value),
+      area_useful: sanitizeNumericText(document.getElementById('fAreaUseful').value),
+      land: sanitizeNumericText(document.getElementById('fLand').value),
+      rooms: sanitizeNumericText(document.getElementById('fRooms').value),
+      baths: sanitizeNumericText(document.getElementById('fBaths').value),
       desc: document.getElementById('fDesc').value.trim(),
       video: document.getElementById('fVideo').value.trim(),
       map: document.getElementById('fMap').value.trim(),
-      phone: document.getElementById('fPhone').value.trim(),
+      phone: normalizePhone(document.getElementById('fPhone').value),
       badge: document.getElementById('fBadge').value,
-        tva: document.getElementById('fTva').value,
-        vanzator: document.getElementById('fVanzator').value,
+      tva: document.getElementById('fTva').value,
+      vanzator: document.getElementById('fVanzator').value,
       photos: finalPhotos
     };
 
@@ -468,6 +578,7 @@ async function saveProperty() {
 
 // ── TOGGLE HIDE ──
 async function toggleHide(id, isHidden) {
+  if (!enforceActiveSession()) return;
   const { error } = await sb.from('proprietati').update({ hidden: !isHidden }).eq('id', id);
   if (error) { showToast('❌ Eroare: ' + error.message); return; }
   showToast(isHidden ? '👁 Proprietate afișată!' : '🙈 Proprietate ascunsă!');
@@ -475,8 +586,10 @@ async function toggleHide(id, isHidden) {
 }
 
 // ── DELETE ──
-async function deleteProperty(id) {
-  if (!confirm('Ești sigur că vrei să ștergi această proprietate?')) return;
+async function deleteProperty(id, title) {
+  if (!enforceActiveSession()) return;
+  const label = title ? `„${title}”` : 'această proprietate';
+  if (!confirm(`Ești sigur că vrei să ștergi ${label}?`)) return;
   const { error } = await sb.from('proprietati').delete().eq('id', id);
   if (error) { showToast('❌ Eroare: ' + error.message); return; }
   showToast('🗑 Proprietate ștearsă');
@@ -522,6 +635,19 @@ function previewMap(val) {
 document.getElementById('modalOverlay').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
+
+['click', 'keydown', 'mousemove', 'touchstart'].forEach(function(evt) {
+  document.addEventListener(evt, function() {
+    touchAdminSession();
+  }, { passive: true });
+});
+
+window.setInterval(function() {
+  const session = readAdminSession();
+  if (session && session.expiresAt <= Date.now()) {
+    logoutAdmin(true);
+  }
+}, 30000);
 
 loadProperties();
 </script>
