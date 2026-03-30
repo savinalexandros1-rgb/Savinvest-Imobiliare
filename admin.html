@@ -233,6 +233,14 @@
           <label>Teren (m²)</label>
           <input type="text" id="fLand" placeholder="ex: 1.200">
         </div>
+        <div class="form-group" id="terrainKindGroup" style="display:none;">
+          <label>Tip Teren</label>
+          <select id="fTerrainKind">
+            <option value="">Selectează</option>
+            <option value="Intravilan">Intravilan</option>
+            <option value="Extravilan">Extravilan</option>
+          </select>
+        </div>
         <div class="form-group">
           <label>Camere</label>
           <input type="number" id="fRooms" placeholder="ex: 4">
@@ -373,6 +381,17 @@ function normalizePhone(value) {
   return value.replace(/[^\d+ ]/g, '').replace(/\s+/g, ' ').trim();
 }
 
+function updateTerrainFields() {
+  const type = document.getElementById('fType').value;
+  const terrainGroup = document.getElementById('terrainKindGroup');
+  const terrainSelect = document.getElementById('fTerrainKind');
+  const isTerrain = type === 'Teren';
+  terrainGroup.style.display = isTerrain ? '' : 'none';
+  if (!isTerrain) {
+    terrainSelect.value = '';
+  }
+}
+
 // ── LOAD ──
 async function loadProperties() {
   if (!enforceActiveSession()) return;
@@ -421,6 +440,8 @@ function openModal(id = null) {
   fields.forEach(f => document.getElementById(f).value = '');
   document.getElementById('fType').value = 'Casă / Vilă';
   document.getElementById('fBadge').value = '';
+  document.getElementById('fTerrainKind').value = '';
+  updateTerrainFields();
 
   if (id) {
     sb.from('proprietati').select('*').eq('id', id).single().then(({ data }) => {
@@ -432,6 +453,7 @@ function openModal(id = null) {
       document.getElementById('fArea').value = data.area || '';
       document.getElementById('fAreaUseful').value = data.area_useful || '';
       document.getElementById('fLand').value = data.land || '';
+      document.getElementById('fTerrainKind').value = data.terrain_kind || '';
       document.getElementById('fRooms').value = data.rooms || '';
       document.getElementById('fBaths').value = data.baths || '';
       document.getElementById('fDesc').value = data.desc || '';
@@ -442,6 +464,7 @@ function openModal(id = null) {
       document.getElementById('fBadge').value = data.badge || '';
       document.getElementById('fTva').value = data.tva || 'fara';
       document.getElementById('fVanzator').value = data.vanzator || 'fizica';
+      updateTerrainFields();
       currentPhotos = (data.photos || []).map(url => ({ url, isNew: false }));
       renderPhotosPrev();
     });
@@ -515,6 +538,10 @@ async function saveProperty() {
   if (!location) { showToast('⚠️ Adaugă o locație!'); return; }
   if (title.length > 140) { showToast('⚠️ Titlul e prea lung. Păstrează-l sub 140 de caractere.'); return; }
   if (currentPhotos.length > MAX_PHOTOS) { showToast(`⚠️ Maximum ${MAX_PHOTOS} poze per proprietate.`); return; }
+  if (document.getElementById('fType').value === 'Teren' && !document.getElementById('fTerrainKind').value) {
+    showToast('⚠️ Selectează dacă terenul este intravilan sau extravilan.');
+    return;
+  }
 
   const btn = document.getElementById('btnSave');
   btn.disabled = true; btn.textContent = 'Se salvează...';
@@ -546,6 +573,7 @@ async function saveProperty() {
       area: sanitizeNumericText(document.getElementById('fArea').value),
       area_useful: sanitizeNumericText(document.getElementById('fAreaUseful').value),
       land: sanitizeNumericText(document.getElementById('fLand').value),
+      terrain_kind: document.getElementById('fTerrainKind').value,
       rooms: sanitizeNumericText(document.getElementById('fRooms').value),
       baths: sanitizeNumericText(document.getElementById('fBaths').value),
       desc: document.getElementById('fDesc').value.trim(),
@@ -635,6 +663,8 @@ function previewMap(val) {
 document.getElementById('modalOverlay').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
+
+document.getElementById('fType').addEventListener('change', updateTerrainFields);
 
 ['click', 'keydown', 'mousemove', 'touchstart'].forEach(function(evt) {
   document.addEventListener(evt, function() {

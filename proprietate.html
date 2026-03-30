@@ -464,6 +464,7 @@ function render(){
 
   const details=[];
   if(prop.type) details.push(['Tip proprietate',prop.type]);
+  if(prop.type === 'Teren' && prop.terrain_kind) details.push(['Categorie teren',prop.terrain_kind]);
   if(prop.location) details.push(['Locație',prop.location]);
   if(prop.area) details.push(['Suprafață construită',prop.area+' m²']);
   if(prop.area_useful) details.push(['Suprafață utilă',prop.area_useful+' m²']);
