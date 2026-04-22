@@ -18,7 +18,7 @@
 <meta property="og:description" content="Terenuri, vile, case de vacanță și pensiuni de vânzare în Valea Prahovei: Sinaia, Bușteni, Azuga, Predeal și Comarnic.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.savinvestimobiliare.ro/">
-<meta property="og:image" content="https://www.savinvestimobiliare.ro/savin.jpg">
+<meta property="og:image" content="https://www.savinvestimobiliare.ro/savin-optimized.jpg">
 <meta name="geo.region" content="RO-PH">
 <meta name="geo.placename" content="Valea Prahovei, Prahova, Romania">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
   "@type": "RealEstateAgent",
   "name": "SAVINVEST Imobiliare",
   "url": "https://www.savinvestimobiliare.ro/",
-  "image": "https://www.savinvestimobiliare.ro/savin.jpg",
+  "image": "https://www.savinvestimobiliare.ro/savin-optimized.jpg",
   "telephone": "+40 747 095 063",
   "email": "savinalexandros@icloud.com",
   "address": {
@@ -1230,7 +1230,7 @@
     
 <div class="about-photo reveal">
   <div class="about-photo-frame">
-    <img id="aboutPhoto" src="savin.jpg" alt="Savin Alexandros">
+    <img id="aboutPhoto" src="savin-optimized.jpg" alt="Savin Alexandros" loading="lazy" decoding="async">
   </div>
   <div class="about-photo-badge">
     <span>🤝</span>
@@ -1463,6 +1463,7 @@
 
   // ── LISTINGS DINAMICE ──
   let allProps = [];
+  const LISTING_CARD_SELECT = 'id,title,location,type,price,rooms,baths,area,land,badge,photos,created_at';
 
   async function renderListings(filtered) {
     const grid = document.getElementById('listingsGrid');
@@ -1473,7 +1474,7 @@
       let data, error;
       try {
         data = await sbFetch('proprietati', {
-          'select': '*',
+          'select': LISTING_CARD_SELECT,
           'or': '(hidden.eq.false,hidden.is.null)',
           'order': 'created_at.desc'
         });
@@ -1497,7 +1498,7 @@
       const bg = colors[i % colors.length];
       const badgeHTML = p.badge ? '<span class="badge badge-excl">' + p.badge + '</span>' : '';
       const imgHTML = p.photos && p.photos[0]
-        ? '<img src="' + p.photos[0] + '" style="width:100%;height:100%;object-fit:cover;display:block;" alt="' + p.title + '">'
+        ? '<img src="' + p.photos[0] + '" style="width:100%;height:100%;object-fit:cover;display:block;" alt="' + p.title + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '" decoding="async" fetchpriority="' + (i === 0 ? 'high' : 'auto') + '">'
         : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;opacity:0.3">🏡</div>';
 
       return '<a href="proprietate.html?id=' + p.id + '" class="listing-card reveal" style="transition-delay:' + (i*0.12) + 's; display:block; text-decoration:none; color:inherit; cursor:pointer;">' +

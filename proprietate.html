@@ -427,10 +427,10 @@ function render(){
     const side4=photos[4]||photos[0];
     pg.innerHTML=`
       <div class="photo-grid-main" onclick="openLb(0)">
-        <img src="${photos[0]}" alt="${prop.title}">
+        <img src="${photos[0]}" alt="${prop.title}" loading="eager" decoding="async" fetchpriority="high">
       </div>
-      <div class="photo-grid-side" onclick="openLb(1)"><img src="${side1}" alt=""></div>
-      <div class="photo-grid-side" onclick="openLb(2)"><img src="${side2}" alt=""></div>
+      <div class="photo-grid-side" onclick="openLb(1)"><img src="${side1}" alt="" loading="lazy" decoding="async"></div>
+      <div class="photo-grid-side" onclick="openLb(2)"><img src="${side2}" alt="" loading="lazy" decoding="async"></div>
       ${photos.length>1?`<button class="btn-all-photos" onclick="openLb(0)">⊞ Toate pozele (${photos.length})</button>`:''}`;
   }
   // Init mobile slider
@@ -638,13 +638,13 @@ function openLb(i){
   const photos = prop.photos;
   // Build track
   const track = document.getElementById('lbTrack');
-  track.innerHTML = photos.map(url =>
-    `<div class="lb-slide"><img src="${url}" alt=""></div>`
+  track.innerHTML = photos.map((url, idx) =>
+    `<div class="lb-slide"><img src="${url}" alt="" loading="${idx === i ? 'eager' : 'lazy'}" decoding="async"></div>`
   ).join('');
   // Build thumbs
   const thumbs = document.getElementById('lbThumbs');
   thumbs.innerHTML = photos.map((url, idx) =>
-    `<div class="lb-thumb ${idx===i?'active':''}" onclick="lbGoTo(${idx})"><img src="${url}" alt=""></div>`
+    `<div class="lb-thumb ${idx===i?'active':''}" onclick="lbGoTo(${idx})"><img src="${url}" alt="" loading="lazy" decoding="async"></div>`
   ).join('');
   updateLb();
   document.getElementById('lightbox').classList.add('open');
@@ -683,12 +683,13 @@ let sliderPhotos = [];
 
 function initMobileSlider(photos) {
   if (!photos || photos.length === 0) return;
+  if (window.innerWidth > 768) return;
   sliderPhotos = photos;
   const track = document.getElementById('sliderTrack');
   const dots = document.getElementById('sliderDots');
   
   track.innerHTML = photos.map((url, i) => 
-    `<div class="mobile-slide" onclick="openLb(${i})" style="cursor:zoom-in;"><img src="${url}" alt=""></div>`
+    `<div class="mobile-slide" onclick="openLb(${i})" style="cursor:zoom-in;"><img src="${url}" alt="" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async"></div>`
   ).join('');
   
   dots.innerHTML = photos.map((_, i) => 
@@ -721,10 +722,7 @@ function initMobileSlider(photos) {
     if (Math.abs(diff) > 30) sliderNav(diff > 0 ? 1 : -1);
   }, {passive:true});
   
-  // Show slider on mobile
-  if (window.innerWidth <= 768) {
-    document.getElementById('mobileSlider').style.display = 'block';
-  }
+  document.getElementById('mobileSlider').style.display = 'block';
   // Fix widths after render
   setTimeout(() => {
     const sliderWidth = document.getElementById('mobileSlider').offsetWidth;
