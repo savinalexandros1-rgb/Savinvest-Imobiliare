@@ -76,7 +76,7 @@
     padding: 7px 60px;
     background: rgba(250,255,248,0.92);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--green-pale);
+    border-bottom: 0;
     animation: fadeDown 0.8s ease;
   }
 
@@ -87,6 +87,15 @@
 
   .nav-logo {
     display: flex; align-items: center; line-height: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  nav.is-scrolled .nav-logo {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
   }
   .nav-logo-img {
     width: 128px;
@@ -122,6 +131,9 @@
     border: none; transition: background 0.3s;
   }
   .nav-cta:hover { background: var(--green-mid); }
+  nav.is-scrolled {
+    border-bottom: 1px solid var(--green-pale);
+  }
 
   .mobile-menu-toggle,
   .mobile-menu {
@@ -167,11 +179,11 @@
 
   /* ---- HERO ---- */
   .hero {
-    min-height: 62vh;
+    min-height: calc(100svh - 68px);
     position: relative;
-    display: flex; align-items: flex-start;
+    display: flex; align-items: center;
     overflow: hidden;
-    padding: 150px 0 36px;
+    padding: 108px 0 64px;
   }
 
   .hero-bg {
@@ -187,6 +199,7 @@
     position: absolute; bottom: 0; right: 0;
     width: 60%; height: 80%;
     overflow: hidden;
+    display: none;
   }
 
   .mountain-svg {
@@ -199,6 +212,26 @@
     padding: 0 60px;
     max-width: 680px;
     animation: heroReveal 1.2s ease 0.3s both;
+  }
+
+  .hero-brand-watermark {
+    position: absolute;
+    z-index: 1;
+    top: 39%;
+    right: clamp(48px, 7vw, 110px);
+    width: clamp(330px, 35vw, 570px);
+    transform: translateY(-50%);
+    opacity: 0.052;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    animation: heroReveal 1.2s ease 0.5s both;
+  }
+
+  .hero-brand-watermark img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: saturate(0.85);
   }
 
   @keyframes heroReveal {
@@ -1053,8 +1086,9 @@
       margin-top: 4px;
     }
     section { padding: 60px 24px; }
-    .hero { min-height: 60vh; padding: 130px 0 36px; }
-    .hero-content { padding: 0 48px; max-width: 100%; }
+    .hero { min-height: calc(100svh - 64px); padding: 100px 0 54px; }
+    .hero-content { padding: 0 48px; max-width: 58%; }
+    .hero-brand-watermark { top: 38%; right: 32px; width: 36vw; opacity: 0.05; }
     .listings-grid { grid-template-columns: 1fr 1fr; }
     .why-section, .zones-section { padding: 54px 24px; }
     .why-grid { grid-template-columns: 1fr 1fr; }
@@ -1072,6 +1106,7 @@
   @media (max-width: 640px) {
     /* NAV */
     nav { padding: 7px 16px; }
+    .nav-logo { opacity: 1; pointer-events: auto; }
     .nav-logo-img { width: 104px; }
     .nav-logo-text span:first-child { font-size: 15px; letter-spacing: 1px; }
     .nav-logo-text span:last-child { font-size: 7px; letter-spacing: 2px; }
@@ -1087,6 +1122,7 @@
     }
     .hero-bg { display: none; }
     .hero-mountains { display: none; }
+    .hero-brand-watermark { display: none; }
 
     .hero-content {
       padding: 28px 20px 32px;
@@ -1238,6 +1274,10 @@
       <polygon points="760,600 772,540 784,600" fill="#0d2318"/>
       <polygon points="800,600 812,555 824,600" fill="#0d2318"/>
     </svg>
+  </div>
+
+  <div class="hero-brand-watermark" aria-hidden="true">
+    <img src="assets/brand/savinvest-logo-user-gemini-transparent@2x.png" alt="">
   </div>
 
   <div class="hero-content">
@@ -1771,8 +1811,10 @@
   window.addEventListener('scroll', function() {
     const nav = document.querySelector('nav');
     if (window.scrollY > 80) {
+      nav.classList.add('is-scrolled');
       nav.style.boxShadow = '0 4px 30px rgba(26,58,42,0.12)';
     } else {
+      nav.classList.remove('is-scrolled');
       nav.style.boxShadow = 'none';
     }
   });
