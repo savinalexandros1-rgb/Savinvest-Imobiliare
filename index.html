@@ -1105,31 +1105,32 @@
   /* ---- RESPONSIVE MOBILE ---- */
   @media (max-width: 640px) {
     /* NAV */
-    nav { min-height: 54px; padding: 7px 16px; }
+    nav {
+      min-height: 64px;
+      padding: 10px 20px;
+      background: rgba(250,255,248,0.97);
+    }
     .nav-logo {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(calc(-50% - 6px));
+      position: static;
+      opacity: 1;
+      pointer-events: auto;
+      transform: none;
     }
     nav.is-scrolled .nav-logo {
-      transform: translateY(-50%);
+      transform: none;
     }
-    .nav-logo-img { width: 104px; }
+    .nav-logo-img { width: 112px; }
     .nav-logo-text span:first-child { font-size: 15px; letter-spacing: 1px; }
     .nav-logo-text span:last-child { font-size: 7px; letter-spacing: 2px; }
     .mobile-menu-toggle {
-      position: fixed;
-      top: 8px;
-      right: 16px;
-      z-index: 130;
+      position: static;
       display: flex !important;
       justify-content: center;
-      min-height: 40px;
-      min-width: 92px;
+      min-height: 44px;
+      min-width: 104px;
       padding: 0 12px;
       font-size: 10px;
-      margin-left: 0;
+      margin-left: auto;
       color: var(--white);
       background: var(--green-deep);
       border-color: var(--green-deep);
@@ -1141,37 +1142,53 @@
     }
     .mobile-menu { top: 64px; left: 14px; right: 14px; }
 
-    /* HERO - full reflow pentru mobil */
+    /* HERO - mobile-first structure */
     .hero {
-      min-height: calc(100svh - 54px);
-      display: flex;
-      align-items: center;
-      padding: 86px 0 44px;
+      min-height: auto;
+      display: block;
+      padding: 104px 0 40px;
       overflow: hidden;
     }
     .hero-bg { display: block; }
     .hero-mountains { display: none; }
-    .hero-brand-watermark {
-      display: block;
-      top: 34%;
-      right: -52vw;
-      width: 108vw;
-      opacity: 0.022;
-    }
+    .hero-brand-watermark { display: none; }
 
     .hero-content {
-      padding: 0 20px;
+      padding: 0 22px;
       max-width: 100%;
       background: transparent;
     }
-    .hero-eyebrow { font-size: 9px; letter-spacing: 4px; margin-bottom: 14px; }
-    .hero h1 { font-size: 36px; margin-bottom: 16px; }
-    .hero-desc { font-size: 14px; line-height: 1.7; margin-bottom: 24px; max-width: 100%; }
-    .hero-actions { flex-direction: column; gap: 10px; }
+    .hero-eyebrow {
+      font-size: 8px;
+      letter-spacing: 3px;
+      gap: 9px;
+      margin-bottom: 18px;
+      white-space: nowrap;
+    }
+    .hero-eyebrow::before { width: 34px; }
+    .hero h1 {
+      font-size: clamp(38px, 10.4vw, 44px);
+      line-height: 1.05;
+      margin-bottom: 18px;
+      max-width: 9.8em;
+    }
+    .hero h1 em {
+      display: block;
+      margin-top: 2px;
+      font-size: 0.94em;
+    }
+    .hero-desc {
+      font-size: 15px;
+      line-height: 1.62;
+      margin-bottom: 28px;
+      max-width: 34ch;
+    }
+    .hero-actions { flex-direction: column; gap: 12px; }
     .btn-primary, .btn-outline {
       width: 100%; text-align: center;
-      padding: 15px 20px; font-size: 12px;
-      display: block;
+      min-height: 56px;
+      padding: 0 20px; font-size: 12px;
+      display: flex; align-items: center; justify-content: center;
     }
 
     /* SEARCH */
@@ -1184,11 +1201,11 @@
     .search-field {
       border-right: none;
       border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding: 16px 20px;
+      padding: 18px 22px;
     }
     .search-field label { font-size: 9px; letter-spacing: 2px; }
     .search-field select, .search-field input { font-size: 14px; }
-    .search-btn { padding: 18px; font-size: 12px; letter-spacing: 3px; }
+    .search-btn { min-height: 56px; padding: 18px; font-size: 12px; letter-spacing: 3px; }
 
     /* SECTIONS */
     section { padding: 44px 16px; }
@@ -1247,15 +1264,14 @@
     .footer-col:first-child { display: block; }
 
     /* FLOATING CTA */
-    .floating-cta { bottom: 14px; right: 14px; padding: 11px 18px; font-size: 10px; gap: 6px; }
+    .floating-cta { display: none; }
   }
 
   /* ---- EXTRA SMALL ---- */
   @media (max-width: 380px) {
-    .hero h1 { font-size: 30px; }
-    .nav-logo { left: 12px; }
-    .nav-logo-img { width: 100px; }
-    .mobile-menu-toggle { letter-spacing: 1.4px; padding: 0 10px; }
+    .hero h1 { font-size: 36px; }
+    .nav-logo-img { width: 104px; }
+    .mobile-menu-toggle { min-width: 94px; letter-spacing: 1.4px; padding: 0 10px; }
   }
 </style>
 </head>
