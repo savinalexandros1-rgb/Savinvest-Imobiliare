@@ -8,14 +8,14 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
-<meta name="description" content="Terenuri și proprietăți de vânzare în Sinaia, Bușteni, Azuga, Predeal, Comarnic și Valea Doftanei. Vile, case de vacanță, pensiuni și clădiri. Contact direct: 0747 095 063.">
-<meta name="keywords" content="terenuri vanzare Sinaia, proprietati Busteni, vile Predeal, case vacanta Valea Prahovei, teren Azuga, imobiliare montane Romania, pensiuni vanzare Prahova, Vila Comarnic, teren Valea Doftanei">
+<meta name="description" content="Terenuri și proprietăți de vânzare în Valea Prahovei: Sinaia, Bușteni, Azuga, Predeal și Comarnic. Vile, case de vacanță, pensiuni și clădiri. Contact direct: 0747 095 063.">
+<meta name="keywords" content="terenuri vanzare Sinaia, proprietati Busteni, vile Predeal, case vacanta Valea Prahovei, teren Azuga, imobiliare montane Romania, pensiuni vanzare Prahova, Vila Comarnic">
 <meta name="robots" content="index, follow">
 <meta name="google-site-verification" content="-j80NyrsYz6B4dSizCuILdySA4kr6Y1cJd3jKLAaPz0" />
 <meta name="author" content="SAVINVEST Imobiliare">
 <link rel="canonical" href="https://www.savinvestimobiliare.ro/">
 <meta property="og:title" content="SAVINVEST – Terenuri și Proprietăți în Valea Prahovei">
-<meta property="og:description" content="Terenuri, vile, case de vacanță și pensiuni de vânzare în Sinaia, Bușteni, Azuga, Predeal, Comarnic și Valea Doftanei.">
+<meta property="og:description" content="Terenuri, vile, case de vacanță și pensiuni de vânzare în Valea Prahovei: Sinaia, Bușteni, Azuga, Predeal și Comarnic.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.savinvestimobiliare.ro/">
 <meta property="og:image" content="https://www.savinvestimobiliare.ro/savin.jpg">
@@ -37,7 +37,7 @@
     "addressLocality": "Bușteni",
     "addressCountry": "RO"
   },
-  "areaServed": ["Valea Prahovei", "Valea Doftanei", "Prahova"],
+  "areaServed": ["Valea Prahovei", "Prahova"],
   "sameAs": ["https://www.savinvestimobiliare.ro/"]
 }
 </script>
@@ -1115,7 +1115,6 @@
       <select id="searchZone">
         <option value="">Toate zonele</option>
         <option value="Prahova">Valea Prahovei</option>
-        <option value="Doftanei">Valea Doftanei</option>
       </select>
     </div>
     <div class="search-field">
@@ -1246,7 +1245,7 @@
       <p class="about-desc">Ne ocupăm de terenuri, vile, case de vacanță, pensiuni și clădiri în cele mai căutate zone montane din Prahova. Rapid, direct și transparent.</p>
       <div class="about-stats">
         <div class="about-stat">
-          <div class="about-stat-num">Valea Prahovei<br>& Doftanei</div>
+          <div class="about-stat-num">Valea Prahovei</div>
           <div class="about-stat-label">Zona de activitate</div>
         </div>
         <div class="about-stat">
@@ -1275,7 +1274,7 @@
     <div class="why-card reveal">
       <span class="why-icon">🏔️</span>
       <div class="why-title">Cunosc zona personal</div>
-      <p class="why-desc">Activez direct în Valea Prahovei și Valea Doftanei. Știu fiecare drum, fiecare teren și fiecare oportunitate — nu lucrez din birou, ci de pe teren.</p>
+      <p class="why-desc">Activez direct în Valea Prahovei. Știu drumurile, terenurile și oportunitățile locale — nu lucrez din birou, ci de pe teren.</p>
     </div>
     <div class="why-card reveal">
       <span class="why-icon">🤝</span>
@@ -1309,15 +1308,6 @@
       <span class="zone-icon">⛰️</span>
       <div class="zone-title">Valea Prahovei</div>
       <p class="zone-desc">Terenuri și proprietăți de vânzare în cele mai căutate stațiuni montane din România, cu acces facil din București.</p>
-
-    </div>
-
-    <div class="zone-card" onclick="quickFilter('', 'Doftanei')">
-      <div class="zone-card-deco"></div>
-      <div class="zone-num">02</div>
-      <span class="zone-icon">🌿</span>
-      <div class="zone-title">Valea Doftanei</div>
-      <p class="zone-desc">O zonă pitorească și liniștită, ideală pentru terenuri și case de vacanță, departe de agitație dar aproape de natură.</p>
 
     </div>
   </div>
@@ -1409,7 +1399,7 @@
     <div class="footer-brand">
       <span>SAVINVEST</span>
       <span>Imobiliare</span>
-      <p class="footer-tagline">Terenuri și proprietăți de vânzare în Valea Prahovei – Sinaia, Bușteni, Azuga, Predeal, Comarnic, Valea Doftanei.</p>
+      <p class="footer-tagline">Terenuri și proprietăți de vânzare în Valea Prahovei – Sinaia, Bușteni, Azuga, Predeal și Comarnic.</p>
     </div>
     <div class="footer-col">
       <h4>Servicii</h4>
@@ -1597,8 +1587,7 @@
     if (zoneVal) {
       filtered = filtered.filter(p => {
         const loc = (p.location || '').toLowerCase();
-        if (zoneVal === 'Doftanei') return loc.includes('doftanei');
-        return !loc.includes('doftanei');
+        return loc.includes('prahova') || loc.includes('sinaia') || loc.includes('bușteni') || loc.includes('busteni') || loc.includes('azuga') || loc.includes('predeal') || loc.includes('comarnic');
       });
     }
 
@@ -1699,7 +1688,6 @@
     var parts = [];
     if (typeVal) parts.push('tip: ' + typeVal);
     if (zoneVal === 'Prahova') parts.push('zonă: Valea Prahovei');
-    if (zoneVal === 'Doftanei') parts.push('zonă: Valea Doftanei');
     if (budgetVal !== null) parts.push('buget maxim: ' + budgetVal.toLocaleString('ro-RO') + ' €');
     return count + ' proprietăți găsite' + (parts.length ? ' pentru ' + parts.join(', ') : '') + '.';
   }

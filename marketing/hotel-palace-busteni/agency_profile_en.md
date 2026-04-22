@@ -2,7 +2,7 @@
 
 ## Short Agency Profile
 
-SAVINVEST Imobiliare is an independent real estate agency focused on mountain and tourism-driven property in Romania, with particular attention to Busteni, Sinaia, Azuga, Predeal, Comarnic, Valea Prahovei, and Valea Doftanei. We work on land, villas, holiday homes, guesthouse opportunities, and redevelopment properties with strong location value and long-term potential.
+SAVINVEST Imobiliare is an independent real estate agency focused on mountain and tourism-driven property in Romania, with particular attention to Busteni, Sinaia, Azuga, Predeal, Comarnic, and Valea Prahovei. We work on land, villas, holiday homes, guesthouse opportunities, and redevelopment properties with strong location value and long-term potential.
 
 ## Medium Agency Profile
 
@@ -22,7 +22,6 @@ Independent real estate agency specialized in mountain-area, hospitality, and re
 - Predeal
 - Comarnic
 - Valea Prahovei
-- Valea Doftanei
 
 ## Property Focus
 
