@@ -1105,29 +1105,64 @@
   /* ---- RESPONSIVE MOBILE ---- */
   @media (max-width: 640px) {
     /* NAV */
-    nav { padding: 7px 16px; }
-    .nav-logo { opacity: 1; pointer-events: auto; }
+    nav { min-height: 54px; padding: 7px 16px; }
+    .nav-logo {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(calc(-50% - 6px));
+    }
+    nav.is-scrolled .nav-logo {
+      transform: translateY(-50%);
+    }
     .nav-logo-img { width: 104px; }
     .nav-logo-text span:first-child { font-size: 15px; letter-spacing: 1px; }
     .nav-logo-text span:last-child { font-size: 7px; letter-spacing: 2px; }
-    .mobile-menu-toggle { min-height: 40px; padding: 0 12px; font-size: 10px; }
+    .mobile-menu-toggle {
+      position: fixed;
+      top: 8px;
+      right: 16px;
+      z-index: 130;
+      display: flex !important;
+      justify-content: center;
+      min-height: 40px;
+      min-width: 92px;
+      padding: 0 12px;
+      font-size: 10px;
+      margin-left: 0;
+      color: var(--white);
+      background: var(--green-deep);
+      border-color: var(--green-deep);
+      box-shadow: 0 10px 30px rgba(13,35,24,0.14);
+      transform: none;
+    }
+    .mobile-menu-toggle .mobile-menu-lines span {
+      background: var(--white);
+    }
     .mobile-menu { top: 64px; left: 14px; right: 14px; }
 
     /* HERO - full reflow pentru mobil */
     .hero {
-      min-height: auto;
-      display: block;
-      padding: 80px 0 0 0;
-      overflow: visible;
+      min-height: calc(100svh - 54px);
+      display: flex;
+      align-items: center;
+      padding: 86px 0 44px;
+      overflow: hidden;
     }
-    .hero-bg { display: none; }
+    .hero-bg { display: block; }
     .hero-mountains { display: none; }
-    .hero-brand-watermark { display: none; }
+    .hero-brand-watermark {
+      display: block;
+      top: 34%;
+      right: -52vw;
+      width: 108vw;
+      opacity: 0.022;
+    }
 
     .hero-content {
-      padding: 28px 20px 32px;
+      padding: 0 20px;
       max-width: 100%;
-      background: linear-gradient(160deg, #fafff8 50%, #d8f3dc 100%);
+      background: transparent;
     }
     .hero-eyebrow { font-size: 9px; letter-spacing: 4px; margin-bottom: 14px; }
     .hero h1 { font-size: 36px; margin-bottom: 16px; }
@@ -1218,6 +1253,7 @@
   /* ---- EXTRA SMALL ---- */
   @media (max-width: 380px) {
     .hero h1 { font-size: 30px; }
+    .nav-logo { left: 12px; }
     .nav-logo-img { width: 100px; }
     .mobile-menu-toggle { letter-spacing: 1.4px; padding: 0 10px; }
   }
