@@ -86,7 +86,12 @@
   }
 
   .nav-logo {
-    display: flex; flex-direction: row; align-items: center; gap: 12px;
+    display: flex; align-items: center; line-height: 0;
+  }
+  .nav-logo-img {
+    width: 180px;
+    height: auto;
+    display: block;
   }
   .nav-logo-text { display: flex; flex-direction: column; gap: 2px; }
   .nav-logo span:first-child {
@@ -921,10 +926,10 @@
   @media (max-width: 640px) {
     /* NAV */
     nav { padding: 12px 16px; }
-    .nav-logo svg { width: 30px; height: 26px; }
+    .nav-logo-img { width: 138px; }
     .nav-logo-text span:first-child { font-size: 15px; letter-spacing: 1px; }
     .nav-logo-text span:last-child { font-size: 7px; letter-spacing: 2px; }
-    .nav-cta { padding: 8px 14px; font-size: 10px; letter-spacing: 1px; }
+    .nav-cta { display: none; }
 
     /* HERO - full reflow pentru mobil */
     .hero {
@@ -1024,7 +1029,7 @@
   /* ---- EXTRA SMALL ---- */
   @media (max-width: 380px) {
     .hero h1 { font-size: 30px; }
-    .nav-logo-text span:first-child { font-size: 14px; }
+    .nav-logo-img { width: 122px; }
     .nav-cta { display: none; }
   }
 </style>
@@ -1033,19 +1038,8 @@
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo" onclick="return goHomeReset(event)">
-    <svg width="42" height="38" viewBox="0 0 64 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="14,54 0,54 7,33" fill="#b7e4c7"/>
-      <polygon points="50,54 64,54 57,33" fill="#b7e4c7"/>
-      <polygon points="32,4 8,54 56,54" fill="#1a3a2a"/>
-      <polygon points="32,4 56,54 32,54" fill="#2d6a4f"/>
-      <rect x="0" y="54" width="64" height="2.5" fill="#40916c"/>
-      <polygon points="32,4 25,21 39,21" fill="#ffffff"/>
-    </svg>
-    <div class="nav-logo-text">
-      <span>SAVINVEST</span>
-      <span>Imobiliare</span>
-    </div>
+  <a href="index.html" class="nav-logo" onclick="return goHomeReset(event)" aria-label="SAVINVEST Imobiliare">
+    <img class="nav-logo-img" src="assets/brand/savinvest-logo-new-transparent@2x.png" alt="SAVINVEST Imobiliare">
   </a>
   <ul class="nav-links">
     <li><a href="#listings" onclick="return openListingsFromStart(event)">Proprietăți</a></li>
