@@ -73,7 +73,7 @@
   nav {
     position: fixed; top: 0; width: 100%; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 60px;
+    padding: 7px 60px;
     background: rgba(250,255,248,0.92);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--green-pale);
@@ -89,7 +89,7 @@
     display: flex; align-items: center; line-height: 0;
   }
   .nav-logo-img {
-    width: 180px;
+    width: 128px;
     height: auto;
     display: block;
   }
@@ -125,11 +125,11 @@
 
   /* ---- HERO ---- */
   .hero {
-    min-height: 75vh;
+    min-height: 62vh;
     position: relative;
     display: flex; align-items: flex-start;
     overflow: hidden;
-    padding-top: 140px;
+    padding: 150px 0 36px;
   }
 
   .hero-bg {
@@ -316,83 +316,117 @@
   }
 
   .categories-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 2px; margin-top: 40px;
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px; margin-top: 40px;
   }
 
   .category-card {
     position: relative; overflow: hidden;
-    aspect-ratio: 4/3; cursor: pointer;
+    aspect-ratio: 4 / 3; cursor: pointer;
     background: var(--green-deep);
+    isolation: isolate;
+    border-radius: 4px;
   }
 
   .category-card:first-child {
-    grid-row: span 2; aspect-ratio: auto;
+    grid-row: auto; aspect-ratio: 4 / 3;
   }
 
   .category-card-bg {
     position: absolute; inset: 0;
     transition: transform 0.6s ease;
+    overflow: hidden;
   }
 
   .category-card:hover .category-card-bg {
     transform: scale(1.06);
   }
 
-  /* Illustrated SVG backgrounds for each category */
   .cat-1 .category-card-bg {
-    background: linear-gradient(135deg, #1a3a2a 0%, #2d6a4f 50%, #40916c 100%);
+    background: linear-gradient(135deg, #143322 0%, #244b38 56%, #365f46 100%);
   }
   .cat-2 .category-card-bg {
-    background: linear-gradient(135deg, #0d2318 0%, #1a3a2a 60%, #2d6a4f 100%);
+    background: linear-gradient(135deg, #0d2318 0%, #183624 62%, #244b38 100%);
   }
   .cat-3 .category-card-bg {
-    background: linear-gradient(135deg, #2d6a4f 0%, #40916c 100%);
+    background: linear-gradient(135deg, #244b38 0%, #3a6a4f 100%);
   }
   .cat-4 .category-card-bg {
-    background: linear-gradient(135deg, #1a5c38 0%, #2d7a58 100%);
+    background: linear-gradient(135deg, #173923 0%, #2d6046 100%);
   }
   .cat-5 .category-card-bg {
-    background: linear-gradient(135deg, #0d3320 0%, #1a4e30 100%);
+    background: linear-gradient(135deg, #0b2116 0%, #173821 100%);
+  }
+
+  .category-card-bg::before,
+  .category-card-bg::after {
+    content: '';
+    position: absolute;
+    inset: auto -8% 14% -8%;
+    height: 64%;
+    background:
+      linear-gradient(61deg, transparent 0 35%, rgba(250,255,248,0.11) 35% 50%, transparent 50%),
+      linear-gradient(-61deg, transparent 0 37%, rgba(250,255,248,0.08) 37% 52%, transparent 52%);
+    transform: translateY(12%);
+  }
+  .category-card-bg::after {
+    inset: auto -18% 4% 22%;
+    height: 72%;
+    opacity: 0.5;
+    transform: translateY(18%) scale(1.1);
   }
 
   .category-card-overlay {
     position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(13,35,24,0.9) 0%, transparent 60%);
+    background:
+      linear-gradient(to top, rgba(8,24,16,0.88) 0%, rgba(8,24,16,0.42) 38%, rgba(8,24,16,0.08) 100%),
+      radial-gradient(circle at 86% 14%, rgba(250,255,248,0.08), transparent 28%);
   }
 
   .category-icon {
-    position: absolute; top: 24px; right: 24px;
-    width: 48px; height: 48px;
-    background: rgba(255,255,255,0.1);
+    position: absolute; top: 16px; right: 16px;
+    width: 34px; height: 34px;
+    background: rgba(250,255,248,0.08);
+    border: 1px solid rgba(250,255,248,0.12);
     border-radius: 50%; display: flex; align-items: center;
-    justify-content: center; font-size: 22px;
+    justify-content: center;
     backdrop-filter: blur(8px);
+    color: var(--green-light);
+  }
+  .category-icon svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   .category-card-content {
     position: absolute; bottom: 0; left: 0; right: 0;
-    padding: 32px;
+    padding: 18px;
   }
 
   .category-tag {
-    font-size: 9px; font-weight: 700; letter-spacing: 3px;
+    font-size: 7px; font-weight: 700; letter-spacing: 2.5px;
     text-transform: uppercase; color: var(--green-light);
-    margin-bottom: 10px;
+    margin-bottom: 7px;
   }
 
   .category-name {
     font-family: 'Playfair Display', serif;
-    font-size: 24px; font-weight: 700;
+    font-size: 19px; font-weight: 900;
     color: var(--white); line-height: 1.2;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
-  .cat-1 .category-name { font-size: 32px; }
+  .cat-1 .category-name { font-size: 20px; }
 
   .category-count {
-    font-size: 12px; color: rgba(255,255,255,0.6);
-    font-weight: 400;
+    font-size: 10px; color: rgba(250,255,248,0.66);
+    font-weight: 400; line-height: 1.55;
   }
 
   /* Decorative mountain/forest patterns within cards */
@@ -516,12 +550,17 @@
   .why-section {
     background: var(--green-deep);
     position: relative; overflow: hidden;
+    padding: 62px 60px 58px;
   }
 
   .why-section .section-eyebrow { color: var(--green-light); }
   .why-section .section-eyebrow::before { background: var(--green-light); }
   .why-section .section-title { color: var(--white); }
   .why-section .section-title em { color: var(--green-light); }
+  .why-section .section-header { margin-bottom: 30px; }
+  .why-section .section-title {
+    font-size: clamp(28px, 2.9vw, 40px);
+  }
 
   .why-bg-pattern {
     position: absolute; inset: 0; opacity: 0.04;
@@ -534,41 +573,49 @@
 
   .why-grid {
     display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 40px; position: relative; z-index: 1; margin-top: 64px;
+    gap: 28px; position: relative; z-index: 1; margin-top: 0;
   }
 
   .why-card {
-    padding: 32px 0;
+    padding: 22px 0 8px;
     border-top: 1px solid rgba(255,255,255,0.12);
   }
 
   .why-icon {
-    font-size: 36px; margin-bottom: 20px;
+    font-size: 28px; margin-bottom: 14px;
     display: block;
   }
 
   .why-title {
     font-family: 'Playfair Display', serif;
-    font-size: 22px; font-weight: 700;
-    color: var(--white); margin-bottom: 12px;
+    font-size: 18px; font-weight: 700;
+    color: var(--white); margin-bottom: 8px;
   }
 
   .why-desc {
-    font-size: 14px; line-height: 1.8;
+    font-size: 12px; line-height: 1.65;
     color: rgba(255,255,255,0.55); font-weight: 300;
   }
 
   /* ---- ZONES ---- */
-  .zones-section { background: var(--off-white); }
+  .zones-section {
+    background: var(--off-white);
+    padding: 62px 60px;
+  }
+  .zones-section .section-header { margin-bottom: 28px; }
+  .zones-section .section-title {
+    font-size: clamp(28px, 2.8vw, 40px);
+  }
 
   .zones-grid {
-    display: grid; grid-template-columns: repeat(2, 1fr);
-    gap: 2px; margin-top: 48px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 320px));
+    gap: 10px; margin-top: 0;
   }
 
   .zone-card {
     background: var(--green-deep);
-    padding: 56px 48px;
+    padding: 30px 26px;
+    min-height: 210px;
     position: relative; overflow: hidden;
     cursor: pointer;
     transition: background 0.3s;
@@ -578,29 +625,29 @@
 
   .zone-card-deco {
     position: absolute; right: -20px; top: -20px;
-    width: 160px; height: 160px; border-radius: 50%;
+    width: 120px; height: 120px; border-radius: 50%;
     background: rgba(255,255,255,0.04);
   }
 
   .zone-num {
     font-family: 'Playfair Display', serif;
-    font-size: 80px; font-weight: 900;
+    font-size: 54px; font-weight: 900;
     color: rgba(255,255,255,0.06); line-height: 1;
-    position: absolute; top: 20px; right: 30px;
+    position: absolute; top: 16px; right: 20px;
   }
 
-  .zone-icon { font-size: 40px; margin-bottom: 20px; display: block; }
+  .zone-icon { font-size: 28px; margin-bottom: 14px; display: block; }
 
   .zone-title {
     font-family: 'Playfair Display', serif;
-    font-size: 30px; font-weight: 700; color: var(--white);
-    margin-bottom: 12px;
+    font-size: 22px; font-weight: 700; color: var(--white);
+    margin-bottom: 8px;
   }
 
   .zone-desc {
-    font-size: 14px; color: rgba(255,255,255,0.6);
-    line-height: 1.8; font-weight: 300;
-    margin-bottom: 24px; max-width: 340px;
+    font-size: 12px; color: rgba(255,255,255,0.6);
+    line-height: 1.6; font-weight: 300;
+    margin-bottom: 18px; max-width: 260px;
   }
 
   .zone-tags {
@@ -608,9 +655,9 @@
   }
 
   .zone-tag {
-    padding: 5px 14px; border-radius: 2px;
+    padding: 4px 11px; border-radius: 2px;
     border: 1px solid rgba(255,255,255,0.2);
-    font-size: 10px; font-weight: 600; letter-spacing: 2px;
+    font-size: 9px; font-weight: 600; letter-spacing: 1.6px;
     text-transform: uppercase; color: rgba(255,255,255,0.5);
   }
 
@@ -622,7 +669,7 @@
   }
 
   .contact-left {
-    padding: 100px 80px;
+    padding: 66px 60px;
     background: var(--green-deep);
     color: var(--white);
   }
@@ -631,21 +678,25 @@
   .contact-left .section-eyebrow::before { background: var(--green-light); }
   .contact-left .section-title { color: var(--white); }
   .contact-left .section-title em { color: var(--green-light); }
+  .contact-left .section-header { margin-bottom: 28px; }
+  .contact-left .section-title {
+    font-size: clamp(28px, 3vw, 40px);
+  }
 
   .contact-info {
-    margin-top: 48px; display: flex; flex-direction: column; gap: 28px;
+    margin-top: 30px; display: flex; flex-direction: column; gap: 20px;
   }
 
   .contact-item {
-    display: flex; gap: 18px; align-items: flex-start;
+    display: flex; gap: 14px; align-items: flex-start;
   }
 
   .contact-item-icon {
-    width: 44px; height: 44px; flex-shrink: 0;
+    width: 36px; height: 36px; flex-shrink: 0;
     background: rgba(255,255,255,0.08);
     border-radius: 2px; display: flex;
     align-items: center; justify-content: center;
-    font-size: 18px;
+    font-size: 15px;
   }
 
   .contact-item-label {
@@ -655,25 +706,25 @@
   }
 
   .contact-item-value {
-    font-size: 15px; color: var(--white);
+    font-size: 14px; color: var(--white);
     font-weight: 400; line-height: 1.5;
   }
 
   .contact-right {
-    padding: 100px 80px; background: var(--off-white);
+    padding: 66px 60px; background: var(--off-white);
   }
 
-  .contact-right .section-header { margin-bottom: 40px; }
+  .contact-right .section-header { margin-bottom: 26px; }
   .contact-intro {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-mid);
-    line-height: 1.7;
-    margin-top: -16px;
-    margin-bottom: 28px;
+    line-height: 1.6;
+    margin-top: -10px;
+    margin-bottom: 20px;
   }
 
   .form-group {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
 
   .form-group label {
@@ -683,10 +734,10 @@
   }
 
   .form-group input, .form-group select, .form-group textarea {
-    width: 100%; padding: 14px 16px;
+    width: 100%; padding: 11px 14px;
     border: 1.5px solid var(--green-pale);
     border-radius: 2px; outline: none;
-    font-family: 'Jost', sans-serif; font-size: 14px;
+    font-family: 'Jost', sans-serif; font-size: 13px;
     color: var(--text-dark); background: var(--white);
     transition: border-color 0.3s;
   }
@@ -695,13 +746,13 @@
     border-color: var(--green-mid);
   }
 
-  .form-group textarea { height: 100px; resize: none; }
+  .form-group textarea { height: 82px; resize: none; }
 
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
   .submit-btn {
     width: 100%; background: var(--green-deep); color: var(--white);
-    padding: 16px; border: none; border-radius: 2px;
+    padding: 14px; border: none; border-radius: 2px;
     font-family: 'Jost', sans-serif;
     font-size: 12px; font-weight: 700; letter-spacing: 3px;
     text-transform: uppercase; cursor: pointer;
@@ -716,7 +767,7 @@
   }
   .contact-action-link {
     display: flex; align-items: center; justify-content: center;
-    min-height: 50px; border-radius: 2px;
+    min-height: 44px; border-radius: 2px;
     font-size: 12px; font-weight: 700; letter-spacing: 2px;
     text-transform: uppercase;
   }
@@ -795,14 +846,14 @@
 
 
   /* ---- ABOUT ME ---- */
-  .about-section { background: var(--white); padding-top: 40px !important; padding-bottom: 40px !important; }
+  .about-section { background: var(--white); padding-top: 46px !important; padding-bottom: 46px !important; }
   .about-inner {
-    display: grid; grid-template-columns: 0.5fr 1.4fr;
-    gap: 48px; align-items: center;
+    display: grid; grid-template-columns: 260px 1fr;
+    gap: 38px; align-items: center;
   }
   .about-photo { position: relative; }
   .about-photo-frame {
-    width: 100%; aspect-ratio: 3/4;
+    width: 100%; max-width: 260px; aspect-ratio: 3/4;
     border-radius: 4px; overflow: hidden;
     background: var(--green-mist);
     border: 1px solid var(--green-pale);
@@ -823,41 +874,47 @@
   .about-photo-placeholder span { font-size: 60px; opacity: 0.3; }
   .about-photo-placeholder p { font-size: 13px; opacity: 0.5; }
   .about-photo-badge {
-    position: absolute; bottom: -20px; right: -20px;
+    position: absolute; bottom: -14px; right: -14px;
     background: white; border: 1px solid var(--green-pale);
-    border-radius: 4px; padding: 14px 18px;
-    display: flex; gap: 12px; align-items: center;
+    border-radius: 4px; padding: 10px 14px;
+    display: flex; gap: 10px; align-items: center;
     box-shadow: 0 8px 32px rgba(26,58,42,0.1);
-    font-size: 24px;
+    font-size: 20px;
+  }
+  .about-text .section-eyebrow { margin-bottom: 12px; }
+  .about-text .section-title {
+    font-size: 26px !important;
   }
   .about-desc {
-    font-size: 13px; line-height: 1.75;
+    font-size: 13px; line-height: 1.65;
     color: var(--text-mid); font-weight: 300;
+    max-width: 640px;
   }
   .about-stats {
-    display: flex; gap: 40px; margin-top: 40px;
-    padding-top: 32px; border-top: 1px solid var(--green-mist);
+    display: flex; gap: 28px; margin-top: 26px;
+    padding-top: 22px; border-top: 1px solid var(--green-mist);
   }
   .about-stat-num {
     font-family: 'Playfair Display', serif;
-    font-size: 18px; font-weight: 700;
+    font-size: 17px; font-weight: 700;
     color: var(--green-deep); margin-bottom: 4px;
   }
   .about-stat-label {
-    font-size: 10px; font-weight: 600; letter-spacing: 2px;
+    font-size: 9px; font-weight: 600; letter-spacing: 1.8px;
     text-transform: uppercase; color: var(--green-bright);
   }
+  .about-text .btn-primary { margin-top: 22px !important; }
   @media (max-width: 1024px) {
-    .about-inner { grid-template-columns: 1fr; gap: 40px; }
+    .about-inner { grid-template-columns: 220px 1fr; gap: 30px; }
     .about-photo {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
     .about-photo-frame {
-      width: min(100%, 420px);
+      width: min(100%, 220px);
       aspect-ratio: 3/4;
-      max-width: 420px;
+      max-width: 220px;
     }
     .about-photo-frame img {
       object-position: center 10%;
@@ -865,6 +922,7 @@
     .about-photo-badge { right: 0; }
   }
   @media (max-width: 640px) {
+    .about-inner { grid-template-columns: 1fr; gap: 24px; }
     .about-photo {
       display: flex;
       flex-direction: column;
@@ -905,28 +963,30 @@
 
   /* ---- RESPONSIVE TABLET ---- */
   @media (max-width: 1024px) {
-    nav { padding: 14px 24px; }
+    nav { padding: 7px 24px; }
     .nav-links { display: none; }
     .nav-cta { padding: 9px 18px; font-size: 11px; }
     section { padding: 60px 24px; }
-    .hero-content { padding: 0 24px; max-width: 100%; }
+    .hero { min-height: 60vh; padding: 130px 0 36px; }
+    .hero-content { padding: 0 48px; max-width: 100%; }
     .listings-grid { grid-template-columns: 1fr 1fr; }
+    .why-section, .zones-section { padding: 54px 24px; }
     .why-grid { grid-template-columns: 1fr 1fr; }
     .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
     .contact-section { grid-template-columns: 1fr; }
-    .contact-left, .contact-right { padding: 60px 40px; }
+    .contact-left, .contact-right { padding: 54px 40px; }
     .search-bar { grid-template-columns: 1fr 1fr; }
     .search-field:last-child { grid-column: span 2; }
-    .categories-grid { grid-template-columns: 1fr 1fr; }
+    .categories-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
     .category-card:first-child { grid-row: span 1; }
-    .zones-grid { grid-template-columns: 1fr 1fr; }
+    .zones-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 300px)); }
   }
 
   /* ---- RESPONSIVE MOBILE ---- */
   @media (max-width: 640px) {
     /* NAV */
-    nav { padding: 12px 16px; }
-    .nav-logo-img { width: 138px; }
+    nav { padding: 7px 16px; }
+    .nav-logo-img { width: 104px; }
     .nav-logo-text span:first-child { font-size: 15px; letter-spacing: 1px; }
     .nav-logo-text span:last-child { font-size: 7px; letter-spacing: 2px; }
     .nav-cta { display: none; }
@@ -978,11 +1038,15 @@
     .section-eyebrow { font-size: 9px; }
 
     /* CATEGORIES */
-    .categories-grid { grid-template-columns: 1fr; gap: 3px; }
-    .category-card { aspect-ratio: 16/8; }
-    .category-card:first-child { aspect-ratio: 16/8; grid-row: span 1; }
-    .category-name { font-size: 20px !important; }
-    .category-card-content { padding: 20px; }
+    .categories-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .category-card { aspect-ratio: 4 / 3; }
+    .category-card:first-child { aspect-ratio: 4 / 3; grid-row: span 1; }
+    .category-icon { top: 12px; right: 12px; width: 28px; height: 28px; }
+    .category-icon svg { width: 15px; height: 15px; }
+    .category-tag { font-size: 6px; letter-spacing: 1.8px; margin-bottom: 5px; }
+    .category-name { font-size: 16px !important; }
+    .category-count { font-size: 9px; line-height: 1.35; }
+    .category-card-content { padding: 13px; }
 
     /* LISTINGS */
     .listings-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -995,21 +1059,23 @@
 
     /* WHY */
     .why-grid { grid-template-columns: 1fr; gap: 0; }
-    .why-card { padding: 22px 0; }
-    .why-title { font-size: 18px; }
-    .why-desc { font-size: 13px; }
+    .why-section { padding: 42px 20px; }
+    .why-card { padding: 18px 0; }
+    .why-title { font-size: 17px; }
+    .why-desc { font-size: 12px; line-height: 1.55; }
 
     /* ZONES */
-    .zones-grid { grid-template-columns: 1fr; gap: 3px; }
-    .zone-card { padding: 32px 20px; }
-    .zone-title { font-size: 22px; }
-    .zone-num { font-size: 50px; top: 10px; right: 16px; }
-    .zone-desc { font-size: 13px; }
+    .zones-section { padding: 42px 20px; }
+    .zones-grid { grid-template-columns: 1fr; gap: 8px; }
+    .zone-card { padding: 26px 20px; min-height: 188px; }
+    .zone-title { font-size: 20px; }
+    .zone-num { font-size: 44px; top: 12px; right: 16px; }
+    .zone-desc { font-size: 12px; }
 
     /* CONTACT */
     .contact-section { display: block; }
-    .contact-left { padding: 44px 20px; }
-    .contact-right { padding: 44px 20px; }
+    .contact-left { padding: 38px 20px; }
+    .contact-right { padding: 38px 20px; }
     .form-row { grid-template-columns: 1fr; }
     .contact-actions { grid-template-columns: 1fr; }
     .contact-info { gap: 18px; }
@@ -1039,7 +1105,7 @@
 <!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo" onclick="return goHomeReset(event)" aria-label="SAVINVEST Imobiliare">
-    <img class="nav-logo-img" src="assets/brand/savinvest-logo-new-transparent@2x.png" alt="SAVINVEST Imobiliare">
+    <img class="nav-logo-img" src="assets/brand/savinvest-logo-user-gemini-transparent@2x.png" alt="SAVINVEST Imobiliare">
   </a>
   <ul class="nav-links">
     <li><a href="#listings" onclick="return openListingsFromStart(event)">Proprietăți</a></li>
@@ -1142,7 +1208,7 @@
 </section>
 
 <!-- CATEGORIES -->
-<section class="categories-section">
+<section class="categories-section" id="categories">
   <div class="section-header reveal">
     <div class="section-eyebrow">Tipuri de Proprietăți</div>
     <h2 class="section-title">Găsește ce <em>cauți</em></h2>
@@ -1150,15 +1216,15 @@
 
   <div class="categories-grid reveal">
     <div class="category-card cat-1" onclick="quickFilter('Casă / Vilă', '')">
-      <div class="category-card-bg">
-        <svg style="width:100%;height:100%;opacity:0.15" viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="0,800 150,300 300,800" fill="white"/>
-          <polygon points="200,800 350,200 500,800" fill="white"/>
-          <polygon points="400,800 550,400 700,800" fill="white"/>
+      <div class="category-card-bg"></div>
+      <div class="category-card-overlay"></div>
+      <div class="category-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 18 9 7l6 11"/>
+          <path d="M10 18 15 10l6 8"/>
+          <path d="M8.2 8.5 9 10l1-1.4"/>
         </svg>
       </div>
-      <div class="category-card-overlay"></div>
-      <div class="category-icon">🏔️</div>
       <div class="category-card-content">
         <div class="category-tag">Categorie Principală</div>
         <div class="category-name">Vile &<br>Case de Munte</div>
@@ -1167,14 +1233,15 @@
     </div>
 
     <div class="category-card cat-2" onclick="quickFilter('Teren', '')">
-      <div class="category-card-bg">
-        <svg style="width:100%;height:100%;opacity:0.12" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="0,300 80,100 160,300" fill="white"/>
-          <polygon points="150,300 250,80 350,300" fill="white"/>
+      <div class="category-card-bg"></div>
+      <div class="category-card-overlay"></div>
+      <div class="category-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 3v18"/>
+          <path d="m6 16 6-13 6 13"/>
+          <path d="m8 12 4-9 4 9"/>
         </svg>
       </div>
-      <div class="category-card-overlay"></div>
-      <div class="category-icon">🌲</div>
       <div class="category-card-content">
         <div class="category-tag">Natură Pură</div>
         <div class="category-name">Terenuri</div>
@@ -1185,7 +1252,13 @@
     <div class="category-card cat-3" onclick="quickFilter('Pensiune', '')">
       <div class="category-card-bg"></div>
       <div class="category-card-overlay"></div>
-      <div class="category-icon">🏡</div>
+      <div class="category-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 11 12 5l8 6"/>
+          <path d="M6 10.5V20h12v-9.5"/>
+          <path d="M10 20v-5h4v5"/>
+        </svg>
+      </div>
       <div class="category-card-content">
         <div class="category-tag">Rustic & Autentic</div>
         <div class="category-name">Pensiuni și Hoteluri</div>
@@ -1196,7 +1269,15 @@
     <div class="category-card cat-4" onclick="quickFilter('Imobil / Clădire', '')">
       <div class="category-card-bg"></div>
       <div class="category-card-overlay"></div>
-      <div class="category-icon">🌄</div>
+      <div class="category-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 19h18"/>
+          <path d="M6 19V8h5v11"/>
+          <path d="M13 19V5h5v14"/>
+          <path d="M8 11h1"/>
+          <path d="M15 9h1"/>
+        </svg>
+      </div>
       <div class="category-card-content">
         <div class="category-tag">Investiție</div>
         <div class="category-name">Imobile și Clădiri</div>
@@ -1207,7 +1288,13 @@
     <div class="category-card cat-5" onclick="quickFilter('Cabană', '')">
       <div class="category-card-bg"></div>
       <div class="category-card-overlay"></div>
-      <div class="category-icon">🏕️</div>
+      <div class="category-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 19 12 5l8 14"/>
+          <path d="M12 5v14"/>
+          <path d="M9 19l3-6 3 6"/>
+        </svg>
+      </div>
       <div class="category-card-content">
         <div class="category-tag">Aventură</div>
         <div class="category-name">Cabane</div>
@@ -1326,7 +1413,7 @@
         <div class="contact-item-icon">✉️</div>
         <div>
           <div class="contact-item-label">Email</div>
-          <div class="contact-item-value" style="color:white;font-size:15px;letter-spacing:0.5px;">savinalexandros@icloud.com</div>
+          <div class="contact-item-value" style="color:white;font-size:14px;letter-spacing:0.5px;">savinalexandros@icloud.com</div>
         </div>
       </div>
 
@@ -1343,7 +1430,7 @@
   <div class="contact-right">
     <div class="section-header">
       <div class="section-eyebrow">Formular</div>
-      <h2 class="section-title" style="font-size:32px">Trimite-ne <em>un mesaj</em></h2>
+      <h2 class="section-title" style="font-size:28px">Trimite-ne <em>un mesaj</em></h2>
     </div>
     <p class="contact-intro">Trimite cererea ta și îți pregătim o selecție potrivită pentru buget, tip de proprietate și zonă.</p>
 
