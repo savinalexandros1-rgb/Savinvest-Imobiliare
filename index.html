@@ -1273,6 +1273,490 @@
     .nav-logo-img { width: 104px; }
     .mobile-menu-toggle { min-width: 94px; letter-spacing: 1.4px; padding: 0 10px; }
   }
+
+  /* ---- MOBILE COMPOSITION RESET ---- */
+  @media (max-width: 640px) {
+    :root {
+      --m-gutter: 18px;
+      --m-section: 38px;
+    }
+
+    body {
+      background: var(--white);
+    }
+
+    nav {
+      min-height: 58px;
+      padding: 7px var(--m-gutter);
+      background: rgba(250,255,248,0.98);
+      border-bottom: 1px solid rgba(183,228,199,0.65);
+    }
+
+    .nav-logo-img {
+      width: 96px;
+    }
+
+    .mobile-menu-toggle {
+      min-width: 92px;
+      min-height: 42px;
+      padding: 0 10px;
+      gap: 8px;
+      border-radius: 3px;
+      font-size: 9px;
+      letter-spacing: 1.9px;
+      box-shadow: none;
+    }
+
+    .mobile-menu-lines span {
+      width: 17px;
+    }
+
+    .mobile-menu {
+      top: 58px;
+      left: var(--m-gutter);
+      right: var(--m-gutter);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .mobile-menu a {
+      min-height: 46px;
+      font-size: 11px;
+      letter-spacing: 2px;
+    }
+
+    .hero {
+      min-height: auto;
+      display: block;
+      padding: 84px var(--m-gutter) 26px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      background:
+        radial-gradient(ellipse at 86% 8%, rgba(64,145,108,0.15) 0%, transparent 48%),
+        linear-gradient(166deg, var(--white) 0%, #f3fbf1 56%, var(--green-mist) 100%);
+    }
+
+    .hero-mountains,
+    .hero-brand-watermark {
+      display: none !important;
+    }
+
+    .hero-content {
+      padding: 0;
+      max-width: 100%;
+    }
+
+    .hero-eyebrow {
+      gap: 9px;
+      margin-bottom: 12px;
+      font-size: 7px;
+      letter-spacing: 2.4px;
+      line-height: 1.4;
+      white-space: normal;
+    }
+
+    .hero-eyebrow::before {
+      width: 32px;
+      flex: 0 0 32px;
+    }
+
+    .hero h1 {
+      max-width: 8.9em;
+      margin-bottom: 14px;
+      font-size: clamp(34px, 9.2vw, 40px);
+      line-height: 1.04;
+      letter-spacing: -0.7px;
+    }
+
+    .hero h1 em {
+      display: block;
+      margin-top: 1px;
+      font-size: 0.88em;
+    }
+
+    .hero-desc {
+      max-width: 31ch;
+      margin-bottom: 20px;
+      font-size: 14px;
+      line-height: 1.55;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-primary,
+    .btn-outline {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 3px;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-align: center;
+    }
+
+    .search-section {
+      margin-top: 0;
+      padding: 14px var(--m-gutter) 18px;
+      background: var(--green-deep);
+    }
+
+    .search-bar {
+      grid-template-columns: 1fr 1fr;
+      max-width: none;
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.055);
+      box-shadow: none;
+    }
+
+    .search-field {
+      min-height: 54px;
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .search-field:nth-child(odd) {
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .search-field:nth-child(3) {
+      grid-column: 1 / -1;
+      border-right: 0;
+    }
+
+    .search-field label {
+      margin-bottom: 2px;
+      font-size: 7.5px;
+      letter-spacing: 1.8px;
+    }
+
+    .search-field select,
+    .search-field input {
+      min-height: 25px;
+      font-size: 13px;
+      line-height: 1.3;
+    }
+
+    .search-btn {
+      grid-column: 1 / -1;
+      min-height: 48px;
+      padding: 0 18px;
+      font-size: 11px;
+      letter-spacing: 3px;
+    }
+
+    section {
+      padding: var(--m-section) var(--m-gutter);
+      scroll-margin-top: 68px;
+    }
+
+    .section-header {
+      margin-bottom: 22px;
+    }
+
+    .section-eyebrow {
+      margin-bottom: 10px;
+      font-size: 7.5px;
+      letter-spacing: 3px;
+      line-height: 1.4;
+      gap: 9px;
+    }
+
+    .section-eyebrow::before {
+      width: 30px;
+      flex: 0 0 30px;
+    }
+
+    .section-title {
+      font-size: clamp(27px, 8vw, 32px);
+      line-height: 1.08;
+      letter-spacing: -0.3px;
+    }
+
+    #listings {
+      padding-top: 36px;
+    }
+
+    .listings-grid {
+      margin-top: 24px;
+      gap: 14px;
+    }
+
+    .listing-img {
+      height: 176px;
+    }
+
+    .categories-section {
+      padding-top: 38px;
+      padding-bottom: 40px;
+    }
+
+    .categories-grid {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .category-card,
+    .category-card:first-child {
+      min-height: 86px;
+      aspect-ratio: auto;
+      border-radius: 11px;
+    }
+
+    .category-card-bg::before,
+    .category-card-bg::after {
+      inset: -24% 26% -28% -18%;
+      height: 150%;
+      opacity: 0.42;
+      transform: rotate(-7deg);
+    }
+
+    .category-card-overlay {
+      background:
+        linear-gradient(90deg, rgba(8,24,16,0.9) 0%, rgba(8,24,16,0.72) 54%, rgba(8,24,16,0.3) 100%),
+        radial-gradient(circle at 86% 50%, rgba(250,255,248,0.08), transparent 28%);
+    }
+
+    .category-card-content {
+      position: relative;
+      min-height: 86px;
+      padding: 15px 58px 15px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .category-icon {
+      top: 50%;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      transform: translateY(-50%);
+    }
+
+    .category-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .category-tag {
+      margin-bottom: 5px;
+      font-size: 6px;
+      letter-spacing: 1.8px;
+    }
+
+    .category-name,
+    .cat-1 .category-name {
+      margin-bottom: 3px;
+      font-size: 18px !important;
+      line-height: 1.12;
+    }
+
+    .category-name br {
+      display: none;
+    }
+
+    .category-count {
+      font-size: 10.5px;
+      line-height: 1.35;
+      color: rgba(250,255,248,0.7);
+    }
+
+    .about-section {
+      padding: 38px var(--m-gutter) !important;
+    }
+
+    .about-inner {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .about-text {
+      order: 1;
+    }
+
+    .about-photo {
+      order: 2;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+    }
+
+    .about-photo-frame {
+      width: 96px;
+      height: 96px;
+      max-width: none;
+      margin: 0;
+      aspect-ratio: auto;
+      border-radius: 50%;
+      flex: 0 0 96px;
+    }
+
+    .about-photo-badge {
+      width: auto;
+      margin: 0;
+      padding: 8px 11px;
+      gap: 8px;
+      font-size: 16px;
+    }
+
+    .about-text .section-title {
+      font-size: 26px !important;
+      line-height: 1.12;
+    }
+
+    .about-desc {
+      max-width: 32ch;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+      padding-top: 16px;
+    }
+
+    .about-stat-num {
+      font-size: 16px;
+      margin-bottom: 2px;
+    }
+
+    .about-stat-label {
+      font-size: 8px;
+      letter-spacing: 1.7px;
+    }
+
+    .about-text .btn-primary {
+      margin-top: 18px !important;
+    }
+
+    .why-section {
+      padding: 36px var(--m-gutter) !important;
+    }
+
+    .why-section .section-header {
+      margin-bottom: 16px;
+    }
+
+    .why-section .section-title {
+      font-size: clamp(25px, 7.2vw, 29px);
+      line-height: 1.08;
+    }
+
+    .why-bg-pattern {
+      opacity: 0.03;
+      background-size: 34px 34px;
+    }
+
+    .why-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .why-card {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      column-gap: 12px;
+      padding: 14px 0;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .why-icon {
+      grid-row: 1 / span 2;
+      margin: 1px 0 0;
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .why-title {
+      margin: 0 0 4px;
+      font-size: 17px;
+      line-height: 1.15;
+    }
+
+    .why-desc {
+      margin: 0;
+      font-size: 12.5px;
+      line-height: 1.48;
+      color: rgba(255,255,255,0.66);
+    }
+
+    .zones-section {
+      padding: 36px var(--m-gutter);
+    }
+
+    .zones-grid {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .zone-card {
+      min-height: auto;
+      padding: 18px;
+      border-radius: 11px;
+    }
+
+    .zone-icon {
+      margin-bottom: 8px;
+      font-size: 22px;
+    }
+
+    .zone-title {
+      font-size: 21px;
+      margin-bottom: 6px;
+    }
+
+    .zone-num {
+      top: 12px;
+      right: 14px;
+      font-size: 38px;
+    }
+
+    .zone-desc {
+      max-width: 31ch;
+      margin-bottom: 0;
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .contact-left,
+    .contact-right {
+      padding: 34px var(--m-gutter);
+    }
+
+    .contact-left .section-header,
+    .contact-right .section-header {
+      margin-bottom: 18px;
+    }
+
+    .contact-info {
+      margin-top: 22px;
+      gap: 16px;
+    }
+
+    .footer-top {
+      margin-bottom: 26px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -1341,11 +1825,6 @@
     <div class="hero-actions">
       <a href="#listings" class="btn-primary" onclick="return openListingsFromStart(event)">Vezi Proprietăți</a>
       <a href="#contact" class="btn-outline">Contactează-ne</a>
-    </div>
-  </div>
-
-
-
     </div>
   </div>
 </section>
@@ -1542,29 +2021,29 @@
   <div class="why-bg-pattern"></div>
   <div class="section-header reveal">
     <div class="section-eyebrow">De Ce Noi</div>
-    <h2 class="section-title">SAVINVEST —<br><em>Expertiza ta</em> în imobiliare montane</h2>
+    <h2 class="section-title">Expertiză locală,<br><em>tranzacții clare</em></h2>
   </div>
 
   <div class="why-grid">
     <div class="why-card reveal">
       <span class="why-icon">🏔️</span>
       <div class="why-title">Cunosc zona personal</div>
-      <p class="why-desc">Activez direct în Valea Prahovei. Știu drumurile, terenurile și oportunitățile locale — nu lucrez din birou, ci de pe teren.</p>
+      <p class="why-desc">Sunt pe teren în Valea Prahovei și verific accesul, zona și oportunitățile reale.</p>
     </div>
     <div class="why-card reveal">
       <span class="why-icon">🤝</span>
       <div class="why-title">Fără surprize neplăcute</div>
-      <p class="why-desc">Prețuri reale, documente clare, fără costuri ascunse. De la primul apel până la semnarea actelor — totul transparent.</p>
+      <p class="why-desc">Prețuri reale, documente clare și costuri discutate de la primul apel.</p>
     </div>
     <div class="why-card reveal">
       <span class="why-icon">⚖️</span>
       <div class="why-title">Tranzacție sigură</div>
-      <p class="why-desc">Fiecare proprietate vine cu documentație verificată. Te ghidez prin tot procesul — de la negociere până la notariat.</p>
+      <p class="why-desc">Verificăm documentația și te ghidăm de la negociere până la notariat.</p>
     </div>
     <div class="why-card reveal">
       <span class="why-icon">📈</span>
       <div class="why-title">Investiție cu potențial</div>
-      <p class="why-desc">Zona montană Prahova este în creștere accelerată. Terenurile și proprietățile de aici câștigă valoare an de an — momentul ideal este acum.</p>
+      <p class="why-desc">Alegem proprietăți cu potențial bun în zona montană Prahova.</p>
     </div>
   </div>
 </section>
