@@ -216,26 +216,6 @@
     animation: heroReveal 1.2s ease 0.3s both;
   }
 
-  .hero-brand-watermark {
-    position: absolute;
-    z-index: 1;
-    top: 39%;
-    right: clamp(48px, 7vw, 110px);
-    width: clamp(330px, 35vw, 570px);
-    transform: translateY(-50%);
-    opacity: 0.052;
-    pointer-events: none;
-    mix-blend-mode: multiply;
-    animation: heroReveal 1.2s ease 0.5s both;
-  }
-
-  .hero-brand-watermark img {
-    width: 100%;
-    height: auto;
-    display: block;
-    filter: saturate(0.85);
-  }
-
   @keyframes heroReveal {
     from { opacity: 0; transform: translateY(40px); }
     to { opacity: 1; transform: translateY(0); }
@@ -1217,7 +1197,6 @@
     section { padding: 60px 24px; }
     .hero { min-height: 100svh; padding: 100px 0 54px; }
     .hero-content { padding: 0 48px; max-width: 58%; }
-    .hero-brand-watermark { top: 38%; right: 32px; width: 36vw; opacity: 0.05; }
     .listings-grid { grid-template-columns: 1fr 1fr; }
     .why-section, .zones-section { padding: 54px 24px; }
     .why-grid { grid-template-columns: 1fr 1fr; }
@@ -1280,8 +1259,6 @@
     }
     .hero-bg { display: block; }
     .hero-mountains { display: none; }
-    .hero-brand-watermark { display: none; }
-
     .hero-content {
       padding: 0 22px;
       max-width: 100%;
@@ -1518,26 +1495,6 @@
 
     .hero-mountains {
       display: none !important;
-    }
-
-    .hero-brand-watermark {
-      order: 2;
-      position: relative;
-      display: block !important;
-      z-index: 2;
-      top: auto;
-      right: auto;
-      align-self: center;
-      width: min(67vw, 240px);
-      margin: 24px auto 0;
-      transform: none;
-      opacity: 0.96;
-      mix-blend-mode: normal;
-      animation: heroReveal 1.2s ease 0.15s both;
-    }
-
-    .hero-brand-watermark img {
-      filter: none;
     }
 
     .hero-content {
@@ -2050,10 +2007,6 @@
       <polygon points="760,600 772,540 784,600" fill="#0d2318"/>
       <polygon points="800,600 812,555 824,600" fill="#0d2318"/>
     </svg>
-  </div>
-
-  <div class="hero-brand-watermark" aria-hidden="true">
-    <img src="assets/brand/savinvest-logo-user-gemini-transparent@2x.png" alt="">
   </div>
 
   <div class="hero-content">
