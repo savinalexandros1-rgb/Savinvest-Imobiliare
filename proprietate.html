@@ -225,11 +225,13 @@
   }
   .footer-top{
     max-width:1200px;
-    margin:0 auto 8px;
+    margin:0 auto 10px;
     display:grid;
-    grid-template-columns:2fr 1fr 1fr;
-    gap:12px;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:20px;
+    align-items:start;
   }
+  .footer-brand,.footer-col{min-width:0;}
   .footer-brand span:first-child{
     font-family:'Playfair Display',serif;
     font-size:11px;font-weight:900;letter-spacing:0.8px;
@@ -242,7 +244,7 @@
   .footer-tagline{
     font-size:8px;line-height:1.3;
     color:rgba(255,255,255,0.42);font-weight:300;
-    max-width:180px;
+    max-width:none;
   }
   .footer-col h4{
     font-size:6px;font-weight:700;letter-spacing:1.2px;
