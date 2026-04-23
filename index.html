@@ -803,7 +803,26 @@
     position: absolute; top: 16px; right: 20px;
   }
 
-  .zone-icon { font-size: 28px; margin-bottom: 14px; display: block; }
+  .zone-icon {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: rgba(255,255,255,0.82);
+  }
+
+  .zone-icon svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 
   .zone-title {
     font-family: 'Playfair Display', serif;
@@ -1039,9 +1058,14 @@
     position: absolute; bottom: -14px; right: -14px;
     background: white; border: 1px solid var(--green-pale);
     border-radius: 4px; padding: 10px 14px;
-    display: flex; gap: 10px; align-items: center;
+    display: flex; align-items: center;
     box-shadow: 0 8px 32px rgba(26,58,42,0.1);
-    font-size: 20px;
+  }
+
+  .about-photo-badge-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green-deep);
   }
   .about-text .section-eyebrow { margin-bottom: 12px; }
   .about-text .section-title {
@@ -1405,36 +1429,68 @@
     }
 
     nav {
-      min-height: 58px;
-      padding: 7px var(--m-gutter);
-      background: rgba(250,255,248,0.98);
+      min-height: 64px;
+      padding: calc(env(safe-area-inset-top, 0px) + 10px) var(--m-gutter) 8px;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      background: transparent;
+      backdrop-filter: none;
+      border-bottom: 0;
+    }
+
+    nav::after {
+      display: none;
+    }
+
+    nav.is-scrolled {
+      background: rgba(250,255,248,0.94);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(183,228,199,0.65);
     }
 
+    .nav-logo {
+      align-self: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+    }
+
+    nav.is-scrolled .nav-logo {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(-1px);
+    }
+
     .nav-logo-img {
-      width: 112px;
+      width: 104px;
     }
 
     .mobile-menu-toggle {
-      min-width: 92px;
+      justify-self: end;
+      align-self: center;
+      width: 42px;
+      min-width: 42px;
+      height: 42px;
       min-height: 42px;
-      padding: 0 10px;
-      gap: 8px;
-      border-radius: 3px;
-      font-size: 9px;
-      letter-spacing: 1.9px;
+      padding: 0;
+      gap: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
       box-shadow: none;
     }
 
     .mobile-menu-lines span {
-      width: 17px;
+      width: 22px;
+      height: 1.8px;
+      background: var(--green-deep);
     }
 
     .mobile-menu {
-      top: 58px;
+      top: calc(env(safe-area-inset-top, 0px) + 56px);
       left: var(--m-gutter);
       right: var(--m-gutter);
-      border-radius: 10px;
+      border-radius: 14px;
       overflow: hidden;
     }
 
@@ -1445,21 +1501,41 @@
     }
 
     .hero {
-      min-height: auto;
-      display: block;
-      padding: 84px var(--m-gutter) 26px;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: calc(env(safe-area-inset-top, 0px) + 94px) var(--m-gutter) 28px;
       overflow: hidden;
     }
 
     .hero-bg {
       background:
-        radial-gradient(ellipse at 86% 8%, rgba(64,145,108,0.15) 0%, transparent 48%),
-        linear-gradient(166deg, var(--white) 0%, #f3fbf1 56%, var(--green-mist) 100%);
+        radial-gradient(ellipse at 76% 22%, rgba(64,145,108,0.12) 0%, transparent 44%),
+        radial-gradient(ellipse at 18% 82%, rgba(64,145,108,0.12) 0%, transparent 42%),
+        linear-gradient(168deg, #fbfffa 0%, #f4fbf1 58%, #e9f6e7 100%);
     }
 
-    .hero-mountains,
-    .hero-brand-watermark {
+    .hero-mountains {
       display: none !important;
+    }
+
+    .hero-brand-watermark {
+      position: relative;
+      display: block !important;
+      z-index: 2;
+      top: auto;
+      right: auto;
+      width: min(76vw, 270px);
+      margin: 0 0 26px;
+      transform: none;
+      opacity: 0.96;
+      mix-blend-mode: normal;
+      animation: heroReveal 1.2s ease 0.15s both;
+    }
+
+    .hero-brand-watermark img {
+      filter: none;
     }
 
     .hero-content {
@@ -1469,9 +1545,9 @@
 
     .hero-eyebrow {
       gap: 9px;
-      margin-bottom: 12px;
-      font-size: 7px;
-      letter-spacing: 2.4px;
+      margin-bottom: 14px;
+      font-size: 8px;
+      letter-spacing: 2.8px;
       line-height: 1.4;
       white-space: normal;
     }
@@ -1482,43 +1558,43 @@
     }
 
     .hero h1 {
-      max-width: 8.9em;
-      margin-bottom: 14px;
-      font-size: clamp(34px, 9.2vw, 40px);
-      line-height: 1.04;
-      letter-spacing: -0.7px;
+      max-width: 7.5em;
+      margin-bottom: 16px;
+      font-size: clamp(42px, 11vw, 52px);
+      line-height: 0.98;
+      letter-spacing: -0.9px;
     }
 
     .hero h1 em {
       display: block;
-      margin-top: 1px;
-      font-size: 0.88em;
+      margin-top: 4px;
+      font-size: 0.82em;
     }
 
     .hero-desc {
-      max-width: 31ch;
-      margin-bottom: 20px;
-      font-size: 14px;
-      line-height: 1.55;
+      max-width: 29ch;
+      margin-bottom: 24px;
+      font-size: 15px;
+      line-height: 1.62;
       font-weight: 300;
     }
 
     .hero-actions {
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
     .btn-primary,
     .btn-outline {
       width: 100%;
-      min-height: 48px;
+      min-height: 54px;
       padding: 0 18px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 3px;
-      font-size: 10px;
-      letter-spacing: 2.5px;
+      font-size: 11px;
+      letter-spacing: 2.8px;
       text-align: center;
     }
 
@@ -1607,7 +1683,7 @@
     }
     .section-copy {
       margin-top: 12px;
-      max-width: 33ch;
+      max-width: none;
       font-size: 13px;
       line-height: 1.55;
     }
@@ -1638,7 +1714,7 @@
 
     .category-card,
     .category-card:first-child {
-      min-height: 86px;
+      min-height: 96px;
       aspect-ratio: auto;
       border-radius: 11px;
     }
@@ -1659,7 +1735,7 @@
 
     .category-card-content {
       position: relative;
-      min-height: 86px;
+      min-height: 96px;
       padding: 15px 58px 15px 16px;
       display: flex;
       flex-direction: column;
@@ -1747,7 +1823,7 @@
     }
 
     .about-desc {
-      max-width: 32ch;
+      max-width: none;
       font-size: 13px;
       line-height: 1.55;
     }
@@ -1798,7 +1874,7 @@
 
     .why-card {
       display: block;
-      min-height: 108px;
+      min-height: 96px;
       aspect-ratio: auto;
       border-radius: 11px;
     }
@@ -1832,8 +1908,8 @@
 
     .why-card-content {
       position: relative;
-      min-height: 108px;
-      padding: 16px 58px 16px 16px;
+      min-height: 96px;
+      padding: 15px 58px 15px 16px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -1931,8 +2007,7 @@
     <li><a href="#despre">Despre Noi</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <button class="mobile-menu-toggle" type="button" aria-controls="mobileMenu" aria-expanded="false" onclick="toggleMobileMenu()">
-    Meniu
+  <button class="mobile-menu-toggle" type="button" aria-label="Deschide meniul" aria-controls="mobileMenu" aria-expanded="false" onclick="toggleMobileMenu()">
     <span class="mobile-menu-lines" aria-hidden="true">
       <span></span>
       <span></span>
@@ -2117,10 +2192,7 @@
     <img id="aboutPhoto" src="savin-optimized.jpg" alt="Savin Alexandros" loading="lazy" decoding="async">
   </div>
   <div class="about-photo-badge">
-    <span>🤝</span>
-    <div>
-      <div style="font-size:13px;font-weight:700;color:var(--green-deep)">Savin Alexandros</div>
-    </div>
+    <div class="about-photo-badge-name">Savin Alexandros</div>
   </div>
 </div>
 <div class="about-text reveal">
@@ -2249,7 +2321,12 @@
     <div class="zone-card" onclick="document.getElementById('listings').scrollIntoView({behavior:'smooth'})">
       <div class="zone-card-deco"></div>
       <div class="zone-num">01</div>
-      <span class="zone-icon">⛰️</span>
+      <span class="zone-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 18 9 8l6 10"></path>
+          <path d="M9 18 14 11l7 7"></path>
+        </svg>
+      </span>
       <div class="zone-title">Valea Prahovei</div>
       <p class="zone-desc">Terenuri și proprietăți de vânzare în cele mai căutate stațiuni montane din România, cu acces facil din București.</p>
 
