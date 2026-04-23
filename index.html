@@ -161,7 +161,7 @@
     position: relative;
     display: block;
     width: 18px;
-    height: 14px;
+    height: 12px;
   }
   .mobile-menu-lines span {
     display: block;
@@ -173,23 +173,16 @@
     background: var(--green-deep);
     transform-origin: center;
     transform: translate(-50%, -50%);
-    transition: transform 0.25s ease, opacity 0.25s ease, background 0.25s ease;
+    transition: transform 0.25s ease, background 0.25s ease;
   }
   .mobile-menu-lines span:first-child {
-    transform: translate(-50%, calc(-50% - 6px));
-  }
-  .mobile-menu-lines span:nth-child(2) {
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, calc(-50% - 3px));
   }
   .mobile-menu-lines span:last-child {
-    transform: translate(-50%, calc(-50% + 6px));
+    transform: translate(-50%, calc(-50% + 3px));
   }
   .mobile-menu-toggle.is-open .mobile-menu-lines span:first-child {
     transform: translate(-50%, -50%) rotate(45deg);
-  }
-  .mobile-menu-toggle.is-open .mobile-menu-lines span:nth-child(2) {
-    opacity: 0;
-    transform: translate(-50%, -50%) scaleX(0);
   }
   .mobile-menu-toggle.is-open .mobile-menu-lines span:last-child {
     transform: translate(-50%, -50%) rotate(-45deg);
@@ -1478,19 +1471,16 @@
     }
     .mobile-menu-lines {
       width: 22px;
-      height: 16px;
+      height: 14px;
     }
     .mobile-menu-lines span {
       top: 50%;
     }
     .mobile-menu-lines span:first-child {
-      transform: translate(-50%, calc(-50% - 7px));
-    }
-    .mobile-menu-lines span:nth-child(2) {
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, calc(-50% - 3.5px));
     }
     .mobile-menu-lines span:last-child {
-      transform: translate(-50%, calc(-50% + 7px));
+      transform: translate(-50%, calc(-50% + 3.5px));
     }
 
     .mobile-menu {
@@ -2004,7 +1994,6 @@
   </ul>
   <button class="mobile-menu-toggle" type="button" aria-label="Deschide meniul" aria-controls="mobileMenu" aria-expanded="false" onclick="toggleMobileMenu()">
     <span class="mobile-menu-lines" aria-hidden="true">
-      <span></span>
       <span></span>
       <span></span>
     </span>
