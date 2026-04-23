@@ -221,7 +221,7 @@
 
   /* LIGHTBOX */
   /* FULLSCREEN VIEWER */
-  .lightbox{position:fixed;inset:0;background:#000;z-index:999;display:none;flex-direction:column;}
+  .lightbox{position:fixed;inset:0;background:#081810;z-index:999;display:none;flex-direction:column;}
   .lightbox.open{display:flex;}
   .lb-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:rgba(0,0,0,0.5);position:absolute;top:0;left:0;right:0;z-index:2;}
   .lb-close{color:white;font-size:28px;cursor:pointer;background:none;border:none;line-height:1;padding:4px 8px;}
@@ -229,7 +229,10 @@
   .lb-track-wrap{flex:1;display:flex;align-items:center;overflow:hidden;position:relative;}
   .lb-track{display:flex;height:100%;transition:transform 0.3s ease;will-change:transform;}
   .lb-slide{min-width:100vw;height:100%;display:flex;align-items:center;justify-content:center;padding:60px 0 40px;}
-  .lb-slide img{max-width:100%;max-height:100%;object-fit:contain;display:block;}
+  .lb-slide-media{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+  .lb-slide-bg{position:absolute;inset:0;background-position:center;background-repeat:no-repeat;background-size:cover;filter:blur(24px) saturate(0.92);transform:scale(1.08);opacity:0.58;}
+  .lb-slide-media::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom, rgba(8,24,16,0.18), rgba(8,24,16,0.4));}
+  .lb-slide img{position:relative;z-index:1;max-width:min(100%, 1440px);max-height:100%;object-fit:contain;display:block;box-shadow:0 18px 48px rgba(0,0,0,0.24);}
   .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 12px;pointer-events:none;z-index:2;}
   .lb-btn{pointer-events:all;background:rgba(255,255,255,0.15);border:none;color:white;width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
   .lb-thumbs{display:flex;gap:6px;padding:10px 16px;overflow-x:auto;background:rgba(0,0,0,0.6);scrollbar-width:none;}
@@ -252,7 +255,10 @@
     .mobile-slider{display:block;position:relative;width:100%;height:72vw;max-height:460px;min-height:260px;overflow:hidden;background:#0d2318;border-radius:6px;margin-bottom:20px;}
     .mobile-slider-track{display:flex;height:100%;transition:transform 0.35s ease;will-change:transform;align-items:center;}
     .mobile-slide{width:100%;min-width:100%;max-width:100%;height:100%;flex-shrink:0;flex-grow:0;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-    .mobile-slide img{width:100%;height:100%;object-fit:contain;display:block;}
+    .mobile-slide-media{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .mobile-slide-bg{position:absolute;inset:0;background-position:center;background-repeat:no-repeat;background-size:cover;filter:blur(20px) saturate(0.92);transform:scale(1.08);opacity:0.56;}
+    .mobile-slide-media::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom, rgba(8,24,16,0.1), rgba(8,24,16,0.32));}
+    .mobile-slide img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block;}
     .mobile-slider-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;}
     .mobile-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;transition:background 0.2s;}
     .mobile-dot.active{background:white;}
@@ -643,7 +649,7 @@ function openLb(i){
   // Build track
   const track = document.getElementById('lbTrack');
   track.innerHTML = photos.map((url, idx) =>
-    `<div class="lb-slide"><img src="${url}" alt="" loading="${idx === i ? 'eager' : 'lazy'}" decoding="async"></div>`
+    `<div class="lb-slide"><div class="lb-slide-media"><div class="lb-slide-bg" style="background-image:url('${url}')"></div><img src="${url}" alt="" loading="${idx === i ? 'eager' : 'lazy'}" decoding="async"></div></div>`
   ).join('');
   // Build thumbs
   const thumbs = document.getElementById('lbThumbs');
@@ -693,7 +699,7 @@ function initMobileSlider(photos) {
   const dots = document.getElementById('sliderDots');
   
   track.innerHTML = photos.map((url, i) => 
-    `<div class="mobile-slide" onclick="openLb(${i})" style="cursor:zoom-in;"><img src="${url}" alt="" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async"></div>`
+    `<div class="mobile-slide" onclick="openLb(${i})" style="cursor:zoom-in;"><div class="mobile-slide-media"><div class="mobile-slide-bg" style="background-image:url('${url}')"></div><img src="${url}" alt="" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async"></div></div>`
   ).join('');
   
   dots.innerHTML = photos.map((_, i) => 
