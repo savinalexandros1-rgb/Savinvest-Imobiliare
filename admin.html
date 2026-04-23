@@ -608,15 +608,25 @@ async function saveProperty() {
       ...uploadedUrls
     ];
 
+    const propertyType = document.getElementById('fType').value;
+    const terrainKindValue = document.getElementById('fTerrainKind').value;
+    const terrainKind = propertyType === 'Teren'
+      ? (terrainKindValue || null)
+      : null;
+
+    if (propertyType === 'Teren' && !terrainKind) {
+      throw new Error('Selectează tipul terenului: Intravilan sau Extravilan.');
+    }
+
     const payload = {
       title,
-      type: document.getElementById('fType').value,
+      type: propertyType,
       location,
       price: sanitizeNumericText(document.getElementById('fPrice').value),
       area: sanitizeNumericText(document.getElementById('fArea').value),
       area_useful: sanitizeNumericText(document.getElementById('fAreaUseful').value),
       land: sanitizeNumericText(document.getElementById('fLand').value),
-      terrain_kind: document.getElementById('fTerrainKind').value,
+      terrain_kind: terrainKind,
       rooms: sanitizeNumericText(document.getElementById('fRooms').value),
       baths: sanitizeNumericText(document.getElementById('fBaths').value),
       desc: document.getElementById('fDesc').value.trim(),
