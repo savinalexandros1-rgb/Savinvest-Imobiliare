@@ -1172,42 +1172,40 @@
       left: 24px;
       right: 24px;
       z-index: 101;
-      display: grid;
-      gap: 2px;
-      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: 10px 14px;
       background: rgba(250,255,248,0.97);
       border: 1px solid var(--green-pale);
+      border-radius: 12px;
       box-shadow: 0 22px 60px rgba(13,35,24,0.16);
       backdrop-filter: blur(14px);
       opacity: 0;
       pointer-events: none;
-      transform: translateY(-10px);
+      transform: translateY(-8px) scale(0.985);
       transition: opacity 0.22s ease, transform 0.22s ease;
     }
     .mobile-menu.is-open {
       opacity: 1;
       pointer-events: auto;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
     .mobile-menu a {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      min-height: 50px;
-      padding: 0 16px;
+      justify-content: flex-start;
+      min-height: 48px;
+      padding: 0;
       color: var(--green-deep);
       border-bottom: 1px solid var(--green-mist);
       font-size: 12px;
       font-weight: 700;
-      letter-spacing: 2.4px;
+      letter-spacing: 2px;
       text-transform: uppercase;
     }
     .mobile-menu a:last-child {
       border-bottom: 0;
-      background: var(--green-deep);
-      color: var(--white);
-      justify-content: center;
-      margin-top: 4px;
     }
     section { padding: 60px 24px; }
     .hero { min-height: 100svh; padding: 100px 0 54px; }
@@ -1501,12 +1499,13 @@
       right: var(--m-gutter);
       border-radius: 14px;
       overflow: hidden;
+      padding: 10px 14px;
     }
 
     .mobile-menu a {
-      min-height: 46px;
+      min-height: 44px;
       font-size: 11px;
-      letter-spacing: 2px;
+      letter-spacing: 1.8px;
     }
 
     .hero {
@@ -2013,9 +2012,9 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#listings" onclick="closeMobileMenu(); return openListingsFromStart(event)">Proprietăți <span>01</span></a>
-  <a href="#zone" onclick="closeMobileMenu()">Zone <span>02</span></a>
-  <a href="#despre" onclick="closeMobileMenu()">Despre Noi <span>03</span></a>
+  <a href="#listings" onclick="closeMobileMenu(); return openListingsFromStart(event)">Proprietăți</a>
+  <a href="#zone" onclick="closeMobileMenu()">Zone</a>
+  <a href="#despre" onclick="closeMobileMenu()">Despre Noi</a>
   <a href="#contact" onclick="closeMobileMenu()">Contactează-ne</a>
 </div>
 
