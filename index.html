@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Terenuri și Proprietăți de Vânzare | Sinaia, Bușteni, Predeal, Azuga, Comarnic | SAVINVEST</title>
-<link rel="icon" type="image/png" href="/favicon.png">
-<link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-tree.png?v=20260423b">
+<link rel="shortcut icon" href="/favicon-tree.ico?v=20260423b" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon-tree.png?v=20260423b">
+<link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-tree-192x192.png?v=20260423b">
 <meta name="description" content="Terenuri și proprietăți de vânzare în Valea Prahovei: Sinaia, Bușteni, Azuga, Predeal și Comarnic. Vile, case de vacanță, pensiuni și clădiri. Contact direct: 0747 095 063.">
 <meta name="keywords" content="terenuri vanzare Sinaia, proprietati Busteni, vile Predeal, case vacanta Valea Prahovei, teren Azuga, imobiliare montane Romania, pensiuni vanzare Prahova, Vila Comarnic">
 <meta name="robots" content="index, follow">
@@ -72,7 +72,9 @@
   /* ---- NAV ---- */
   nav {
     position: fixed; top: 0; width: 100%; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
+    display: grid;
+    grid-template-columns: 128px minmax(0, 1fr) 128px;
+    align-items: center;
     padding: 7px 60px;
     background: rgba(250,255,248,0.92);
     backdrop-filter: blur(12px);
@@ -86,6 +88,8 @@
   }
 
   .nav-logo {
+    position: static;
+    justify-self: start;
     display: flex; align-items: center; line-height: 0;
     opacity: 0;
     pointer-events: none;
@@ -95,7 +99,7 @@
   nav.is-scrolled .nav-logo {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
+    transform: translateY(-2px);
   }
   .nav-logo-img {
     width: 128px;
@@ -114,7 +118,13 @@
   }
 
   .nav-links {
-    display: flex; gap: 36px; list-style: none;
+    display: flex; align-items: center; gap: 36px; list-style: none;
+    justify-self: center;
+  }
+  nav::after {
+    content: '';
+    width: 128px;
+    justify-self: end;
   }
   .nav-links a {
     text-decoration: none; font-size: 13px; font-weight: 500;
@@ -123,14 +133,6 @@
   }
   .nav-links a:hover { color: var(--green-bright); }
 
-  .nav-cta {
-    background: var(--green-deep); color: var(--white);
-    padding: 10px 26px; border-radius: 2px;
-    font-size: 12px; font-weight: 600; letter-spacing: 2px;
-    text-transform: uppercase; cursor: pointer;
-    border: none; transition: background 0.3s;
-  }
-  .nav-cta:hover { background: var(--green-mid); }
   nav.is-scrolled {
     border-bottom: 1px solid var(--green-pale);
   }
@@ -179,7 +181,7 @@
 
   /* ---- HERO ---- */
   .hero {
-    min-height: calc(100svh - 68px);
+    min-height: 100svh;
     position: relative;
     display: flex; align-items: center;
     overflow: hidden;
@@ -383,6 +385,14 @@
   }
   .section-title em {
     font-style: italic; color: var(--green-mid);
+  }
+  .section-copy {
+    margin-top: 18px;
+    max-width: 760px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-mid);
+    font-weight: 300;
   }
 
   /* ---- CATEGORIES ---- */
@@ -623,15 +633,15 @@
 
   /* ---- WHY US ---- */
   .why-section {
-    background: var(--green-deep);
+    background: var(--off-white);
     position: relative; overflow: hidden;
     padding: 62px 60px 58px;
   }
 
-  .why-section .section-eyebrow { color: var(--green-light); }
-  .why-section .section-eyebrow::before { background: var(--green-light); }
-  .why-section .section-title { color: var(--white); }
-  .why-section .section-title em { color: var(--green-light); }
+  .why-section .section-eyebrow { color: var(--green-bright); }
+  .why-section .section-eyebrow::before { background: var(--green-bright); }
+  .why-section .section-title { color: var(--green-deep); }
+  .why-section .section-title em { color: var(--green-mid); }
   .why-section .section-header { margin-bottom: 30px; }
   .why-section .section-title {
     font-size: clamp(28px, 2.9vw, 40px);
@@ -647,29 +657,111 @@
   }
 
   .why-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 28px; position: relative; z-index: 1; margin-top: 0;
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px; position: relative; z-index: 1; margin-top: 0;
   }
 
   .why-card {
-    padding: 22px 0 8px;
-    border-top: 1px solid rgba(255,255,255,0.12);
+    position: relative; overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--green-deep);
+    border-radius: 4px;
+    isolation: isolate;
+  }
+
+  .why-card-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #0f2a1c 0%, #1f4935 58%, #315b43 100%);
+  }
+  .why-card:nth-child(2) .why-card-bg {
+    background: linear-gradient(135deg, #173923 0%, #2d6046 100%);
+  }
+  .why-card:nth-child(3) .why-card-bg {
+    background: linear-gradient(135deg, #0d2318 0%, #183624 62%, #244b38 100%);
+  }
+  .why-card:nth-child(4) .why-card-bg {
+    background: linear-gradient(135deg, #244b38 0%, #3a6a4f 100%);
+  }
+  .why-card:nth-child(5) .why-card-bg {
+    background: linear-gradient(135deg, #0b2116 0%, #173821 100%);
+  }
+  .why-card-bg::before,
+  .why-card-bg::after {
+    content: '';
+    position: absolute;
+    inset: auto -8% 14% -8%;
+    height: 64%;
+    background:
+      linear-gradient(61deg, transparent 0 35%, rgba(250,255,248,0.11) 35% 50%, transparent 50%),
+      linear-gradient(-61deg, transparent 0 37%, rgba(250,255,248,0.08) 37% 52%, transparent 52%);
+    transform: translateY(12%);
+  }
+  .why-card-bg::after {
+    inset: auto -18% 4% 22%;
+    height: 72%;
+    opacity: 0.5;
+    transform: translateY(18%) scale(1.1);
+  }
+
+  .why-card-overlay {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to top, rgba(8,24,16,0.88) 0%, rgba(8,24,16,0.42) 38%, rgba(8,24,16,0.08) 100%),
+      radial-gradient(circle at 86% 14%, rgba(250,255,248,0.08), transparent 28%);
   }
 
   .why-icon {
-    font-size: 28px; margin-bottom: 14px;
+    position: absolute; top: 16px; right: 16px;
+    width: 34px; height: 34px;
+    background: rgba(250,255,248,0.08);
+    border: 1px solid rgba(250,255,248,0.12);
+    border-radius: 50%; display: flex; align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    color: var(--green-light);
+  }
+  .why-icon svg {
+    width: 18px;
+    height: 18px;
     display: block;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .why-card-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 18px;
+    min-height: 104px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .why-tag {
+    font-size: 7px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--green-light);
+    margin-bottom: 7px;
   }
 
   .why-title {
     font-family: 'Playfair Display', serif;
     font-size: 18px; font-weight: 700;
-    color: var(--white); margin-bottom: 8px;
+    color: var(--white); margin-bottom: 7px;
+    line-height: 1.18;
   }
 
   .why-desc {
     font-size: 12px; line-height: 1.65;
-    color: rgba(255,255,255,0.55); font-weight: 300;
+    color: rgba(250,255,248,0.66); font-weight: 300;
+    min-height: 38px;
+  }
+
+  .why-card-direct .why-tag,
+  .why-card-direct .why-desc {
+    visibility: hidden;
   }
 
   /* ---- ZONES ---- */
@@ -825,24 +917,18 @@
 
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
-  .submit-btn {
-    width: 100%; background: var(--green-deep); color: var(--white);
-    padding: 14px; border: none; border-radius: 2px;
-    font-family: 'Jost', sans-serif;
-    font-size: 12px; font-weight: 700; letter-spacing: 3px;
-    text-transform: uppercase; cursor: pointer;
-    transition: background 0.3s;
-  }
-  .submit-btn:hover { background: var(--green-mid); }
   .contact-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
-    margin-top: 12px;
+    margin-top: 4px;
   }
   .contact-action-link {
     display: flex; align-items: center; justify-content: center;
     min-height: 44px; border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
     font-size: 12px; font-weight: 700; letter-spacing: 2px;
     text-transform: uppercase;
   }
@@ -889,7 +975,8 @@
 
   .footer-col ul { list-style: none; }
   .footer-col li { margin-bottom: 10px; }
-  .footer-col a {
+  .footer-col a,
+  .footer-col span {
     font-size: 13px; color: rgba(255,255,255,0.4);
     text-decoration: none; transition: color 0.3s;
   }
@@ -1023,24 +1110,42 @@
 
   /* ---- FLOATING CTA ---- */
   .floating-cta {
-    position: fixed; bottom: 32px; right: 32px; z-index: 99;
-    background: var(--green-bright); color: var(--white);
-    padding: 14px 28px; border-radius: 2px;
+    position: fixed; bottom: 92px; right: 72px; z-index: 99;
+    background: #25d366; color: var(--white);
+    padding: 14px 22px; border-radius: 999px;
     font-size: 11px; font-weight: 700; letter-spacing: 2px;
     text-transform: uppercase; cursor: pointer;
-    border: none; box-shadow: 0 8px 32px rgba(26,58,42,0.3);
+    border: none; box-shadow: 0 14px 38px rgba(37,211,102,0.28);
     transition: all 0.3s; display: flex; align-items: center; gap: 10px;
   }
+  .floating-cta svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+    fill: currentColor;
+    flex: 0 0 auto;
+  }
   .floating-cta:hover {
-    background: var(--green-deep); transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(26,58,42,0.4);
+    background: #1ebe5d; transform: translateY(-2px);
+    box-shadow: 0 18px 42px rgba(37,211,102,0.34);
   }
 
   /* ---- RESPONSIVE TABLET ---- */
   @media (max-width: 1024px) {
-    nav { padding: 7px 24px; }
+    nav {
+      padding: 7px 24px;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      position: static;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(-1px);
+    }
+    nav.is-scrolled .nav-logo {
+      transform: translateY(-1px);
+    }
     .nav-links { display: none; }
-    .nav-cta { display: none; }
     .mobile-menu-toggle { display: flex; }
     .mobile-menu {
       position: fixed;
@@ -1086,7 +1191,7 @@
       margin-top: 4px;
     }
     section { padding: 60px 24px; }
-    .hero { min-height: calc(100svh - 64px); padding: 100px 0 54px; }
+    .hero { min-height: 100svh; padding: 100px 0 54px; }
     .hero-content { padding: 0 48px; max-width: 58%; }
     .hero-brand-watermark { top: 38%; right: 32px; width: 36vw; opacity: 0.05; }
     .listings-grid { grid-template-columns: 1fr 1fr; }
@@ -1114,10 +1219,10 @@
       position: static;
       opacity: 1;
       pointer-events: auto;
-      transform: none;
+      transform: translateY(-1px);
     }
     nav.is-scrolled .nav-logo {
-      transform: none;
+      transform: translateY(-1px);
     }
     .nav-logo-img { width: 112px; }
     .nav-logo-text span:first-child { font-size: 15px; letter-spacing: 1px; }
@@ -1264,7 +1369,21 @@
     .footer-col:first-child { display: block; }
 
     /* FLOATING CTA */
-    .floating-cta { display: none; }
+    .floating-cta {
+      right: var(--m-gutter);
+      bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+      min-height: 44px;
+      padding: 0 15px;
+      gap: 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      letter-spacing: 1.6px;
+      box-shadow: 0 16px 34px rgba(37,211,102,0.3);
+    }
+    .floating-cta svg {
+      width: 16px;
+      height: 16px;
+    }
   }
 
   /* ---- EXTRA SMALL ---- */
@@ -1293,7 +1412,7 @@
     }
 
     .nav-logo-img {
-      width: 96px;
+      width: 112px;
     }
 
     .mobile-menu-toggle {
@@ -1486,6 +1605,12 @@
       line-height: 1.08;
       letter-spacing: -0.3px;
     }
+    .section-copy {
+      margin-top: 12px;
+      max-width: 33ch;
+      font-size: 13px;
+      line-height: 1.55;
+    }
 
     #listings {
       padding-top: 36px;
@@ -1663,41 +1788,75 @@
     }
 
     .why-bg-pattern {
-      opacity: 0.03;
-      background-size: 34px 34px;
+      display: none;
     }
 
     .why-grid {
       grid-template-columns: 1fr;
-      gap: 0;
+      gap: 10px;
     }
 
     .why-card {
-      display: grid;
-      grid-template-columns: 30px 1fr;
-      column-gap: 12px;
-      padding: 14px 0;
-      border-top: 1px solid rgba(255,255,255,0.12);
+      display: block;
+      min-height: 108px;
+      aspect-ratio: auto;
+      border-radius: 11px;
     }
 
     .why-icon {
-      grid-row: 1 / span 2;
-      margin: 1px 0 0;
-      font-size: 20px;
-      line-height: 1;
+      top: 50%;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      transform: translateY(-50%);
+    }
+
+    .why-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .why-card-bg::before,
+    .why-card-bg::after {
+      inset: -24% 26% -28% -18%;
+      height: 150%;
+      opacity: 0.42;
+      transform: rotate(-7deg);
+    }
+
+    .why-card-overlay {
+      background:
+        linear-gradient(90deg, rgba(8,24,16,0.9) 0%, rgba(8,24,16,0.72) 54%, rgba(8,24,16,0.3) 100%),
+        radial-gradient(circle at 86% 50%, rgba(250,255,248,0.08), transparent 28%);
+    }
+
+    .why-card-content {
+      position: relative;
+      min-height: 108px;
+      padding: 16px 58px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .why-tag {
+      margin-bottom: 5px;
+      font-size: 6px;
+      letter-spacing: 1.8px;
     }
 
     .why-title {
       margin: 0 0 4px;
-      font-size: 17px;
+      font-size: 18px;
       line-height: 1.15;
     }
 
     .why-desc {
       margin: 0;
-      font-size: 12.5px;
-      line-height: 1.48;
-      color: rgba(255,255,255,0.66);
+      min-height: 0;
+      font-size: 10.5px;
+      line-height: 1.35;
+      color: rgba(250,255,248,0.7);
     }
 
     .zones-section {
@@ -1769,10 +1928,9 @@
   <ul class="nav-links">
     <li><a href="#listings" onclick="return openListingsFromStart(event)">Proprietăți</a></li>
     <li><a href="#zone">Zone</a></li>
-    <li><a href="#about">Despre Noi</a></li>
+    <li><a href="#despre">Despre Noi</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contactează-ne</button>
   <button class="mobile-menu-toggle" type="button" aria-controls="mobileMenu" aria-expanded="false" onclick="toggleMobileMenu()">
     Meniu
     <span class="mobile-menu-lines" aria-hidden="true">
@@ -1786,7 +1944,7 @@
 <div class="mobile-menu" id="mobileMenu">
   <a href="#listings" onclick="closeMobileMenu(); return openListingsFromStart(event)">Proprietăți <span>01</span></a>
   <a href="#zone" onclick="closeMobileMenu()">Zone <span>02</span></a>
-  <a href="#about" onclick="closeMobileMenu()">Despre Noi <span>03</span></a>
+  <a href="#despre" onclick="closeMobileMenu()">Despre Noi <span>03</span></a>
   <a href="#contact" onclick="closeMobileMenu()">Contactează-ne</a>
 </div>
 
@@ -1829,40 +1987,12 @@
   </div>
 </section>
 
-<!-- SEARCH -->
-<div class="search-section">
-  <div class="search-bar">
-    <div class="search-field">
-      <label>Tip Proprietate</label>
-      <select id="searchType">
-        <option value="">Toate proprietățile</option>
-        <option value="Casă / Vilă">Casă / Vilă</option>
-        <option value="Teren">Teren</option>
-        <option value="Cabană">Cabană</option>
-        <option value="Pensiune">Pensiune</option>
-        <option value="Imobil / Clădire">Imobil / Clădire</option>
-      </select>
-    </div>
-    <div class="search-field">
-      <label>Zona</label>
-      <select id="searchZone">
-        <option value="">Toate zonele</option>
-        <option value="Prahova">Valea Prahovei</option>
-      </select>
-    </div>
-    <div class="search-field">
-      <label>Buget Maxim</label>
-      <input type="text" id="searchBudget" placeholder="ex: 150.000 EUR">
-    </div>
-    <button class="search-btn" onclick="doSearch()">Caută</button>
-  </div>
-</div>
-
 <!-- LISTINGS -->
 <section id="listings">
   <div class="section-header reveal">
-    <div class="section-eyebrow">Proprietăți de Vânzare</div>
-    <h2 class="section-title">Ofertele <em>disponibile acum</em></h2>
+    <div class="section-eyebrow">Portofoliul Curent</div>
+    <h2 class="section-title">Proprietățile <em>reprezentate acum</em></h2>
+    <p class="section-copy">Nu încercăm să listăm tot. Alegem proprietăți pe care le putem înțelege, verifica și prezenta corect: poziție, acces, acte, potențial și public potrivit.</p>
   </div>
 
   <div id="resultsToolbar" style="display:none;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin:0 60px 24px;padding:16px 20px;background:#f1f9f3;border:1px solid #d8f3dc;border-radius:8px;">
@@ -1880,15 +2010,15 @@
   </div>
 </section>
 
-<!-- CATEGORIES -->
+<!-- PROPERTY TYPES -->
 <section class="categories-section" id="categories">
   <div class="section-header reveal">
     <div class="section-eyebrow">Tipuri de Proprietăți</div>
-    <h2 class="section-title">Găsește ce <em>cauți</em></h2>
+    <h2 class="section-title">Ce tipuri de proprietăți <em>reprezentăm</em></h2>
   </div>
 
   <div class="categories-grid reveal">
-    <div class="category-card cat-1" onclick="quickFilter('Casă / Vilă', '')">
+    <div class="category-card cat-1" onclick="document.getElementById('listings').scrollIntoView({behavior:'smooth'})">
       <div class="category-card-bg"></div>
       <div class="category-card-overlay"></div>
       <div class="category-icon" aria-hidden="true">
@@ -1905,7 +2035,7 @@
       </div>
     </div>
 
-    <div class="category-card cat-2" onclick="quickFilter('Teren', '')">
+    <div class="category-card cat-2" onclick="document.getElementById('listings').scrollIntoView({behavior:'smooth'})">
       <div class="category-card-bg"></div>
       <div class="category-card-overlay"></div>
       <div class="category-icon" aria-hidden="true">
@@ -1922,7 +2052,7 @@
       </div>
     </div>
 
-    <div class="category-card cat-3" onclick="quickFilter('Pensiune', '')">
+    <div class="category-card cat-3" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
       <div class="category-card-bg"></div>
       <div class="category-card-overlay"></div>
       <div class="category-icon" aria-hidden="true">
@@ -1939,7 +2069,7 @@
       </div>
     </div>
 
-    <div class="category-card cat-4" onclick="quickFilter('Imobil / Clădire', '')">
+    <div class="category-card cat-4" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
       <div class="category-card-bg"></div>
       <div class="category-card-overlay"></div>
       <div class="category-icon" aria-hidden="true">
@@ -1958,7 +2088,7 @@
       </div>
     </div>
 
-    <div class="category-card cat-5" onclick="quickFilter('Cabană', '')">
+    <div class="category-card cat-5" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
       <div class="category-card-bg"></div>
       <div class="category-card-overlay"></div>
       <div class="category-icon" aria-hidden="true">
@@ -1995,23 +2125,22 @@
 </div>
 <div class="about-text reveal">
       <div class="section-eyebrow">Despre Mine</div>
-      <h2 class="section-title" style="font-size:28px;">Proprietăți reale, în <em>zone cu potențial</em></h2>
-      <p class="about-desc">Ne ocupăm de terenuri, vile, case de vacanță, pensiuni și clădiri în cele mai căutate zone montane din Prahova. Rapid, direct și transparent.</p>
+      <h2 class="section-title" style="font-size:28px;">Reprezentare directă pentru <em>proprietăți selectate</em></h2>
+      <p class="about-desc">Nu încercăm să listăm tot. Alegem proprietăți pe care le putem înțelege, verifica și prezenta corect: poziție, acces, acte, potențial și public potrivit.</p>
       <div class="about-stats">
         <div class="about-stat">
           <div class="about-stat-num">Valea Prahovei</div>
           <div class="about-stat-label">Zona de activitate</div>
         </div>
         <div class="about-stat">
-          <div class="about-stat-num">Direct</div>
-          <div class="about-stat-label">Fără intermediari</div>
+          <div class="about-stat-num">Selectiv</div>
+          <div class="about-stat-label">Puține proprietăți</div>
         </div>
         <div class="about-stat">
           <div class="about-stat-num">100%</div>
           <div class="about-stat-label">Transparență</div>
         </div>
       </div>
-      <a href="#contact" class="btn-primary" style="margin-top:32px;display:inline-block;">Contactează-mă</a>
     </div>
   </div>
 </section>
@@ -2026,24 +2155,85 @@
 
   <div class="why-grid">
     <div class="why-card reveal">
-      <span class="why-icon">🏔️</span>
-      <div class="why-title">Cunosc zona personal</div>
-      <p class="why-desc">Sunt pe teren în Valea Prahovei și verific accesul, zona și oportunitățile reale.</p>
+      <div class="why-card-bg"></div>
+      <div class="why-card-overlay"></div>
+      <div class="why-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 18 9 7l6 11"/>
+          <path d="M10 18 15 10l6 8"/>
+        </svg>
+      </div>
+      <div class="why-card-content">
+        <div class="why-tag">Pe Teren</div>
+        <div class="why-title">Cunosc zona personal</div>
+        <p class="why-desc">Verific fiecare proprietate: acces, vecinătăți, poziție și potențial real.</p>
+      </div>
     </div>
     <div class="why-card reveal">
-      <span class="why-icon">🤝</span>
-      <div class="why-title">Fără surprize neplăcute</div>
-      <p class="why-desc">Prețuri reale, documente clare și costuri discutate de la primul apel.</p>
+      <div class="why-card-bg"></div>
+      <div class="why-card-overlay"></div>
+      <div class="why-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M7 12h10"/>
+          <path d="M12 7v10"/>
+          <path d="M5 5h14v14H5z"/>
+        </svg>
+      </div>
+      <div class="why-card-content">
+        <div class="why-tag">Selectiv</div>
+        <div class="why-title">Portofoliu limitat</div>
+        <p class="why-desc">Ne ocupăm de câteva proprietăți, nu de un catalog fără control.</p>
+      </div>
     </div>
     <div class="why-card reveal">
-      <span class="why-icon">⚖️</span>
-      <div class="why-title">Tranzacție sigură</div>
-      <p class="why-desc">Verificăm documentația și te ghidăm de la negociere până la notariat.</p>
+      <div class="why-card-bg"></div>
+      <div class="why-card-overlay"></div>
+      <div class="why-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M6 20h12"/>
+          <path d="M12 4v16"/>
+          <path d="M7 7h10"/>
+          <path d="M8 7l-3 6h6z"/>
+          <path d="M16 7l-3 6h6z"/>
+        </svg>
+      </div>
+      <div class="why-card-content">
+        <div class="why-tag">Verificat</div>
+        <div class="why-title">Tranzacție sigură</div>
+        <p class="why-desc">Documentație verificată, prezentare clară și proces ghidat până la notariat.</p>
+      </div>
     </div>
     <div class="why-card reveal">
-      <span class="why-icon">📈</span>
-      <div class="why-title">Investiție cu potențial</div>
-      <p class="why-desc">Alegem proprietăți cu potențial bun în zona montană Prahova.</p>
+      <div class="why-card-bg"></div>
+      <div class="why-card-overlay"></div>
+      <div class="why-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 19h16"/>
+          <path d="M6 16l4-4 3 3 5-7"/>
+          <path d="M15 8h3v3"/>
+        </svg>
+      </div>
+      <div class="why-card-content">
+        <div class="why-tag">Promovare</div>
+        <div class="why-title">Marketing potrivit</div>
+        <p class="why-desc">Poziționare, fotografii și promovare potrivite valorii proprietății.</p>
+      </div>
+    </div>
+    <div class="why-card why-card-direct reveal">
+      <div class="why-card-bg"></div>
+      <div class="why-card-overlay"></div>
+      <div class="why-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 19 12 5l8 14"/>
+          <path d="M12 5v14"/>
+          <path d="M9 19l3-6 3 6"/>
+        </svg>
+      </div>
+      <div class="why-card-content">
+        <div class="why-tag">Direct</div>
+        <div class="why-title">Reprezentare directă</div>
+        <p class="why-desc">Reprezentare directă</p>
+      </div>
     </div>
   </div>
 </section>
@@ -2056,7 +2246,7 @@
   </div>
 
   <div class="zones-grid reveal">
-    <div class="zone-card" onclick="quickFilter('', 'Prahova')">
+    <div class="zone-card" onclick="document.getElementById('listings').scrollIntoView({behavior:'smooth'})">
       <div class="zone-card-deco"></div>
       <div class="zone-num">01</div>
       <span class="zone-icon">⛰️</span>
@@ -2137,10 +2327,9 @@
         <label>Mesaj</label>
         <textarea id="leadMessage" placeholder="Descrie-ne ce proprietate cauți, bugetul aproximativ și zona preferată..."></textarea>
       </div>
-      <button class="submit-btn" type="submit">Trimite pe WhatsApp →</button>
       <div class="contact-actions">
-        <a class="contact-action-link contact-action-wa" href="https://wa.me/40747095063?text=Bună%20ziua!%20Sunt%20interesat%20de%20o%20proprietate%20SAVINVEST." target="_blank">WhatsApp direct</a>
-        <a class="contact-action-link contact-action-mail" href="mailto:savinalexandros@icloud.com?subject=Cerere%20proprietate%20SAVINVEST">Email direct</a>
+        <button class="contact-action-link contact-action-wa" type="submit">WhatsApp</button>
+        <a class="contact-action-link contact-action-mail" href="mailto:savinalexandros@icloud.com?subject=Cerere%20proprietate%20SAVINVEST" onclick="return submitLeadForm(event, 'email')">Email</a>
       </div>
       <div class="contact-form-status" id="contactFormStatus"></div>
     </form>
@@ -2153,48 +2342,50 @@
     <div class="footer-brand">
       <span>SAVINVEST</span>
       <span>Imobiliare</span>
-      <p class="footer-tagline">Terenuri și proprietăți de vânzare în Valea Prahovei – Sinaia, Bușteni, Azuga, Predeal și Comarnic.</p>
+      <p class="footer-tagline">Terenuri și proprietăți de vânzare în Valea Prahovei.</p>
     </div>
     <div class="footer-col">
       <h4>Servicii</h4>
       <ul>
-        <li><a href="#">Vânzare Proprietăți</a></li>
-        <li><a href="#">Cumpărare</a></li>
-        <li><a href="#">Evaluare Imobiliară</a></li>
-        <li><a href="#">Consultanță Investiții</a></li>
-        <li><a href="#">Servicii Juridice</a></li>
+        <li><span>Vânzare Proprietăți</span></li>
+        <li><span>Cumpărare</span></li>
+        <li><span>Evaluare Imobiliară</span></li>
+        <li><span>Consultanță Investiții</span></li>
+        <li><span>Servicii Juridice</span></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Zone</h4>
       <ul>
-        <li><a href="#">Sinaia</a></li>
-        <li><a href="#">Bușteni</a></li>
-        <li><a href="#">Valea Prahovei</a></li>
-        <li><a href="#">Predeal</a></li>
-        <li><a href="#">Subcarpați</a></li>
+        <li><span>Sinaia</span></li>
+        <li><span>Bușteni</span></li>
+        <li><span>Valea Prahovei</span></li>
+        <li><span>Predeal</span></li>
+        <li><span>Subcarpați</span></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Companie</h4>
       <ul>
-        <li><a href="#">Despre Noi</a></li>
-        <li><a href="#">Echipa</a></li>
-        <li><a href="#">Testimoniale</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="#despre">Despre Noi</a></li>
+        <li><span>Echipa</span></li>
+        <li><span>Testimoniale</span></li>
+        <li><span>Blog</span></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2025 SAVINVEST IMOBILIARE. Toate drepturile rezervate.</p>
-    <p>Realizat cu ❤️ pentru iubitorii de munte</p>
+    <p>© 2026 SAVINVEST IMOBILIARE. Toate drepturile rezervate.</p>
   </div>
 </footer>
 
 <!-- Floating CTA -->
-<a class="floating-cta" href="https://wa.me/40747095063?text=Bună ziua! Sunt interesat de o proprietate SAVINVEST" target="_blank">
-  💬 WhatsApp
+<a class="floating-cta" href="https://wa.me/40747095063?text=Bună ziua! Sunt interesat de o proprietate SAVINVEST" target="_blank" rel="noopener noreferrer" aria-label="Deschide WhatsApp pentru contact direct">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M20.52 3.48A11.82 11.82 0 0 0 12.08 0C5.56 0 .25 5.3.25 11.82c0 2.08.54 4.11 1.58 5.9L0 24l6.47-1.69a11.8 11.8 0 0 0 5.61 1.43h.01c6.52 0 11.83-5.3 11.83-11.82 0-3.16-1.23-6.13-3.4-8.44Zm-8.44 18.3h-.01a9.88 9.88 0 0 1-5.03-1.37l-.36-.21-3.84 1 1.03-3.74-.24-.38a9.87 9.87 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.9-9.89 2.64 0 5.12 1.03 6.99 2.91a9.82 9.82 0 0 1 2.89 6.98c0 5.45-4.44 9.89-9.89 9.89Zm5.42-7.42c-.3-.15-1.79-.88-2.06-.97-.28-.1-.48-.15-.68.15-.2.29-.78.97-.96 1.16-.17.2-.35.22-.64.08-.3-.15-1.25-.46-2.38-1.46-.88-.78-1.48-1.74-1.65-2.03-.17-.29-.02-.45.13-.6.13-.13.3-.35.45-.53.15-.17.2-.29.3-.49.1-.2.05-.37-.03-.53-.07-.15-.68-1.64-.93-2.25-.24-.58-.48-.5-.68-.51h-.58c-.2 0-.53.08-.8.37-.28.29-1.05 1.03-1.05 2.51s1.08 2.92 1.23 3.12c.15.2 2.11 3.22 5.11 4.52.71.31 1.27.5 1.7.64.72.23 1.37.2 1.88.12.57-.08 1.79-.73 2.05-1.44.25-.71.25-1.32.18-1.44-.08-.13-.28-.2-.57-.35Z"/>
+  </svg>
+  <span>WhatsApp</span>
 </a>
 
 <script>
@@ -2359,9 +2550,20 @@
    * (zone) and maximum budget using the `allProps` array.
    */
   function doSearch() {
-    const typeVal = document.getElementById('searchType').value;
-    const zoneVal = document.getElementById('searchZone').value;
-    const budgetStr = document.getElementById('searchBudget').value.replace(/[^0-9]/g, '');
+    const typeField = document.getElementById('searchType');
+    const zoneField = document.getElementById('searchZone');
+    const budgetField = document.getElementById('searchBudget');
+
+    if (!typeField || !zoneField || !budgetField) {
+      renderListings();
+      var allTarget = document.getElementById('listings');
+      if (allTarget) allTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+
+    const typeVal = typeField.value;
+    const zoneVal = zoneField.value;
+    const budgetStr = budgetField.value.replace(/[^0-9]/g, '');
     const budgetVal = budgetStr ? parseInt(budgetStr, 10) : null;
 
     let filtered = allProps.slice();
@@ -2393,11 +2595,19 @@
   }
 
   function quickFilter(typeVal, zoneVal) {
+    var typeField = document.getElementById('searchType');
+    var zoneField = document.getElementById('searchZone');
+    if (!typeField || !zoneField) {
+      renderListings();
+      var target = document.getElementById('listings');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
     if (typeVal) {
-      document.getElementById('searchType').value = typeVal;
+      typeField.value = typeVal;
     }
     if (zoneVal) {
-      document.getElementById('searchZone').value = zoneVal;
+      zoneField.value = zoneVal;
     }
     doSearch();
   }
