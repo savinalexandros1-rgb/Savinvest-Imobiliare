@@ -1432,7 +1432,7 @@
       min-height: 64px;
       padding: calc(env(safe-area-inset-top, 0px) + 10px) var(--m-gutter) 8px;
       grid-template-columns: 1fr auto;
-      align-items: start;
+      align-items: center;
       background: transparent;
       backdrop-filter: none;
       border-bottom: 0;
@@ -1450,19 +1450,19 @@
 
     .nav-logo {
       align-self: center;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-8px);
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
     }
 
     nav.is-scrolled .nav-logo {
       opacity: 1;
       pointer-events: auto;
-      transform: translateY(-1px);
+      transform: translateY(0);
     }
 
     .nav-logo-img {
-      width: 104px;
+      width: 112px;
     }
 
     .mobile-menu-toggle {
@@ -1483,7 +1483,7 @@
     .mobile-menu-lines span {
       width: 22px;
       height: 1.8px;
-      background: var(--green-deep);
+      background: #757c82;
     }
 
     .mobile-menu {
@@ -1504,8 +1504,8 @@
       min-height: 100svh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: calc(env(safe-area-inset-top, 0px) + 94px) var(--m-gutter) 28px;
+      justify-content: center;
+      padding: calc(env(safe-area-inset-top, 0px) + 74px) var(--m-gutter) 28px;
       overflow: hidden;
     }
 
@@ -1521,13 +1521,15 @@
     }
 
     .hero-brand-watermark {
+      order: 2;
       position: relative;
       display: block !important;
       z-index: 2;
       top: auto;
       right: auto;
-      width: min(76vw, 270px);
-      margin: 0 0 26px;
+      align-self: center;
+      width: min(67vw, 240px);
+      margin: 24px auto 0;
       transform: none;
       opacity: 0.96;
       mix-blend-mode: normal;
@@ -1539,6 +1541,7 @@
     }
 
     .hero-content {
+      order: 1;
       padding: 0;
       max-width: 100%;
     }
@@ -1558,9 +1561,9 @@
     }
 
     .hero h1 {
-      max-width: 7.5em;
+      max-width: 6.9em;
       margin-bottom: 16px;
-      font-size: clamp(42px, 11vw, 52px);
+      font-size: clamp(40px, 10.4vw, 48px);
       line-height: 0.98;
       letter-spacing: -0.9px;
     }
@@ -1574,8 +1577,8 @@
     .hero-desc {
       max-width: 29ch;
       margin-bottom: 24px;
-      font-size: 15px;
-      line-height: 1.62;
+      font-size: 14px;
+      line-height: 1.58;
       font-weight: 300;
     }
 
@@ -1684,8 +1687,8 @@
     .section-copy {
       margin-top: 12px;
       max-width: none;
-      font-size: 13px;
-      line-height: 1.55;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     #listings {
@@ -1824,8 +1827,8 @@
 
     .about-desc {
       max-width: none;
-      font-size: 13px;
-      line-height: 1.55;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .about-stats {
@@ -1936,7 +1939,7 @@
     }
 
     .zones-section {
-      padding: 36px var(--m-gutter);
+      padding: 40px var(--m-gutter) 58px;
     }
 
     .zones-grid {
@@ -1945,19 +1948,23 @@
     }
 
     .zone-card {
-      min-height: auto;
-      padding: 18px;
+      min-height: 164px;
+      padding: 24px 20px;
       border-radius: 11px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
 
     .zone-icon {
-      margin-bottom: 8px;
-      font-size: 22px;
+      display: none;
     }
 
     .zone-title {
       font-size: 21px;
-      margin-bottom: 6px;
+      margin-bottom: 10px;
     }
 
     .zone-num {
@@ -1967,15 +1974,15 @@
     }
 
     .zone-desc {
-      max-width: 31ch;
+      max-width: 24ch;
       margin-bottom: 0;
-      font-size: 12.5px;
-      line-height: 1.5;
+      font-size: 12px;
+      line-height: 1.55;
     }
 
     .contact-left,
     .contact-right {
-      padding: 34px var(--m-gutter);
+      padding: 40px var(--m-gutter);
     }
 
     .contact-left .section-header,
