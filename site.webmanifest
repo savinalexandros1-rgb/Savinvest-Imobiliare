@@ -3,12 +3,12 @@
   "short_name": "SAVINVEST",
   "icons": [
     {
-      "src": "/savinvest-tree-20260424.png",
+      "src": "/savinvest-tree-20260424b.png",
       "sizes": "48x48",
       "type": "image/png"
     },
     {
-      "src": "/android-chrome-savinvest-tree-192x192-20260424.png",
+      "src": "/android-chrome-savinvest-tree-192x192-20260424b.png",
       "sizes": "192x192",
       "type": "image/png"
     },
